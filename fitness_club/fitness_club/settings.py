@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'accounts',
     'studios',
-    'classes',
     'rest_framework',
     'location_field.apps.DefaultConfig',
 ]
@@ -144,33 +143,3 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
-
-# LOCATION_FIELD_PATH = settings.STATIC_URL + 'location_field'
-
-# LOCATION_FIELD = {
-#     'map.provider': 'open',
-#     'map.zoom': 13,
-#     'search.provider': 'google',
-#     'search.suffix': '',
-
-#     # Google
-#     'provider.google.api': '//maps.google.com/maps/api/js',
-#     'provider.google.api_key': 'AIzaSyCacffEukme6otcR-3yFnfzWvLuil_n5pQ',
-#     'provider.google.map_type': 'ROADMAP',
-
-#     # Mapbox
-#     'provider.mapbox.access_token': '',
-#     'provider.mapbox.max_zoom': 18,
-#     'provider.mapbox.id': 'mapbox.streets',
-
-#     # OpenStreetMap
-#     'provider.openstreetmap.max_zoom': 18,
-
-#     # misc
-#     'resources.root_path': LOCATION_FIELD_PATH,
-#     'resources.media': {
-#         'js': [
-#             LOCATION_FIELD_PATH + '/js/form.js',
-#         ],
-#     },
-# }
