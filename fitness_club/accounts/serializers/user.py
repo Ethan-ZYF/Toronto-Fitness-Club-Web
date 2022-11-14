@@ -1,5 +1,8 @@
-from fitness_club.accounts.models import FCUser
+from accounts.models import FCUser
 from rest_framework import serializers
+from django.core.validators import EmailValidator
+from rest_framework.exceptions import ValidationError
+import re
 
 class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(required=True)
@@ -27,3 +30,17 @@ class UserSerializer(serializers.ModelSerializer):
         currUser.set_password(data['password'])
         currUser.save()
         return currUser
+    
+    def validate_password(self, password):
+        if len(password) < 8:
+            raise ValidationError("Password must be at least 8 characters long")
+        # need to have one uppercase, one lowercase, one number, and one special character
+        regex = re.compile('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$')
+        if not regex.match(password):
+            raise ValidationError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+        return password
+
+    def validate_password2(self, password2):
+        if password2 != self.initial_data['password']:
+            raise ValidationError("Passwords do not match")
+        return password2

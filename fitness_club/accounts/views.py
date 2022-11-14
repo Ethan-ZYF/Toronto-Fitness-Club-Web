@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import UserSerializer
+from accounts.serializers.signup import SignupSerializer
+from accounts.serializers.user import UserSerializer
 
 # Create your views here.
 class SignupView(CreateAPIView):

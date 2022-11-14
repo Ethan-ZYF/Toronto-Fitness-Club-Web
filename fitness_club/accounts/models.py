@@ -13,4 +13,3 @@ class FCUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
