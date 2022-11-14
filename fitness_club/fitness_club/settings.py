@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'studios',
     'classes',
     'rest_framework',
+    'location_field.apps.DefaultConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,14 +133,44 @@ MEDIA_URL = 'media/'
 AUTH_USER_MODEL = 'accounts.FCUser'
 
 # jwt settings
-REST_FRAMEWORK = { 
+REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication', 
-        'rest_framework.authentication.SessionAuthentication', 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-    ), 
+    ),
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+# LOCATION_FIELD_PATH = settings.STATIC_URL + 'location_field'
+
+# LOCATION_FIELD = {
+#     'map.provider': 'open',
+#     'map.zoom': 13,
+#     'search.provider': 'google',
+#     'search.suffix': '',
+
+#     # Google
+#     'provider.google.api': '//maps.google.com/maps/api/js',
+#     'provider.google.api_key': 'AIzaSyCacffEukme6otcR-3yFnfzWvLuil_n5pQ',
+#     'provider.google.map_type': 'ROADMAP',
+
+#     # Mapbox
+#     'provider.mapbox.access_token': '',
+#     'provider.mapbox.max_zoom': 18,
+#     'provider.mapbox.id': 'mapbox.streets',
+
+#     # OpenStreetMap
+#     'provider.openstreetmap.max_zoom': 18,
+
+#     # misc
+#     'resources.root_path': LOCATION_FIELD_PATH,
+#     'resources.media': {
+#         'js': [
+#             LOCATION_FIELD_PATH + '/js/form.js',
+#         ],
+#     },
+# }
