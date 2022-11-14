@@ -31,6 +31,11 @@ class UserSerializer(serializers.ModelSerializer):
         currUser.save()
         return currUser
     
+    def validate_username(self, username):
+        if FCUser.objects.filter(username=username).exists():
+            raise ValidationError("Username already exists")
+        return username
+    
     def validate_password(self, password):
         if len(password) < 8:
             raise ValidationError("Password must be at least 8 characters long")
