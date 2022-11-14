@@ -1,4 +1,4 @@
-from .models import FCUser
+from fitness_club.accounts.models import FCUser
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
