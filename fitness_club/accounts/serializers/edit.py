@@ -1,14 +1,15 @@
-from accounts.models import FCUser
 from rest_framework import serializers
+from accounts.models import FCUser
 from rest_framework.exceptions import ValidationError
 import re
 
-class UserSerializer(serializers.ModelSerializer):
+class EditSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
     
     class Meta:
         model = FCUser
         fields = ('username', 'first_name', 'last_name', 'email', 'avatar', 'password', 'password2')
+        read_only_fields = ('username',)
         extra_kwargs = {
             'username': {'validators': []},
         }
