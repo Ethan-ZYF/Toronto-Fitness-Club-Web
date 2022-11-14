@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'accounts',
     'studios',
     'rest_framework',
-    'location_field.apps.DefaultConfig',
 ]
 
 MIDDLEWARE = [

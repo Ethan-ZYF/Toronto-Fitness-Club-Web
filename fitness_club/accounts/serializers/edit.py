@@ -12,7 +12,7 @@ class EditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FCUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'avatar',
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar',
                   'password', 'password2')
         read_only_fields = ('username', )
         extra_kwargs = {
@@ -24,6 +24,7 @@ class EditSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = False
+        self.fields['phone_number'].required = False
         self.fields['first_name'].required = False
         self.fields['last_name'].required = False
         self.fields['avatar'].required = False
@@ -44,16 +45,16 @@ class EditSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         currUser = self.context['request'].user
         if currUser.pk != instance.pk:
-            raise ValidationError(
-                "You do not have permission to edit this user")
+            raise ValidationError("You do not have permission to edit this user")
         print(validated_data)
-        if 'username' in validated_data and validated_data[
-                'username'] != self.initial_data['username']:
+        if 'username' in  validated_data and validated_data['username'] != self.initial_data['username']:
             instance.username = validated_data['username']
         if 'password' in validated_data:
             instance.set_password(validated_data['password'])
         if 'email' in validated_data:
             instance.email = validated_data['email']
+        if 'phone_number' in validated_data:
+            instance.phone_number = validated_data['phone_number']
         if 'first_name' in validated_data:
             instance.first_name = validated_data['first_name']
         if 'last_name' in validated_data:
@@ -84,3 +85,9 @@ class EditSerializer(serializers.ModelSerializer):
         if password2 != self.initial_data['password']:
             raise ValidationError("Passwords do not match")
         return password2
+    
+    def validate_phone_number(self, phone_number):
+        regex = re.compile('^\d{3}-\d{3}-\d{4}$')
+        if not regex.match(phone_number):
+            raise ValidationError("Phone number must be in the format XXX-XXX-XXXX")
+        return phone_number
