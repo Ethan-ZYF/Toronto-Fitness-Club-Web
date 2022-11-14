@@ -4,8 +4,9 @@ from rest_framework.exceptions import ValidationError
 import re
 
 class UserSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(write_only=True)
-    
+    password2 = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
     class Meta:
         model = FCUser
         fields = ('username', 'first_name', 'last_name', 'email', 'avatar', 'password', 'password2')
