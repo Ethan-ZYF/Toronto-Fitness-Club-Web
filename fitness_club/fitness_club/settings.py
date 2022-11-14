@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'studios',
     'classes',
     'rest_framework',
-    'location_field.apps.DefaultConfig',
 ]
 
 MIDDLEWARE = [

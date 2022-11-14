@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FCUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'avatar', 'password', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'password', 'password2')
         extra_kwargs = {
             'username': {'validators': []},
         }
@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = False
+        self.fields['phone_number'].required = False
         self.fields['first_name'].required = False
         self.fields['last_name'].required = False
         self.fields['avatar'].required = False
@@ -26,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
             username = data['username'],
             password = data['password'],
             email = "" if 'email' not in data else data['email'],
+            phone_number = "" if 'phone_number' not in data else data['phone_number'],
             avatar = "" if 'avatar' not in data else data['avatar'],
             first_name = "" if 'first_name' not in data else data['first_name'],
             last_name = "" if 'last_name' not in data else data['last_name'],
@@ -45,6 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(validated_data['password'])
         if 'email' in validated_data:
             instance.email = validated_data['email']
+        if 'phone_number' in validated_data:
+            instance.phone_number = validated_data['phone_number']
         if 'first_name' in validated_data:
             instance.first_name = validated_data['first_name']
         if 'last_name' in validated_data:
@@ -72,3 +76,9 @@ class UserSerializer(serializers.ModelSerializer):
         if password2 != self.initial_data['password']:
             raise ValidationError("Passwords do not match")
         return password2
+
+    def validate_phone_number(self, phone_number):
+        regex = re.compile('^\d{3}-\d{3}-\d{4}$')
+        if not regex.match(phone_number):
+            raise ValidationError("Phone number must be in the format XXX-XXX-XXXX")
+        return phone_number
