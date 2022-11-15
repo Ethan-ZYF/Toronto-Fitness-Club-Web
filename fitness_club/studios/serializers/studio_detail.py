@@ -5,10 +5,16 @@ from django.utils.http import urlencode
 
 from django.utils import timezone
 
+class FilteredEventsSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(start_time__gt=timezone.now())
+        return super(FilteredEventsSerializer, self).to_representation(data)
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('time')
+        fields = ("start_time",)
+        list_serializer_class = FilteredEventsSerializer
 
 class ClassSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
@@ -20,12 +26,14 @@ class ClassSerializer(serializers.ModelSerializer):
 class StudioSerializer(serializers.ModelSerializer):
     direction_link = serializers.SerializerMethodField('get_direction_link')
     classes = ClassSerializer(many=True, read_only=True)
-    # schedule = serializers.SerializerMethodField('order_class')
+    sc = serializers.PrimaryKeyRelatedField(many=True, queryset=Event.objects.all())
+    print('yoooooo')
+    print(sc)
 
     def get_direction_link(self, studio):
         return "https://www.google.com/maps/dir/?api=1&"+urlencode({'destination':studio.address})
 
-    # def order_class(self, studio)
     class Meta:
         model = Studio
-        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes')
+        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'sc')
+

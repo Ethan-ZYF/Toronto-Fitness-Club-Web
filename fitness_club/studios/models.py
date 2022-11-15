@@ -63,6 +63,8 @@ class Class(models.Model):
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.__prev_start_date != self.start_date or self.__prev_end_date != self.end_date:
             self.dates_changed = True
+        else:
+            self.dates_changed = False
         super(Class, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -71,6 +73,7 @@ class Class(models.Model):
 class Event(models.Model):
     belonged_class = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='events')
     start_time = models.DateTimeField(blank=False, null=False)
+    studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='events')
 
 @receiver(post_save, sender=Class)
 def createEvents(sender, **kwargs):
@@ -79,17 +82,17 @@ def createEvents(sender, **kwargs):
     instance = kwargs['instance']
 
     if instance.dates_changed:
-        q1 = Event.objects.filter(belonged_class = instance.id).filter(start_time__gt=timezone.now()).delete()
+        Event.objects.filter(belonged_class = instance.id).filter(start_time__gt=timezone.now()).delete()
         # create new future events 
         curr = instance.start_date
         while curr < timezone.now():
             curr += timedelta(days = 7)
         while curr < instance.end_date:
-            e=Event(belonged_class=instance, start_time=curr)
+            e=Event(belonged_class=instance, start_time=curr, studio=instance.studio)
             e.save()
             print(e)
             curr += timedelta(days = 7)
-            
+
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=50, blank=False, null=False)
