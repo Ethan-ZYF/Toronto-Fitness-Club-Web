@@ -2,7 +2,6 @@ from django.db import models
 from location_field.models.plain import PlainLocationField
 
 
-
 class Studio(models.Model):
     name = models.CharField(max_length=50,
                             blank=False,
@@ -12,15 +11,17 @@ class Studio(models.Model):
 
     # longitude = models.FloatField(blank=False, null=False, default=0.0)
     # latitude = models.FloatField(blank=False, null=False, default=0.0)
-    location = PlainLocationField(based_fields=['address'], zoom=7, default='POINT(0.0 0.0)')
+    location = PlainLocationField(based_fields=['address'],
+                                  zoom=7,
+                                  default='POINT(0.0 0.0)')
 
     postcode = models.CharField(max_length=7, blank=False, null=False)
     phone_number = models.CharField(max_length=20, blank=False, null=False)
+
     # images = models.ManyToManyField(to=StudioImage, blank=True)
-    
+
     def __str__(self):
         return self.name
-    
 
 
 class StudioImage(models.Model):
@@ -28,9 +29,6 @@ class StudioImage(models.Model):
                               blank=False,
                               null=False)
     studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE)
-
-
-
 
 
 class Class(models.Model):
@@ -43,7 +41,7 @@ class Class(models.Model):
     end_time = models.DateTimeField(blank=False, null=False)
 
     def __str__(self):
-        return str(self.studio) + self.name
+        return str(self.studio) + " " + self.name
 
 
 class Tag(models.Model):
