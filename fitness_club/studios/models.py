@@ -45,44 +45,51 @@ class Class(models.Model):
     description = models.TextField(blank=True, null=True)
     capacity = models.IntegerField(blank=False, null=False)
 
-    start_date = models.DateTimeField(blank=False, null=False)#blank=False, null=False
-    end_date = models.DateTimeField(blank=False, null=False) #blank=False, null=False
+    start_date = models.DateTimeField(blank=False, null=False)
+    end_date = models.DateTimeField(blank=False, null=False) 
     duration = models.PositiveIntegerField(blank=False, null=False)
 
     curr_capacity = models.PositiveBigIntegerField(default=capacity)
 
+    __prev_start_date = None
+    __prev_end_date = None
+    dates_changed = False
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__prev_start_date = self.start_date
+        self.__prev_end_date = self.end_date
+
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.__prev_start_date != self.start_date or self.__prev_end_date != self.end_date:
+            self.dates_changed = True
+        super(Class, self).save(*args, **kwargs)
+
     def __str__(self):
         return str(self.studio) + " " + self.name
 
+class Event(models.Model):
+    belonged_class = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='events')
+    start_time = models.DateTimeField(blank=False, null=False)
 
 @receiver(post_save, sender=Class)
 def createEvents(sender, **kwargs):
-    # create all valid events based on sender's start and end dates 
-    # handle differently if time is changed, should destroy all previous associated events and create a series of new ones
+    print('whatskdflxdfj')
+    created = kwargs['created']
+    instance = kwargs['instance']
 
-        # def save(self, *args, **kwargs):
-    #     pk = self.pk
-    #     # create associated events upon creating new class
-    #     if not self.pk: 
-    #         curr = self.start_date
-    #         while curr < timezone.now():
-    #             curr = curr + timedelta(days = 7)
-    #         while curr < self.end_date:
-    #             e=Event(belonged_class=self.id, time=curr)
-    #             e.save()
-    #             curr = curr + timedelta(days = 7)
-
-    #     super(Class, self).save(*args, **kwargs)
-    return
-
-
-
-
-
-class Event(models.Model):
-    belonged_class = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='events')
-    time = models.DateTimeField(blank=False, null=False)
-
+    if instance.dates_changed:
+        q1 = Event.objects.filter(belonged_class = instance.id).filter(start_time__gt=timezone.now()).delete()
+        # create new future events 
+        curr = instance.start_date
+        while curr < timezone.now():
+            curr += timedelta(days = 7)
+        while curr < instance.end_date:
+            e=Event(belonged_class=instance, start_time=curr)
+            e.save()
+            print(e)
+            curr += timedelta(days = 7)
+            
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=50, blank=False, null=False)
