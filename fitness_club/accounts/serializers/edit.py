@@ -28,6 +28,8 @@ class EditSerializer(serializers.ModelSerializer):
         self.fields['first_name'].required = False
         self.fields['last_name'].required = False
         self.fields['avatar'].required = False
+        self.fields['password'].required = False
+        self.fields['password2'].required = False
 
     def create(self, data):
         currUser = FCUser.objects.create(
