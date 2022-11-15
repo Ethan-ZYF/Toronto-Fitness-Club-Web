@@ -37,6 +37,7 @@ class LoginView(CreateAPIView):
 
 class EditView(RetrieveAPIView, UpdateAPIView):
     serializer_class = EditSerializer
+    permission_classes = (IsAuthenticated,)
     
     def get_object(self):
         return self.request.user
