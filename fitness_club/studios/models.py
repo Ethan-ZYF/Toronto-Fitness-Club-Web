@@ -55,3 +55,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.tag_name
+
+
+class Loc(models.Model):
+    latitude = models.FloatField(blank=False, null=False, default=0.0)
+    longitude = models.FloatField(blank=False, null=False, default=0.0)
+    
+    def __str__(self):
+        return str(self.lon) + "," + str(self.lat)
