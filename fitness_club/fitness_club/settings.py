@@ -143,3 +143,10 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+LOCATION_FIELD = {
+    'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
+    'provider.google.api_key': 'AIzaSyAZS5dH1mt6sX42v8wJJSeVrKDWAs3kyz4',
+    'provider.google.api_libraries': '',
+    'provider.google.map.type': 'ROADMAP',
+}

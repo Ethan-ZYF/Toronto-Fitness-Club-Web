@@ -10,8 +10,9 @@ class Studio(models.Model):
                             unique=True)
     address = models.CharField(max_length=50, blank=True, null=True)
 
-    longitude = models.FloatField(blank=False, null=False, default=0.0)
-    latitude = models.FloatField(blank=False, null=False, default=0.0)
+    # longitude = models.FloatField(blank=False, null=False, default=0.0)
+    # latitude = models.FloatField(blank=False, null=False, default=0.0)
+    location = PlainLocationField(based_fields=['address'], zoom=7, default='POINT(0.0 0.0)')
 
     postcode = models.CharField(max_length=7, blank=False, null=False)
     phone_number = models.CharField(max_length=20, blank=False, null=False)
