@@ -1,14 +1,16 @@
 from django.contrib import admin
-from .models import Studio, Class, Tag, StudioImage
+from .models import Studio, Class, Tag, StudioImage, Amenity
 
 
 # Register your models here.
 class StudioImageInline(admin.TabularInline):
     model = StudioImage
 
+class StudioAmenityInline(admin.TabularInline):
+    model = Amenity
 
 class StudioAdmin(admin.ModelAdmin):
-    inlines = [StudioImageInline]
+    inlines = [StudioImageInline, StudioAmenityInline]
 
 
 admin.site.register(Studio, StudioAdmin)
