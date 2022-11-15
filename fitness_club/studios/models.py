@@ -17,6 +17,10 @@ class Studio(models.Model):
     postcode = models.CharField(max_length=7, blank=False, null=False)
     phone_number = models.CharField(max_length=20, blank=False, null=False)
     # images = models.ManyToManyField(to=StudioImage, blank=True)
+    
+    def __str__(self):
+        return self.name
+    
 
 
 class StudioImage(models.Model):
