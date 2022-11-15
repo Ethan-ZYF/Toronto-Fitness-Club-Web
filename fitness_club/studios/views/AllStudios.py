@@ -10,10 +10,16 @@ class AllStudiosView(APIView):
         studio_list = []
         studios = Studio.objects.all()
         for studio in studios:
+            image = StudioImage.objects.filter(studio=studio)
+            image_list = []
+            if image:
+                for img in image:
+                    image_list.append(img.image.url)
             studio_list.append({
                 'name': studio.name,
                 'address': studio.address,
                 'location': studio.location,
+                'image': image_list,
             })
 
         return Response({'studios': studio_list})
