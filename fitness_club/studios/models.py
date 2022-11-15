@@ -31,6 +31,11 @@ class StudioImage(models.Model):
     studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE)
 
 
+class Amenity(models.Model):
+    studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE)
+    type = models.CharField(max_length=50, blank=False, null=False)
+    quantity = models.PositiveIntegerField(blank=False, null=False)
+
 class Class(models.Model):
     studio = models.ForeignKey(Studio, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=False, null=False)
