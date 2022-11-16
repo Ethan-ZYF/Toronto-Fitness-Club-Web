@@ -28,7 +28,6 @@ class StudioSerializer(serializers.ModelSerializer):
     classes = ClassSerializer(many=True, read_only=True)
     # sc = serializers.PrimaryKeyRelatedField(many=True, queryset=Event.objects.all())
     events = EventSerializer(many=True, read_only=True)
-    print('yoooooo')
 
 
     def get_direction_link(self, studio):
