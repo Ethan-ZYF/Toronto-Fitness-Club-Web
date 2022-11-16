@@ -59,7 +59,7 @@ class StudioSerializer(serializers.ModelSerializer):
     images = StudioImageSerializer(many=True, read_only=True)
 
     def get_event_set(self, instance):
-        events = instance.events.all().order_by('-start_time')
+        events = instance.events.all().order_by('start_time')
         return EventDetailsSerializer(events, many=True).data
 
     def get_direction_link(self, studio):
