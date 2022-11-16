@@ -20,7 +20,7 @@ class ClassSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
     class Meta:
         model = Class
-        fields = ('name', 'description','curr_capacity', 'capacity', 'duration', 'events')
+        fields = ('name', 'description','coach', 'curr_capacity', 'capacity', 'duration', 'events')
 
 
 class StudioSerializer(serializers.ModelSerializer):
