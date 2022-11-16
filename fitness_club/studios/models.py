@@ -31,11 +31,11 @@ class StudioImage(models.Model):
     image = models.ImageField(upload_to="studio_images",
                               blank=False,
                               null=False)
-    studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE)
+    studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE, related_name="images")
 
 
 class Amenity(models.Model):
-    studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE)
+    studio = models.ForeignKey(to=Studio, on_delete=models.CASCADE, related_name='amenities')
     type = models.CharField(max_length=50, blank=False, null=False)
     quantity = models.PositiveIntegerField(blank=False, null=False)
 
