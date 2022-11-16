@@ -23,6 +23,7 @@ class Subscription(models.Model):
     member = models.ForeignKey(to=FCUser, on_delete=models.CASCADE, related_name='subscriptions')
     plan = models.ForeignKey(to=Plan, on_delete=models.CASCADE, related_name='subscriptions')
     start_date = models.DateTimeField(blank=False, null=False, default=timezone.now)
+    end_date = models.DateTimeField(blank=False, null=False, default=(timezone.now() + timezone.timedelta(days=365)))
     
     def __str__(self):
         return f"{self.member.username}/{str(self.plan)}"

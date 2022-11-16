@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FCUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'password', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no', 'password', 'password2')
         extra_kwargs = {
             'username': {'validators': []},
         }
@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         currUser = FCUser.objects.create(
             username = data['username'],
             password = data['password'],
+            credit_debit_no = data['credit_debit_no'],
             email = "" if 'email' not in data else data['email'],
             phone_number = "" if 'phone_number' not in data else data['phone_number'],
             avatar = "" if 'avatar' not in data else data['avatar'],
@@ -45,6 +46,8 @@ class UserSerializer(serializers.ModelSerializer):
             instance.username = validated_data['username']
         if 'password' in validated_data:
             instance.set_password(validated_data['password'])
+        if 'credit_debit_no' in validated_data:
+            instance.credit_debit_no = validated_data['credit_debit_no']
         if 'email' in validated_data:
             instance.email = validated_data['email']
         if 'phone_number' in validated_data:
@@ -78,7 +81,15 @@ class UserSerializer(serializers.ModelSerializer):
         return password2
 
     def validate_phone_number(self, phone_number):
+        if phone_number is None or phone_number == "":
+            return phone_number
         regex = re.compile('^\d{3}-\d{3}-\d{4}$')
         if not regex.match(phone_number):
             raise ValidationError("Phone number must be in the format XXX-XXX-XXXX")
         return phone_number
+
+    def validate_credit_debit_no(self, credit_debit_no):
+        regex = re.compile('^\d{4}-\d{4}-\d{4}-\d{4}$')
+        if not regex.match(credit_debit_no):
+            raise ValidationError("Credit/debit number must be in the format XXXX-XXXX-XXXX-XXXX")
+        return credit_debit_no
