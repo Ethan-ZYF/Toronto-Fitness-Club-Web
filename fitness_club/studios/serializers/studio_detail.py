@@ -26,14 +26,18 @@ class ClassSerializer(serializers.ModelSerializer):
 class StudioSerializer(serializers.ModelSerializer):
     direction_link = serializers.SerializerMethodField('get_direction_link')
     classes = ClassSerializer(many=True, read_only=True)
-    sc = serializers.PrimaryKeyRelatedField(many=True, queryset=Event.objects.all())
+    # sc = serializers.PrimaryKeyRelatedField(many=True, queryset=Event.objects.all())
+    events = EventSerializer(many=True, read_only=True)
     print('yoooooo')
-    print(sc)
+
 
     def get_direction_link(self, studio):
         return "https://www.google.com/maps/dir/?api=1&"+urlencode({'destination':studio.address})
 
     class Meta:
         model = Studio
-        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'sc')
+        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'events')
+
+
+        # return future events in order of start_time
 
