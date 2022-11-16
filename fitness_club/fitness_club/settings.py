@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'accounts',
     'studios',
+    'subscriptions',
     'rest_framework',
     'location_field.apps.DefaultConfig',
 ]
