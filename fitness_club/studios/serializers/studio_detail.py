@@ -56,6 +56,7 @@ class StudioSerializer(serializers.ModelSerializer):
     classes = ClassSerializer(many=True, read_only=True)
     event_set = serializers.SerializerMethodField()
     amenities = AmenitySerializer(many=True, read_only=True)
+    images = StudioImageSerializer(many=True, read_only=True)
 
     def get_event_set(self, instance):
         events = instance.events.all().order_by('-start_time')
