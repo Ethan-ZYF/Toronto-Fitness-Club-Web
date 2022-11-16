@@ -16,8 +16,11 @@ class Plan(models.Model):
 
 
     def __str__(self):
-        return f"{self.gym.name} - {self.member.username}"
+        return f"{self.gym.name} - {self.plan}: ${self.price}"
 
 class Subscription(models.Model):
     member = models.ForeignKey(to=FCUser, on_delete=models.CASCADE, related_name='subscriptions')
     plan = models.ForeignKey(to=Plan, on_delete=models.CASCADE, related_name='subscriptions')
+    
+    def __str__(self):
+        return f"{self.member.username}/{str(self.plan)}"
