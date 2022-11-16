@@ -5,7 +5,8 @@ from studios.models import Studio, StudioImage, Amenity
 
 
 class ListSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='studio-detail')
 
     class Meta:
         model = Studio
-        fields = ('name', 'address', 'location', 'postcode', 'phone_number')
+        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'url')
