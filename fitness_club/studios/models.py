@@ -44,6 +44,7 @@ class Class(models.Model):
     name = models.CharField(max_length=50, blank=False, null=False)
     description = models.TextField(blank=True, null=True)
     capacity = models.IntegerField(blank=False, null=False)
+    coach = models.CharField(max_length=50, blank=True, null=True)
 
     start_date = models.DateTimeField(blank=False, null=False)
     end_date = models.DateTimeField(blank=False, null=False) 
@@ -77,7 +78,6 @@ class Event(models.Model):
 
 @receiver(post_save, sender=Class)
 def createEvents(sender, **kwargs):
-    print('whatskdflxdfj')
     created = kwargs['created']
     instance = kwargs['instance']
 
