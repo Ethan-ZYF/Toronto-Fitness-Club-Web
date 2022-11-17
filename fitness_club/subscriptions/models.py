@@ -35,9 +35,10 @@ class Subscription(models.Model):
     plan = models.ForeignKey(to=Plan,
                              on_delete=models.CASCADE,
                              related_name='subscriptions')
+    start_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.user.username} - {self.plan.plan}"
+        return f"{self.user.username} - {self.plan.plan}/{self.start_date.month}-{self.start_date.day}-{self.start_date.year}"
 
 
 @receiver(models.signals.post_save, sender=Subscription)
