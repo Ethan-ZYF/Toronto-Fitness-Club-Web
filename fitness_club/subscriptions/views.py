@@ -42,7 +42,10 @@ class EditView(RetrieveAPIView, UpdateAPIView):
     permission_classes = (IsAuthenticated, )
     
     def get_object(self):
-        return self.request.user.subscription
+        try:
+            return Subscription.objects.get(user=self.request.user)
+        except Subscription.DoesNotExist:
+            return None
     
 class CancelView(DestroyAPIView):
     permission_classes = (IsAuthenticated, )
@@ -50,6 +53,7 @@ class CancelView(DestroyAPIView):
     
     def get_queryset(self):
         return Subscription.objects.filter(user=self.request.user)
+        
     
     def delete(self, request, *args, **kwargs):
         if hasattr(request.user, 'subscription'):

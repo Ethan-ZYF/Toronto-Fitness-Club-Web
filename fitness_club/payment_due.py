@@ -7,26 +7,29 @@ django.setup()
 from accounts.models import FCUser, Payment
 from subscriptions.models import Subscription, Plan
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
+from django.utils import timezone
 
 users = FCUser.objects.filter(subscription__isnull=False)
-# print(users)
+print(users)
 need_payment = []
 for user in users:
-    if user.subscription.plan == "MONTHLY":
+    # print(user.subscription.plan.plan)
+    if user.subscription.plan.plan == "MONTHLY":
         print(user)
         if user.subscription.start_date + relativedelta(
-                months=1) <= datetime.date.today():
+                months=1) <= timezone.now().date():
             need_payment.append(user)
-    elif user.subscription.plan == "YEARLY":
+    elif user.subscription.plan.plan == "YEARLY":
         if user.subscription.start_date + relativedelta(
-                years=1) <= datetime.date.today():
+                years=1) <= timezone.now().date():
             need_payment.append(user)
 print(need_payment)
 
 for user in need_payment:
     Payment.objects.create(
         user=user,
-        amount=user.subscription.plan.price,
-        date=datetime.date.today(),
+        subscription=user.subscription,
+        date=timezone.now(),
     )
 print("All Paid")
