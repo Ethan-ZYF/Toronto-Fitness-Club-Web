@@ -88,3 +88,32 @@ class PayView(CreateAPIView):
             return Response(e.detail['non_field_errors'][0])
         serializer.save()
         return Response("Payment successful")
+
+class FuturePayView(APIView):
+    permission_classes = (IsAuthenticated, )
+    cnt_limit = 3
+    
+    def get(self, request, *args, **kwargs):
+        current_plan = request.user.subscription.plan
+        last_payment = Payment.objects.filter(user=request.user).order_by('-date')[0]
+        last_payment_date = last_payment.date
+        response = []
+        for i in range(self.cnt_limit):
+            if current_plan == 'MONTHLY':
+                next_date = last_payment_date + relativedelta(months=1)
+                response.append({
+                    'amount': request.user.subscription.plan.price,
+                    'card_info': request.user.credit_debit_no,
+                    'date': next_date.strftime("%d/%m/%Y %H:%M:%S")
+                })
+                last_payment_date += relativedelta(months=1)
+            else:
+                next_date = last_payment_date + relativedelta(years=1)
+                response.append({
+                    'amount': request.user.subscription.plan.price,
+                    'card_info': request.user.credit_debit_no,
+                    'date': next_date.strftime("%d/%m/%Y %H:%M:%S")
+                })
+                last_payment_date += relativedelta(years=1)
+        final_response = {'future_payments': response}
+        return Response(final_response)        
