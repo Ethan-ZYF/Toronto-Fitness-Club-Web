@@ -6,16 +6,23 @@ from dateutil.relativedelta import relativedelta
 
 
 class PaymentHistorySerializer(serializers.ModelSerializer):
-
+    amount = serializers.SerializerMethodField('get_amount')
+    card_info = serializers.SerializerMethodField('get_card_info')
+    date_and_time = serializers.SerializerMethodField('get_date_and_time')
+    
+    def get_amount(self, obj):
+        return obj.subscription.plan.price
+    
+    def get_card_info(self, obj):
+        return obj.user.credit_debit_no
+    
+    def get_date_and_time(self, obj):
+        return obj.date.strftime("%d/%m/%Y %H:%M:%S")
+    
     class Meta:
         model = Payment
-        fields = ['id', 'user', 'subscription', 'date']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['user'].required = True
-        self.fields['subscription'].required = True
-        self.fields['date'].required = True
+        fields = ['amount', 'card_info', 'date_and_time']
+        read_only_fields = ['amount', 'card_info', 'date_and_time']
 
 
 class CreatePaymentSerializer(serializers.ModelSerializer):

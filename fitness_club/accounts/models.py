@@ -25,7 +25,7 @@ class Payment(models.Model):
     subscription = models.ForeignKey(to='subscriptions.Subscription',
                                      on_delete=models.CASCADE,
                                      related_name='payments')
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     # date = models.DateField(auto_now=True)
 
     def __str__(self):
