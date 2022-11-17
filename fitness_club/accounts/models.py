@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from subscriptions.models import Subscription
 
 
 class FCUser(AbstractUser):
@@ -15,3 +16,12 @@ class FCUser(AbstractUser):
     credit_debit_no = models.CharField(max_length=50, blank=True, null=True)
 
     USERNAME_FIELD = 'username'
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(to=FCUser, on_delete=models.CASCADE, related_name='payments')
+    subscription = models.ForeignKey(to=Subscription, on_delete=models.CASCADE, related_name='payments')
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount}"
