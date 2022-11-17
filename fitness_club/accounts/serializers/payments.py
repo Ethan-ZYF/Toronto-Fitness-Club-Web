@@ -32,7 +32,11 @@ class CreatePaymentSerializer(serializers.ModelSerializer):
         today = datetime.today().date()
         # print(today, "debug")
         start_date = self.context['request'].user.subscription.start_date
+        print(start_date, "debug")
         plan = self.context['request'].user.subscription.plan.plan
+        if start_date > today:
+            print("start date is in the future")
+            raise serializers.ValidationError("Your subscription has already covered this period")
         while start_date < today:
             if plan == 'MONTHLY':
                 start_date += relativedelta(months=1)

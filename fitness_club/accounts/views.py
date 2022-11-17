@@ -85,9 +85,6 @@ class PayView(CreateAPIView):
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:
-            if e == "No Payment Due":
-                return Response("No Payment Due")
-            else:
-                return Response("Payment Already Made")
+            return Response(e.detail['non_field_errors'][0])
         serializer.save()
         return Response("Payment successful")
