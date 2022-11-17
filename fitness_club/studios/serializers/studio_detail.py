@@ -2,7 +2,7 @@ from rest_framework import serializers
 from studios.models import Studio, StudioImage, Amenity, Class, Event
 from datetime import datetime, timedelta
 from django.utils.http import urlencode
-
+from accounts.models import FCUser
 from django.utils import timezone
 
 
@@ -69,3 +69,23 @@ class StudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Studio
         fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'event_set', 'amenities', 'images')
+
+class HistoryEventDetailsSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='belonged_class.name')
+    class_length_in_hour = serializers.CharField(source='belonged_class.duration')
+    class Meta:
+        model = Event
+        fields = ("start_time","class_name", "class_length_in_hour")
+        list_serializer_class = FilteredEventsSerializer
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    schedule = EventDetailsSerializer(many=True, read_only=True)
+    class Meta:
+        model = FCUser
+        fields=['schedule']
+
+class HistorySerializer(serializers.ModelSerializer):
+    schedule = EventDetailsSerializer(many=True, read_only=True)
+    class Meta:
+        model = FCUser
+        fields=['schedule']

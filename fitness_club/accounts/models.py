@@ -16,6 +16,9 @@ class FCUser(AbstractUser):
     credit_debit_no = models.CharField(max_length=50, blank=True, null=True)
     # set to false and cannot be changed by admin
     active_subscription = models.BooleanField(default=False, editable=False)
+    
+    schedule = models.ManyToManyField(to='studios.Event', related_name="schedule_events")
+    history = models.ManyToManyField(to='studios.Event', related_name="history_events")
 
     USERNAME_FIELD = 'username'
 

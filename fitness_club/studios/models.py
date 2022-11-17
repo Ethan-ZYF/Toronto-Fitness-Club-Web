@@ -89,6 +89,9 @@ class Event(models.Model):
                                on_delete=models.CASCADE,
                                related_name='events',
                                editable=False)
+    
+    def __str__(self) -> str:
+        return str(self.belonged_class) + " " + self.start_time.strftime("%Y-%m-%d %H:%M:%S")
 
 
 @receiver(post_save, sender=Class)
