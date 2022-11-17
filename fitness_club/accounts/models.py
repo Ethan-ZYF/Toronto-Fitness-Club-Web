@@ -14,6 +14,8 @@ class FCUser(AbstractUser):
     avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
     is_admin = models.BooleanField(default=False)
     credit_debit_no = models.CharField(max_length=50, blank=True, null=True)
+    # set to false and cannot be changed by admin
+    active_subscription = models.BooleanField(default=False, editable=False)
 
     USERNAME_FIELD = 'username'
 

@@ -32,6 +32,9 @@ class SubscribeView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        # change user's is_subscribed to True
+        request.user.is_subscribed = True
+        print(request.user.is_subscribed)
         return Response({'detail': 'You have successfully enrolled.'})
 
 class EditView(RetrieveAPIView, UpdateAPIView):
@@ -52,6 +55,8 @@ class CancelView(DestroyAPIView):
         if hasattr(request.user, 'subscription'):
             # delete from queryset
             self.get_queryset().delete()
+            request.user.is_subscribed = False
+            print(request.user.is_subscribed)
             return Response({'detail': 'You have successfully unsubscribed.'})
         return Response({'detail': 'You are not subscribed.'})
     
