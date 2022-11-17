@@ -16,8 +16,10 @@ class SubscribeSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         user = self.context['request'].user
+        print(validated_data)
         # subscription = Subscription.objects.create(user=user, **validated_data)
-        if validated_data['plan'] == 'MONTHLY':
+        if validated_data['plan'].plan == 'MONTHLY':
+            print('monthly')
             validated_data['start_date'] += relativedelta(months=1)
         else:
             validated_data['start_date'] += relativedelta(years=1)
