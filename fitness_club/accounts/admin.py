@@ -5,15 +5,21 @@ from subscriptions.models import Subscription
 
 class SubscriptiontInline(admin.TabularInline):
     model = Subscription
-    
+
+
 class PaymentInline(admin.TabularInline):
     model = Payment
     # cannot change the payment details
     readonly_fields = ('subscription', 'date')
-    
+
+    def has_add_permission(self, request, obj):
+        return False
+
+
 class FCUserAdmin(admin.ModelAdmin):
     model = FCUser
     inlines = [SubscriptiontInline, PaymentInline]
+
 
 # Register your models here.
 admin.site.register(FCUser, FCUserAdmin)
