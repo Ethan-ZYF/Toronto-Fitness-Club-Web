@@ -48,5 +48,5 @@ def create_payment(sender, instance, created, **kwargs):
         return
     curr_payment = Payment.objects.create(user=instance.user,
                                           subscription=instance,
-                                          date=instance.start_date)
+                                          date=timezone.now())
     curr_payment.save()
