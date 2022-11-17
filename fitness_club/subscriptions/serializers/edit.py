@@ -12,7 +12,7 @@ class EditSubSerializer(serializers.ModelSerializer):
         start_date = curr_subscription.start_date
         prev_plan = curr_subscription.plan.plan
         while start_date <= timezone.now().date():
-            if prev_plan == 'Monthly':
+            if prev_plan == 'MONTHLY':
                 start_date += relativedelta(months=1)
             else:
                 start_date += relativedelta(years=1)
