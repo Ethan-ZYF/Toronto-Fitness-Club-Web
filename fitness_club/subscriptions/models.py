@@ -1,5 +1,4 @@
 from django.db import models
-from accounts.models import FCUser
 from studios.models import Studio
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -29,7 +28,7 @@ class Plan(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.OneToOneField(to=FCUser,
+    user = models.OneToOneField(to='accounts.FCUser',
                                 on_delete=models.CASCADE,
                                 related_name='subscription')
     plan = models.ForeignKey(to=Plan,
