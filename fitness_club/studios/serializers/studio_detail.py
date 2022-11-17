@@ -17,24 +17,28 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("start_time", )
+        fields = ('id', 'start_time')
         list_serializer_class = FilteredEventsSerializer
+
 
 class EventDetailsSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
-    class_length_in_hour = serializers.CharField(source='belonged_class.duration')
+    class_length_in_hour = serializers.CharField(
+        source='belonged_class.duration')
+
     class Meta:
         model = Event
-        fields = ("start_time","class_name", "class_length_in_hour")
+        fields = ('id', "start_time", "class_name", "class_length_in_hour")
         list_serializer_class = FilteredEventsSerializer
+
 
 class ClassSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
 
     class Meta:
         model = Class
-        fields = ('name', 'description', 'coach', 'curr_capacity', 'capacity',
-                  'duration', 'events')
+        fields = ('id', 'name', 'description', 'coach', 'curr_capacity',
+                  'capacity', 'duration', 'events')
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -68,24 +72,33 @@ class StudioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Studio
-        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'event_set', 'amenities', 'images')
+        fields = ('id', 'name', 'address', 'location', 'postcode',
+                  'phone_number', 'direction_link', 'classes', 'event_set',
+                  'amenities', 'images')
+
 
 class HistoryEventDetailsSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
-    class_length_in_hour = serializers.CharField(source='belonged_class.duration')
+    class_length_in_hour = serializers.CharField(
+        source='belonged_class.duration')
+
     class Meta:
         model = Event
-        fields = ("start_time","class_name", "class_length_in_hour")
+        fields = ("start_time", "class_name", "class_length_in_hour")
         list_serializer_class = FilteredEventsSerializer
+
 
 class ScheduleSerializer(serializers.ModelSerializer):
     schedule = EventDetailsSerializer(many=True, read_only=True)
+
     class Meta:
         model = FCUser
-        fields=['schedule']
+        fields = ['schedule']
+
 
 class HistorySerializer(serializers.ModelSerializer):
     schedule = EventDetailsSerializer(many=True, read_only=True)
+
     class Meta:
         model = FCUser
-        fields=['schedule']
+        fields = ['schedule']

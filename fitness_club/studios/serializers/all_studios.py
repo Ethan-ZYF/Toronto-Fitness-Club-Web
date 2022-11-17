@@ -9,4 +9,5 @@ class ListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Studio
-        fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'url')
+        fields = ('id', 'name', 'address', 'location', 'postcode',
+                  'phone_number', 'url')
