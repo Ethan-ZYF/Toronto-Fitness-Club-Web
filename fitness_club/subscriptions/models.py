@@ -44,6 +44,8 @@ class Subscription(models.Model):
 @receiver(models.signals.post_save, sender=Subscription)
 def create_payment(sender, instance, created, **kwargs):
     # create a payment for the subscription with the current date
+    if instance.start_date > timezone.now().date():
+        return
     curr_payment = Payment(user=instance.user,
                             subscription=instance,
                             date=timezone.now())   
