@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from subscriptions.serializers.plan import PlanSerializer
+from subscriptions.serializers.subscribe import SubscribeSerializer
 from django.contrib.auth import login, logout
 from accounts.models import FCUser
 from subscriptions.models import Plan
@@ -16,5 +17,17 @@ class PlansView(ListAPIView):
     serializer_class = PlanSerializer
     
 
-class EnrollView(CreateAPIView):
-    pass
+class SubscribeView(CreateAPIView):
+    serializer_class = SubscribeSerializer
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self, request, *args, **kwargs):
+        return Response({'detail': 'Please choose a plan to enroll.'})
+    
+    def post(self, request, *args, **kwargs):
+        if request.user.subscription:
+            return Response({'detail': 'You have already subscribed.'})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'detail': 'You have successfully enrolled.'})
