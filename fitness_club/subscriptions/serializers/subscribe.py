@@ -11,7 +11,7 @@ class SubscribeSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['plan'] = serializers.PrimaryKeyRelatedField(queryset=Plan.objects.all())
-        self.fields['start_date'] = serializers.DateField(default=timezone.now)
+        self.fields['start_date'] = serializers.DateField(default=timezone.now().date())
     
     def create(self, validated_data):
         user = self.context['request'].user

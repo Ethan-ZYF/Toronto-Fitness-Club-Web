@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from subscriptions.serializers.plan import PlanSerializer
 from subscriptions.serializers.subscribe import SubscribeSerializer
+from subscriptions.serializers.edit import EditSubSerializer
 from django.contrib.auth import login, logout
 from accounts.models import FCUser
 from subscriptions.models import Plan
@@ -32,3 +33,10 @@ class SubscribeView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'detail': 'You have successfully enrolled.'})
+
+class EditView(RetrieveAPIView, UpdateAPIView):
+    serializer_class = EditSubSerializer
+    permission_classes = (IsAuthenticated, )
+    
+    def get_object(self):
+        return self.request.user.subscription
