@@ -31,9 +31,10 @@ class SubscribeView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        # change user's is_subscribed to True
-        request.user.is_subscribed = True
-        print(request.user.is_subscribed)
+        # change the user's subscription field to True
+        request.user.active_subscription = True
+        request.user.save()
+        print(request.user.active_subscription)
         return Response({'detail': 'You have successfully enrolled.'})
 
 class EditView(RetrieveAPIView, UpdateAPIView):
@@ -58,9 +59,12 @@ class CancelView(DestroyAPIView):
         if hasattr(request.user, 'subscription'):
             # delete from queryset
             self.get_queryset().delete()
-            request.user.is_subscribed = False
-            print(request.user.is_subscribed)
-            return Response({'detail': 'You have successfully unsubscribed.'})
+            request.user.active_subscription = False
+            # delete all the user's events in schedule that are later than start date
+            request.user.save()
+            request.user.schedule.filter(start_time__gt=request.user.subscription.start_date).delete()
+            request.user.save()
+            return Response({'detail': f'You have unsubscribed, expire_date: {request.user.subscription.start_date}.'})
         return Response({'detail': 'You are not subscribed.'})
     
     def get(self, request, *args, **kwargs):

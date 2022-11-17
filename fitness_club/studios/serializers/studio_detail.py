@@ -25,6 +25,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
     class_length_in_hour = serializers.CharField(
         source='belonged_class.duration')
+    start_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Event
