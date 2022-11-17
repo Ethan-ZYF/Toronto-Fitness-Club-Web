@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.utils.http import urlencode
 
 from django.utils import timezone
+from accounts.models import FCUser
 
 
 class FilteredEventsSerializer(serializers.ListSerializer):
@@ -14,13 +15,20 @@ class FilteredEventsSerializer(serializers.ListSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Event
         fields = ("start_time", )
         list_serializer_class = FilteredEventsSerializer
 
 class EventDetailsSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='belonged_class.name')
+    class_length_in_hour = serializers.CharField(source='belonged_class.duration')
+    class Meta:
+        model = Event
+        fields = ("start_time","class_name", "class_length_in_hour")
+        list_serializer_class = FilteredEventsSerializer
+
+class HistoryEventDetailsSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
     class_length_in_hour = serializers.CharField(source='belonged_class.duration')
     class Meta:
@@ -69,3 +77,19 @@ class StudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Studio
         fields = ('name', 'address', 'location', 'postcode', 'phone_number', 'direction_link', 'classes', 'event_set', 'amenities', 'images')
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    schedule = EventDetailsSerializer(many=True, read_only=True)
+    class Meta:
+        model = FCUser
+        fields=['schedule']
+
+class HistorySerializer(serializers.ModelSerializer):
+    schedule = EventDetailsSerializer(many=True, read_only=True)
+    class Meta:
+        model = FCUser
+        fields=['schedule']
+
+
+

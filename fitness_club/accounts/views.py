@@ -55,3 +55,4 @@ class LogoutView(APIView):
             pass
         logout(request)
         return Response("User logged out successfully")
+
