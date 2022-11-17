@@ -25,7 +25,8 @@ class SubscribeView(CreateAPIView):
         return Response({'detail': 'Please choose a plan to enroll.'})
     
     def post(self, request, *args, **kwargs):
-        if request.user.subscription:
+        # check if the user has the field subscription
+        if hasattr(request.user, 'subscription'):
             return Response({'detail': 'You have already subscribed.'})
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

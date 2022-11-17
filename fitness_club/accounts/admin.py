@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import FCUser, Subscription, Payment
+from accounts.models import FCUser, Payment
+from subscriptions.models import Subscription
 
 
 class SubscriptiontInline(admin.TabularInline):
@@ -7,6 +8,8 @@ class SubscriptiontInline(admin.TabularInline):
     
 class PaymentInline(admin.TabularInline):
     model = Payment
+    # cannot change the payment details
+    readonly_fields = ('subscription', 'date')
     
 class FCUserAdmin(admin.ModelAdmin):
     model = FCUser
