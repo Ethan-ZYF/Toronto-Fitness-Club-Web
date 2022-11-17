@@ -1,7 +1,8 @@
 from django.db import models
 from studios.models import Studio
 from django.utils import timezone
-from rest_framework.exceptions import ValidationError
+from accounts.models import Payment
+from django.dispatch import receiver
 
 # Create your models here.
 PLAN_CHOICES = (
@@ -37,3 +38,12 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.plan.plan}"
+
+
+@receiver(models.signals.post_save, sender=Subscription)
+def create_payment(sender, instance, created, **kwargs):
+    # create a payment for the subscription with the current date
+    curr_payment = Payment(user=instance.user,
+                            subscription=instance,
+                            date=timezone.now())   
+    curr_payment.save()
