@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from subscriptions.models import Subscription, Plan
+from accounts.models import Subscription, Plan
 from datetime import datetime, timedelta
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
