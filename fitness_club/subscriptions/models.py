@@ -3,6 +3,7 @@ from studios.models import Studio
 from django.utils import timezone
 from accounts.models import Payment
 from django.dispatch import receiver
+from datetime import datetime, timedelta
 
 # Create your models here.
 PLAN_CHOICES = (
@@ -46,7 +47,11 @@ def create_payment(sender, instance, created, **kwargs):
     print(instance.start_date)
     if instance.start_date > timezone.now().date():
         return
+    next_payment_date = instance.start_date
+    # change next_payment_date to datetime with current time
+    print(timezone.now())
+    next_payment_date = timezone.datetime.combine(next_payment_date, datetime.now().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           subscription=instance,
-                                          date=timezone.now())
+                                          date=next_payment_date)
     curr_payment.save()

@@ -3,6 +3,7 @@ from subscriptions.models import Subscription, Plan
 from datetime import datetime, timedelta
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from rest_framework.response import Response
 
 class EditSubSerializer(serializers.ModelSerializer):
     new_start_date = serializers.SerializerMethodField('get_new_start_date')
@@ -22,6 +23,12 @@ class EditSubSerializer(serializers.ModelSerializer):
         model = Subscription
         fields = ('new_start_date', 'plan')
         read_only_fields = ('new_start_date',)
+    
+    def validate(self, data):
+        # check if the user has the field subscription
+        if not hasattr(self.context['request'].user, 'subscription'):
+            raise serializers.ValidationError('You have not subscribed yet.')
+        return data
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
