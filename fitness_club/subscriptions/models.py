@@ -11,8 +11,6 @@ PLAN_CHOICES = (
 )
 
 
-
-
 class Plan(models.Model):
     price = models.DecimalField(max_digits=6,
                                 decimal_places=2,
@@ -23,7 +21,7 @@ class Plan(models.Model):
                             choices=PLAN_CHOICES,
                             blank=True,
                             null=True)
-    
+
     def __str__(self):
         return f"{self.plan} - {self.price}"
 
@@ -44,9 +42,11 @@ class Subscription(models.Model):
 @receiver(models.signals.post_save, sender=Subscription)
 def create_payment(sender, instance, created, **kwargs):
     # create a payment for the subscription with the current date
+    print(instance)
+    print(instance.start_date)
     if instance.start_date > timezone.now().date():
         return
-    curr_payment = Payment(user=instance.user,
-                            subscription=instance,
-                            date=timezone.now())   
+    curr_payment = Payment.objects.create(user=instance.user,
+                                          subscription=instance,
+                                          date=instance.start_date)
     curr_payment.save()

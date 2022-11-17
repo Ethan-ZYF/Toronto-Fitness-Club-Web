@@ -6,9 +6,11 @@ from rest_framework.renderers import AdminRenderer, JSONRenderer, BrowsableAPIRe
 from accounts.serializers.login import LoginSerializer
 from accounts.serializers.user import UserSerializer
 from accounts.serializers.edit import EditSerializer
-from accounts.serializers.payments import PaymentSerializer
+from accounts.serializers.payments import PaymentHistorySerializer, CreatePaymentSerializer
 from django.contrib.auth import login, logout
 from accounts.models import FCUser, Payment
+from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -63,9 +65,29 @@ class LogoutView(APIView):
         return Response("User logged out successfully")
 
 
-class PaymentView(ListAPIView):
-    serializer_class = PaymentSerializer
+class PaymentHistoryView(ListAPIView):
+    serializer_class = PaymentHistorySerializer
     permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
         return Payment.objects.filter(user=self.request.user)
+
+
+class PayView(CreateAPIView):
+    serializer_class = CreatePaymentSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        return Response("Pay here")
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            if e == "No Payment Due":
+                return Response("No Payment Due")
+            else:
+                return Response("Payment Already Made")
+        serializer.save()
+        return Response("Payment successful")
