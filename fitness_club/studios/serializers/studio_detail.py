@@ -64,7 +64,7 @@ class StudioSerializer(serializers.ModelSerializer):
 
     def get_direction_link(self, studio):
         return "https://www.google.com/maps/dir/?api=1&" + urlencode(
-            {'destination': studio.address})
+            {'destination': studio.location})
 
     class Meta:
         model = Studio

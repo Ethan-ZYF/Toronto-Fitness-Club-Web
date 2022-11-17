@@ -2,7 +2,6 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIVie
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.renderers import AdminRenderer, JSONRenderer, BrowsableAPIRenderer
 from accounts.serializers.login import LoginSerializer
 from accounts.serializers.user import UserSerializer
 from accounts.serializers.edit import EditSerializer

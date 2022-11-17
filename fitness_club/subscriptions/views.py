@@ -8,11 +8,10 @@ from subscriptions.serializers.edit import EditSubSerializer
 from django.contrib.auth import login, logout
 from accounts.models import FCUser
 from subscriptions.models import Plan, Subscription
-from rest_framework.renderers import AdminRenderer
+# from rest_framework.renderers import AdminRenderer
 
 # Create your views here.
 class PlansView(ListAPIView):
-    renderer_classes = [AdminRenderer]
     permission_classes = (IsAuthenticated,)
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
