@@ -58,8 +58,6 @@ class Class(models.Model):
     end_date = models.DateTimeField(blank=False, null=False)
     duration = models.PositiveIntegerField(blank=False, null=False)
 
-    curr_capacity = models.PositiveBigIntegerField(default=capacity)
-
     __prev_start_date = None
     __prev_end_date = None
     dates_changed = False
@@ -89,9 +87,11 @@ class Event(models.Model):
                                on_delete=models.CASCADE,
                                related_name='events',
                                editable=False)
-    
+    curr_capacity = models.PositiveBigIntegerField(default=0)
+
     def __str__(self) -> str:
-        return str(self.belonged_class) + " " + self.start_time.strftime("%Y-%m-%d %H:%M:%S")
+        return str(self.belonged_class) + " " + self.start_time.strftime(
+            "%Y-%m-%d %H:%M:%S")
 
 
 @receiver(post_save, sender=Class)

@@ -31,3 +31,4 @@ class ClassAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Class, ClassAdmin)
+admin.site.register(Event)

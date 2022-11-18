@@ -29,7 +29,8 @@ class EventDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', "start_time", "class_name", "class_length_in_hour")
+        fields = ('id', "start_time", "class_name", "class_length_in_hour",
+                  "curr_capacity")
         list_serializer_class = FilteredEventsSerializer
 
 
@@ -38,8 +39,8 @@ class ClassSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Class
-        fields = ('id', 'name', 'description', 'coach', 'curr_capacity',
-                  'capacity', 'duration', 'events')
+        fields = ('id', 'name', 'description', 'coach', 'capacity', 'duration',
+                  'events')
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -85,7 +86,8 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ("start_time", "class_name", "class_length_in_hour")
+        fields = ("id", "start_time", "class_name", "class_length_in_hour",
+                  "curr_capacity")
         list_serializer_class = FilteredEventsSerializer
 
 
