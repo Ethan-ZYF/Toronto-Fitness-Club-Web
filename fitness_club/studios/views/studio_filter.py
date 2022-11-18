@@ -22,11 +22,11 @@ class StudioFilterView(generics.ListAPIView):
         if target_name:
             queryset = queryset.filter(name__icontains=target_name)
         if target_amenities:
-            queryset = queryset.filter(amenities__name__icontains=target_amenities)
+            queryset = queryset.filter(amenities__type__icontains=target_amenities)
         if target_class_name:
             queryset = queryset.filter(classes__name__icontains=target_class_name)
         if target_coach_name:
-            queryset = queryset.filter(classes__coach__name__icontains=target_coach_name)
+            queryset = queryset.filter(classes__coach__icontains=target_coach_name)
         return queryset
     
     def list(self, request, *args, **kwargs):
@@ -37,7 +37,7 @@ class StudioFilterView(generics.ListAPIView):
 
 class FilterStudioScheduleView(generics.ListAPIView):
     serializer_class = EventSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     search_fields = ['username', 'email']
 
     def list(self, request, pk):
