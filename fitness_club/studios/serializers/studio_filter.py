@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from studios.models import StudioFilter, Studio
+from studios.models import Studio
 
 class FilterChoiceSerializer(serializers.Serializer):
     studio_name = serializers.CharField(required=False)
@@ -10,9 +10,3 @@ class FilterChoiceSerializer(serializers.Serializer):
     class Meta:
         model = Studio
         fields = ('studio_name', 'amenities', 'class_name', 'coach_name')
-    
-    def create(self, validated_data):
-        return StudioFilter.objects.create(**validated_data)
-    
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
