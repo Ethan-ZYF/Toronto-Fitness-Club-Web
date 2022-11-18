@@ -2,7 +2,8 @@ from django.urls import path
 from studios.views.all_studios import AllStudiosView
 from studios.views.search_studio import SearchView
 from studios.views.studio_detail import StudiosDetailView
-from studios.views.class_view import EnrollClassView, DeleteClassView, EnrollEventView, DeleteEventView, ScheduleView, HistoryView, FilterStudioScheduleView
+from studios.views.class_view import EnrollClassView, DeleteClassView, EnrollEventView, DeleteEventView, ScheduleView, HistoryView
+from studios.views.studio_filter import StudioFilterView
 
 urlpatterns = [
     path('all/', AllStudiosView.as_view(), name='studio'),
@@ -14,5 +15,4 @@ urlpatterns = [
     path('delete-event/<int:pk>/', DeleteEventView.as_view(), name="delete-event"),
     path('schedule/', ScheduleView.as_view(), name="schedule"),
     path('history/', HistoryView.as_view(), name="history"),
-    path('filter-class/<int:pk>/', FilterStudioScheduleView.as_view(), name='studio-filter-class'),
 ]
