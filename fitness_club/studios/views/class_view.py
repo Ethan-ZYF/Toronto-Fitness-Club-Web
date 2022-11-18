@@ -34,6 +34,8 @@ class EnrollClassView(APIView):
         user = request.user
         for e in events:
             user.schedule.add(e)
+            if e.curr_capacity >= e.belonged_class.capacity:
+                return Response('Error! There is no more space in this class!')
             e.curr_capacity += 1
             e.save()
         return Response(
@@ -87,6 +89,8 @@ class EnrollEventView(APIView):
             )
 
         user = request.user
+        if event.curr_capacity >= event.belonged_class.capacity:
+            return Response('Error! There is no more space in this class!')
         event.curr_capacity += 1
         user.schedule.add(event)
         event.save()
