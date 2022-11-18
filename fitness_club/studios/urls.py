@@ -6,7 +6,7 @@ from studios.views.class_view import EnrollClassView, DeleteClassView, EnrollEve
 
 urlpatterns = [
     path('all/', AllStudiosView.as_view(), name='studio'),
-    path('search/', SearchView.as_view(), name='search'),
+    path('search-location/', SearchView.as_view(), name='search-location'),
     path('studio-detail/<int:pk>/', StudiosDetailView.as_view(), name='studio-detail'),
     path('enroll-class/<int:pk>/', EnrollClassView.as_view(), name="enroll-class"),
     path('delete-class/<int:pk>/', DeleteClassView.as_view(), name="delete-class"),
