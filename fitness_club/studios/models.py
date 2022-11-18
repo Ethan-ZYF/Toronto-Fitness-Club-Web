@@ -88,7 +88,7 @@ class Event(models.Model):
                                on_delete=models.CASCADE,
                                related_name='events',
                                editable=False)
-    curr_capacity = models.PositiveBigIntegerField(default=0)
+    curr_size = models.PositiveBigIntegerField(default=0)
 
     def __str__(self) -> str:
         return str(self.belonged_class) + " " + self.start_time.strftime(

@@ -29,8 +29,8 @@ class SearchView(ListCreateAPIView):
         studio_list = []
         for dist, idx in dist_idx_pair:
             studio = all_studios[idx]
-            images = studio.studioimage_set.all().values_list('image', flat=True)
-            amenities = studio.amenity_set.all().values()
+            images = studio.images.all().values_list('image', flat=True)
+            amenities = studio.amenities.all().values()
             studio_list.append({
                 'name': studio.name,
                 'address': studio.address,
