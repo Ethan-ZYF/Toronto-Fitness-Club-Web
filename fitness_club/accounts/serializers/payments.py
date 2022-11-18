@@ -36,7 +36,8 @@ class CreatePaymentSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         today = datetime.today().date()
-        # print(today, "debug")
+        if not hasattr(self.context['request'].user, 'subscription'):
+            raise serializers.ValidationError("You don't have a subscription now!")
         start_date = self.context['request'].user.subscription.start_date
         print(start_date, "debug")
         plan = self.context['request'].user.subscription.plan.plan
