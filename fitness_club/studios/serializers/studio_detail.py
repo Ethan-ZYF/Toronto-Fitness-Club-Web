@@ -20,10 +20,15 @@ class FilteredHistoryEventsSerializer(serializers.ListSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='belonged_class.name')
+    class_length_in_hour = serializers.CharField(
+        source='belonged_class.duration')
+    start_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Event
-        fields = ('id', 'start_time')
+        fields = ('id', "start_time", "class_name", "class_length_in_hour",
+                  "curr_capacity")
         list_serializer_class = FilteredEventsSerializer
 
 
