@@ -1,18 +1,16 @@
 from rest_framework import generics
 from studios.models import Studio
-from rest_framework import filters
-from studios.serializers.studio_filter import FilterChoiceSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from studios.models import Amenity, Class, Event
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from studios.serializers.studio_detail import StudioSerializer, EventSerializer
 from datetime import datetime, timedelta
 from django.utils import timezone
 
+
 class StudioFilterView(generics.ListAPIView):
     serializer_class = StudioSerializer
     permission_classes = (IsAuthenticated,)
-    
+
     def get_queryset(self):
         queryset = Studio.objects.all()
         target_name = self.request.query_params.get('name', None)
@@ -28,7 +26,7 @@ class StudioFilterView(generics.ListAPIView):
         if target_coach_name:
             queryset = queryset.filter(classes__coach__icontains=target_coach_name)
         return queryset
-    
+
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
@@ -42,7 +40,7 @@ class FilterStudioScheduleView(generics.ListAPIView):
 
     def list(self, request, pk):
         queryset = self.get_queryset()
-        serializer = EventSerializer(queryset, many = True)
+        serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def get_queryset(self):
@@ -54,11 +52,11 @@ class FilterStudioScheduleView(generics.ListAPIView):
 
         queryset = studio.events.filter(start_time__gt=timezone.now())
 
-        class_name=self.request.query_params.get('class_name')
+        class_name = self.request.query_params.get('class_name')
         if class_name is not None:
             queryset = queryset.filter(belonged_class__name=class_name)
 
-        coach_name=self.request.query_params.get('coachname')
+        coach_name = self.request.query_params.get('coachname')
         if coach_name is not None:
             queryset = queryset.filter(belonged_class__coach=coach_name)
 
@@ -74,8 +72,6 @@ class FilterStudioScheduleView(generics.ListAPIView):
             queryset = queryset.filter(start_time__time__lt=time_begin)
         if time_end is not None:
             time_end = datetime.time(self.request.query_params.get('time_end'))
-            queryset = queryset.filter(start_time__time__gt=time_end-timedelta(hours=belonged_class__duration))
+            queryset = queryset.filter(start_time__time__gt=time_end - timedelta(hours=belonged_class__duration))
 
         return queryset
-
-

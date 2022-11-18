@@ -1,7 +1,7 @@
-from django.contrib import admin
-from django.urls import path
-from .views import SignupView, LoginView, LogoutView, EditView, PaymentHistoryView, PayView, FuturePayView, PlansView, SubscribeView, EditView, CancelView, EditPlanView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.urls import path
+from .views import SignupView, LoginView, LogoutView, PaymentHistoryView, PayView, FuturePayView, PlansView, \
+    SubscribeView, EditView, CancelView, EditPlanView
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),

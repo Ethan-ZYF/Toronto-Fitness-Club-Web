@@ -1,24 +1,24 @@
-from accounts.models import FCUser, Payment
-from rest_framework import serializers
-from django.contrib.auth import authenticate
-from datetime import datetime, timedelta
+from datetime import datetime
+
+from accounts.models import Payment
 from dateutil.relativedelta import relativedelta
+from rest_framework import serializers
 
 
 class PaymentHistorySerializer(serializers.ModelSerializer):
     amount = serializers.SerializerMethodField('get_amount')
     card_info = serializers.SerializerMethodField('get_card_info')
     date_and_time = serializers.DateTimeField(source='date', read_only=True, format="%d/%m/%Y %H:%M:%S")
-    
+
     def get_amount(self, obj):
         return obj.subscription.plan.price
-    
+
     def get_card_info(self, obj):
         return obj.user.credit_debit_no
-    
+
     def get_date_and_time(self, obj):
         return obj.date.strftime("%d/%m/%Y %H:%M:%S")
-    
+
     class Meta:
         model = Payment
         fields = ['amount', 'card_info', 'date_and_time']
@@ -26,7 +26,6 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
 
 
 class CreatePaymentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Payment
         fields = ['user', 'subscription', 'date']

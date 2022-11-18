@@ -1,14 +1,14 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from studios.models import Class, Studio, StudioImage, Tag
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from studios.models import Studio
 from studios.serializers.search import SearchSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 class SearchView(ListCreateAPIView):
     serializer_class = SearchSerializer
     permission_classes = (IsAuthenticated,)
-    
+
     # post request to search for studios based on location
     def post(self, request, *args, **kwargs):
         target_lat = request.POST.get('latitude')
@@ -23,7 +23,7 @@ class SearchView(ListCreateAPIView):
             lat, lon = studio.location.split(',')
             lon = float(lon)
             lat = float(lat)
-            dist = (lon - target_lon)**2 + (lat - target_lat)**2
+            dist = (lon - target_lon) ** 2 + (lat - target_lat) ** 2
             dist_idx_pair.append((dist, i))
         dist_idx_pair.sort()
         studio_list = []
@@ -39,9 +39,6 @@ class SearchView(ListCreateAPIView):
                 'images': images,
             })
         return Response({'studios': studio_list})
-    
+
     def get(self, request, *args, **kwargs):
         return Response({'success': 'Class created'})
-    
-        
-        

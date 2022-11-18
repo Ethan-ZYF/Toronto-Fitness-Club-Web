@@ -1,7 +1,5 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from studios.models import Class, Studio, StudioImage, Tag
+from studios.models import Studio
 from studios.serializers.all_studios import ListSerializer
 
 

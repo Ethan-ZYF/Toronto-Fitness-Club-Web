@@ -1,9 +1,8 @@
-from rest_framework import serializers
-from studios.models import Studio, StudioImage, Amenity, Class, Event
-from datetime import datetime, timedelta
-from django.utils.http import urlencode
 from accounts.models import FCUser
 from django.utils import timezone
+from django.utils.http import urlencode
+from rest_framework import serializers
+from studios.models import Studio, StudioImage, Amenity, Class, Event
 
 
 class FilteredEventsSerializer(serializers.ListSerializer):
@@ -11,6 +10,7 @@ class FilteredEventsSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         data = data.filter(start_time__gt=timezone.now())
         return super(FilteredEventsSerializer, self).to_representation(data)
+
 
 class FilteredHistoryEventsSerializer(serializers.ListSerializer):
 
@@ -68,17 +68,15 @@ class ClassSerializer(serializers.ModelSerializer):
 
 
 class AmenitySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Amenity
         fields = ('type', 'quantity')
 
 
 class StudioImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = StudioImage
-        fields = ('image', )
+        fields = ('image',)
 
 
 class StudioSerializer(serializers.ModelSerializer):

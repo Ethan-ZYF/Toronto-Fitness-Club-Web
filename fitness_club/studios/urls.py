@@ -1,9 +1,10 @@
 from django.urls import path
 from studios.views.all_studios import AllStudiosView
+from studios.views.class_view import EnrollClassView, DeleteClassView, EnrollEventView, DeleteEventView, ScheduleView, \
+    HistoryView
 from studios.views.search_studio import SearchView
 from studios.views.studio_detail import StudiosDetailView
-from studios.views.class_view import EnrollClassView, DeleteClassView, EnrollEventView, DeleteEventView, ScheduleView, HistoryView
-from studios.views.studio_filter import StudioFilterView,FilterStudioScheduleView
+from studios.views.studio_filter import StudioFilterView, FilterStudioScheduleView
 
 urlpatterns = [
     path('all/', AllStudiosView.as_view(), name='studio'),

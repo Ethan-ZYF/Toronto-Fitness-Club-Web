@@ -1,9 +1,10 @@
+from datetime import timedelta
+
 from django.db import models
-from location_field.models.plain import PlainLocationField
-from datetime import datetime, timedelta
-from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+from location_field.models.plain import PlainLocationField
 
 
 class Studio(models.Model):

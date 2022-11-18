@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from location_field.models.plain import PlainLocationField
-from studios.models import Studio, StudioImage, Amenity
+from studios.models import Studio
 
 
 class ListSerializer(serializers.ModelSerializer):

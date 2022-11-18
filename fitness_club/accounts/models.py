@@ -1,10 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
-from django.utils import timezone
-from studios.models import Studio
-from django.dispatch import receiver
-from datetime import datetime, timedelta
+from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.dispatch import receiver
+from django.utils import timezone
 
 
 class FCUser(AbstractUser):
@@ -20,12 +20,11 @@ class FCUser(AbstractUser):
     credit_debit_no = models.CharField(max_length=50, blank=True, null=True)
     # set to false and cannot be changed by admin
     active_subscription = models.BooleanField(default=False)
-    
+
     schedule = models.ManyToManyField(to='studios.Event', related_name="schedule_events")
     history = models.ManyToManyField(to='studios.Event', related_name="history_events")
 
     USERNAME_FIELD = 'username'
-
 
 
 # Create your models here.
@@ -71,6 +70,7 @@ class Payment(models.Model):
                                      on_delete=models.CASCADE,
                                      related_name='payments')
     date = models.DateTimeField(default=datetime.now)
+
     # date = models.DateField(auto_now=True)
 
     def __str__(self):

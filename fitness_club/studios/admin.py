@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Studio, Class, Tag, StudioImage, Amenity, Event
 
 

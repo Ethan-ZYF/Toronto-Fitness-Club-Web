@@ -1,7 +1,8 @@
-from rest_framework import serializers
-from accounts.models import FCUser
-from rest_framework.exceptions import ValidationError
 import re
+
+from accounts.models import FCUser
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 
 class EditSerializer(serializers.ModelSerializer):
@@ -12,9 +13,9 @@ class EditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FCUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no', 
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no',
                   'password', 'password2')
-        read_only_fields = ('username', )
+        read_only_fields = ('username',)
         extra_kwargs = {
             'username': {
                 'validators': []
@@ -51,7 +52,7 @@ class EditSerializer(serializers.ModelSerializer):
         if currUser.pk != instance.pk:
             raise ValidationError("You do not have permission to edit this user")
         print(validated_data)
-        if 'username' in  validated_data and validated_data['username'] != self.initial_data['username']:
+        if 'username' in validated_data and validated_data['username'] != self.initial_data['username']:
             instance.username = validated_data['username']
         if 'password' in validated_data:
             instance.set_password(validated_data['password'])
@@ -91,7 +92,7 @@ class EditSerializer(serializers.ModelSerializer):
         if password2 != self.initial_data['password']:
             raise ValidationError("Passwords do not match")
         return password2
-    
+
     def validate_phone_number(self, phone_number):
         regex = re.compile('^\d{3}-\d{3}-\d{4}$')
         if not regex.match(phone_number):

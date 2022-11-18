@@ -1,9 +1,7 @@
-from rest_framework import serializers
 from accounts.models import Subscription, Plan
-from datetime import datetime, timedelta
-from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-from rest_framework.response import Response
+from django.utils import timezone
+from rest_framework import serializers
 
 
 class EditSubSerializer(serializers.ModelSerializer):
@@ -24,7 +22,7 @@ class EditSubSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = ('new_start_date', 'plan')
-        read_only_fields = ('new_start_date', )
+        read_only_fields = ('new_start_date',)
 
     def validate(self, data):
         # check if the user has the field subscription

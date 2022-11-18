@@ -1,14 +1,9 @@
-from rest_framework import generics
-from studios.models import Studio, Event
-from studios.serializers.studio_detail import StudioSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
-from rest_framework import mixins
-from rest_framework import generics
-from rest_framework.views import APIView
 from django.utils import timezone
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from studios.models import Event
 from studios.serializers.studio_detail import ScheduleSerializer, HistorySerializer
-from django.http import HttpResponseRedirect
 
 
 class EnrollClassView(APIView):
@@ -137,7 +132,7 @@ def updateScheduleHistory(user):
 
 
 class ScheduleView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         updateScheduleHistory(request.user)
@@ -145,7 +140,7 @@ class ScheduleView(APIView):
 
 
 class HistoryView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         updateScheduleHistory(request.user)

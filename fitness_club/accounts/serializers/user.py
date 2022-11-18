@@ -1,7 +1,9 @@
+import re
+
 from accounts.models import FCUser
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-import re
+
 
 class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, style={'input_type': 'password'})
@@ -9,11 +11,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FCUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no', 'password', 'password2')
+        fields = (
+        'username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no', 'password',
+        'password2')
         extra_kwargs = {
             'username': {'validators': []},
         }
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = False
@@ -21,28 +25,28 @@ class UserSerializer(serializers.ModelSerializer):
         self.fields['first_name'].required = False
         self.fields['last_name'].required = False
         self.fields['avatar'].required = False
-    
+
     def create(self, data):
         currUser = FCUser.objects.create(
-            username = data['username'],
-            password = data['password'],
-            credit_debit_no = data['credit_debit_no'],
-            email = "" if 'email' not in data else data['email'],
-            phone_number = "" if 'phone_number' not in data else data['phone_number'],
-            avatar = "" if 'avatar' not in data else data['avatar'],
-            first_name = "" if 'first_name' not in data else data['first_name'],
-            last_name = "" if 'last_name' not in data else data['last_name'],
+            username=data['username'],
+            password=data['password'],
+            credit_debit_no=data['credit_debit_no'],
+            email="" if 'email' not in data else data['email'],
+            phone_number="" if 'phone_number' not in data else data['phone_number'],
+            avatar="" if 'avatar' not in data else data['avatar'],
+            first_name="" if 'first_name' not in data else data['first_name'],
+            last_name="" if 'last_name' not in data else data['last_name'],
         )
         currUser.set_password(data['password'])
         currUser.save()
         return currUser
-    
+
     def update(self, instance, validated_data):
         currUser = self.context['request'].user
         if currUser.pk != instance.pk:
             raise ValidationError("You do not have permission to edit this user")
         print(validated_data)
-        if 'username' in  validated_data and validated_data['username'] != self.initial_data['username']:
+        if 'username' in validated_data and validated_data['username'] != self.initial_data['username']:
             instance.username = validated_data['username']
         if 'password' in validated_data:
             instance.set_password(validated_data['password'])
@@ -60,19 +64,20 @@ class UserSerializer(serializers.ModelSerializer):
             instance.avatar = validated_data['avatar']
         instance.save()
         return instance
-    
+
     def validate_username(self, username):
         if FCUser.objects.filter(username=username).exists():
             raise ValidationError("Username already exists")
         return username
-    
+
     def validate_password(self, password):
         if len(password) < 8:
             raise ValidationError("Password must be at least 8 characters long")
         # need to have one uppercase, one lowercase, one number, and one special character
         regex = re.compile('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$')
         if not regex.match(password):
-            raise ValidationError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+            raise ValidationError(
+                "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
         return password
 
     def validate_password2(self, password2):

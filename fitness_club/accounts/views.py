@@ -1,24 +1,23 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from accounts.serializers.login import LoginSerializer
-from accounts.serializers.user import UserSerializer
+from accounts.models import Payment, Subscription, Plan
 from accounts.serializers.edit import EditSerializer
+from accounts.serializers.edit_plan import EditSubSerializer
+from accounts.serializers.login import LoginSerializer
 from accounts.serializers.payments import PaymentHistorySerializer, CreatePaymentSerializer
 from accounts.serializers.plan import PlanSerializer
 from accounts.serializers.subscribe import SubscribeSerializer
-from accounts.serializers.edit_plan import EditSubSerializer
-from django.contrib.auth import login, logout
-from accounts.models import FCUser, Payment, Subscription, Plan
+from accounts.serializers.user import UserSerializer
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, timedelta
+from django.contrib.auth import login, logout
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 # Create your views here.
 class SignupView(CreateAPIView):
     serializer_class = UserSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         return Response("Welcome to the signup page")
@@ -32,7 +31,7 @@ class SignupView(CreateAPIView):
 
 class LoginView(CreateAPIView):
     serializer_class = LoginSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
         return Response("Welcome to the login page")
@@ -46,14 +45,14 @@ class LoginView(CreateAPIView):
 
 class EditView(RetrieveAPIView, UpdateAPIView):
     serializer_class = EditSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return self.request.user
 
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         return Response("Logout here")
@@ -69,7 +68,7 @@ class LogoutView(APIView):
 
 class PaymentHistoryView(ListAPIView):
     serializer_class = PaymentHistorySerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Payment.objects.filter(user=self.request.user)
@@ -77,7 +76,7 @@ class PaymentHistoryView(ListAPIView):
 
 class PayView(CreateAPIView):
     serializer_class = CreatePaymentSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         return Response("Pay here")
@@ -91,10 +90,11 @@ class PayView(CreateAPIView):
         serializer.save()
         return Response("Payment successful")
 
+
 class FuturePayView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     cnt_limit = 3
-    
+
     def get(self, request, *args, **kwargs):
         current_plan = request.user.subscription.plan
         last_payment = Payment.objects.filter(user=request.user).order_by('-date')[0]
@@ -120,10 +120,12 @@ class FuturePayView(APIView):
         final_response = {'future_payments': response}
         return Response(final_response)
 
+
 class PlansView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
+
 
 class SubscribeView(CreateAPIView):
     serializer_class = SubscribeSerializer
@@ -145,6 +147,7 @@ class SubscribeView(CreateAPIView):
         print(request.user.active_subscription)
         return Response({'detail': 'You have successfully enrolled.'})
 
+
 class EditPlanView(RetrieveAPIView, UpdateAPIView):
     serializer_class = EditSubSerializer
     permission_classes = (IsAuthenticated,)
@@ -154,6 +157,7 @@ class EditPlanView(RetrieveAPIView, UpdateAPIView):
             return Subscription.objects.get(user=self.request.user)
         except Subscription.DoesNotExist:
             return None
+
 
 class CancelView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)

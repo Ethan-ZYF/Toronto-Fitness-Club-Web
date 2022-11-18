@@ -1,7 +1,7 @@
-from django.contrib import admin
 from accounts.models import FCUser, Payment, Subscription, Plan
-from rest_framework.exceptions import ValidationError
+from django.contrib import admin
 from django.contrib import messages
+from rest_framework.exceptions import ValidationError
 
 
 def validate_only_one_month_and_one_year(obj):
@@ -59,10 +59,11 @@ class PlanAdmin(RemoveAdminDefaultMessageMixin, admin.ModelAdmin):
 admin.site.register(Plan, PlanAdmin)
 admin.site.register(Subscription)
 
+
 class SubscriptiontInline(admin.TabularInline):
     model = Subscription
     readonly_fields = ('plan', 'start_date')
-    
+
     def has_add_permission(self, request, obj):
         return False
 

@@ -5,9 +5,7 @@ import django
 
 django.setup()
 from accounts.models import FCUser, Payment
-from .models import Subscription, Plan
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
 from django.utils import timezone
 
 users = FCUser.objects.filter(subscription__isnull=False)
