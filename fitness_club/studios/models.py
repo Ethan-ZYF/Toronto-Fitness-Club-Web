@@ -129,10 +129,3 @@ class Loc(models.Model):
 
     def __str__(self):
         return str(self.lon) + "," + str(self.lat)
-
-
-class StudioFilter(models.Model):
-    studio_name = models.CharField(max_length=100)
-    amenities = models.CharField(max_length=50)
-    class_name = models.CharField(max_length=50)
-    coach_name = models.CharField(max_length=50)
