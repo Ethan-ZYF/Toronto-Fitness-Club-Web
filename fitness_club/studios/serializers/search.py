@@ -16,3 +16,4 @@ class SearchSerializer(serializers.ModelSerializer):
         instance.latitude = validated_data.get('latitude', instance.latitude)
         instance.save()
         return instance
+

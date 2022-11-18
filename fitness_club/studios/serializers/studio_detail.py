@@ -23,7 +23,8 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'start_time')
+        fields = ('id', "start_time", "class_name", "class_length_in_hour",
+                  "curr_capacity")
         list_serializer_class = FilteredEventsSerializer
 
 
