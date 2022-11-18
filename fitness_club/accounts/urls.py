@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import SignupView, LoginView, LogoutView, EditView, PaymentHistoryView, PayView, FuturePayView, PlansView, SubscribeView,EditView, CancelView, EditPlanView
+from .views import SignupView, LoginView, LogoutView, EditView, PaymentHistoryView, PayView, FuturePayView, PlansView, SubscribeView, EditView, CancelView, EditPlanView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
     path('plans/', PlansView.as_view(), name='plans'),
     path('subscribe/', SubscribeView.as_view(), name='subscribe'),
     path('subscribe/<int:pk>/', SubscribeView.as_view(), name='subscribe'),
-    path('edit_plan/', EditPlanView.as_view(), name='edit_plan'),
+    path('edit-plan/', EditPlanView.as_view(), name='edit_plan'),
     path('cancel/', CancelView.as_view(), name='cancel'),
     path("api/token/", TokenObtainPairView.as_view(),
          name="token_obtain_pair"),
