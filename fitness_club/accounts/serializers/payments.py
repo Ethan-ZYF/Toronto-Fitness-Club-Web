@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 class PaymentHistorySerializer(serializers.ModelSerializer):
     amount = serializers.SerializerMethodField('get_amount')
     card_info = serializers.SerializerMethodField('get_card_info')
-    date_and_time = serializers.SerializerMethodField('get_date_and_time')
+    date_and_time = serializers.DateTimeField(source='date', read_only=True, format="%d/%m/%Y %H:%M:%S")
     
     def get_amount(self, obj):
         return obj.subscription.plan.price

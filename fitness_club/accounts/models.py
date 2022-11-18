@@ -4,6 +4,7 @@ from django.utils import timezone
 from studios.models import Studio
 from django.dispatch import receiver
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 
 class FCUser(AbstractUser):
@@ -56,27 +57,10 @@ class Subscription(models.Model):
     plan = models.ForeignKey(to=Plan,
                              on_delete=models.CASCADE,
                              related_name='subscriptions')
-    start_date = models.DateField(default=timezone.now)
+    start_date = models.DateField(default=timezone.localdate(timezone=timezone.get_current_timezone()))
 
     def __str__(self):
         return f"{self.user.username} - {self.plan.plan}/{self.start_date.month}-{self.start_date.day}-{self.start_date.year}"
-
-
-@receiver(models.signals.post_save, sender=Subscription)
-def create_payment(sender, instance, created, **kwargs):
-    # create a payment for the subscription with the current date
-    print(instance)
-    print(instance.start_date)
-    if instance.start_date > timezone.now().date():
-        return
-    next_payment_date = instance.start_date
-    # change next_payment_date to datetime with current time
-    print(timezone.now())
-    next_payment_date = timezone.datetime.combine(next_payment_date, datetime.now().time())
-    curr_payment = Payment.objects.create(user=instance.user,
-                                          subscription=instance,
-                                          date=next_payment_date)
-    curr_payment.save()
 
 
 class Payment(models.Model):
@@ -86,8 +70,37 @@ class Payment(models.Model):
     subscription = models.ForeignKey(to='Subscription',
                                      on_delete=models.CASCADE,
                                      related_name='payments')
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.localtime(timezone=timezone.get_current_timezone()))
     # date = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.subscription.plan.price}"
+
+
+@receiver(models.signals.post_save, sender=Subscription)
+def create_payment(sender, instance, created, **kwargs):
+    # create a payment for the subscription with the current date
+    print("current time zone time: ", timezone.localtime())
+    print("ZONE:", timezone.localdate(timezone=timezone.get_current_timezone()))
+    print("current instance time: ", instance.start_date)
+    if instance.start_date > timezone.localdate(timezone=timezone.get_current_timezone()):
+        print("HHHHHHHAHSHSHAHSHD")
+        return
+    next_payment_date = instance.start_date
+    # change next_payment_date to datetime with current time
+    # get time of current timezone (new york)
+    print("next_payment_date: ", next_payment_date)
+
+    # next_payment_date -= relativedelta(hours=5)
+    next_payment_date = timezone.datetime.combine(next_payment_date, timezone.localtime(timezone=timezone.get_current_timezone()).time())
+    curr_payment = Payment.objects.create(user=instance.user,
+                                          subscription=instance,
+                                          date=next_payment_date)
+    curr_payment.save()
+    if instance.plan.plan == 'MONTHLY':
+        next_payment_date += relativedelta(months=1)
+    else:
+        next_payment_date += relativedelta(years=1)
+    # change start_date of subscription to next_payment_date
+    instance.start_date = next_payment_date.date()
+    instance.save()

@@ -145,7 +145,7 @@ class SubscribeView(CreateAPIView):
         print(request.user.active_subscription)
         return Response({'detail': 'You have successfully enrolled.'})
 
-class EditView(RetrieveAPIView, UpdateAPIView):
+class EditPlanView(RetrieveAPIView, UpdateAPIView):
     serializer_class = EditSubSerializer
     permission_classes = (IsAuthenticated,)
 
