@@ -12,6 +12,12 @@ class FilteredEventsSerializer(serializers.ListSerializer):
         data = data.filter(start_time__gt=timezone.now())
         return super(FilteredEventsSerializer, self).to_representation(data)
 
+class FilteredHistoryEventsSerializer(serializers.ListSerializer):
+
+    def to_representation(self, data):
+        data = data.filter(start_time__lte=timezone.now())
+        return super(FilteredHistoryEventsSerializer, self).to_representation(data)
+
 
 class EventSerializer(serializers.ModelSerializer):
 
@@ -32,6 +38,19 @@ class EventDetailsSerializer(serializers.ModelSerializer):
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
                   "curr_capacity")
         list_serializer_class = FilteredEventsSerializer
+
+
+class HistoryEventDetailsSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='belonged_class.name')
+    class_length_in_hour = serializers.CharField(
+        source='belonged_class.duration')
+    start_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+
+    class Meta:
+        model = Event
+        fields = ('id', "start_time", "class_name", "class_length_in_hour",
+                  "curr_capacity")
+        list_serializer_class = FilteredHistoryEventsSerializer
 
 
 class ClassSerializer(serializers.ModelSerializer):
@@ -88,7 +107,7 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
         model = Event
         fields = ("id", "start_time", "class_name", "class_length_in_hour",
                   "curr_capacity")
-        list_serializer_class = FilteredEventsSerializer
+        list_serializer_class = FilteredHistoryEventsSerializer
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
@@ -100,8 +119,8 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
 
 class HistorySerializer(serializers.ModelSerializer):
-    schedule = EventDetailsSerializer(many=True, read_only=True)
+    history = HistoryEventDetailsSerializer(many=True, read_only=True)
 
     class Meta:
         model = FCUser
-        fields = ['schedule']
+        fields = ['history']
