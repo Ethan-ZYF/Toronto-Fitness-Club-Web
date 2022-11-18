@@ -57,7 +57,7 @@ class Subscription(models.Model):
     plan = models.ForeignKey(to=Plan,
                              on_delete=models.CASCADE,
                              related_name='subscriptions')
-    start_date = models.DateField(default=timezone.localdate(timezone=timezone.get_current_timezone()))
+    start_date = models.DateField(default=datetime.now)
 
     def __str__(self):
         return f"{self.user.username} - {self.plan.plan}/{self.start_date.month}-{self.start_date.day}-{self.start_date.year}"
@@ -70,7 +70,7 @@ class Payment(models.Model):
     subscription = models.ForeignKey(to='Subscription',
                                      on_delete=models.CASCADE,
                                      related_name='payments')
-    date = models.DateTimeField(default=timezone.localtime(timezone=timezone.get_current_timezone()))
+    date = models.DateTimeField(default=datetime.now)
     # date = models.DateField(auto_now=True)
 
     def __str__(self):
@@ -83,7 +83,7 @@ def create_payment(sender, instance, created, **kwargs):
     print("current time zone time: ", timezone.localtime())
     print("ZONE:", timezone.localdate(timezone=timezone.get_current_timezone()))
     print("current instance time: ", instance.start_date)
-    if instance.start_date > timezone.localdate(timezone=timezone.get_current_timezone()):
+    if instance.start_date > timezone.localdate():
         print("HHHHHHHAHSHSHAHSHD")
         return
     next_payment_date = instance.start_date
@@ -92,7 +92,7 @@ def create_payment(sender, instance, created, **kwargs):
     print("next_payment_date: ", next_payment_date)
 
     # next_payment_date -= relativedelta(hours=5)
-    next_payment_date = timezone.datetime.combine(next_payment_date, timezone.localtime(timezone=timezone.get_current_timezone()).time())
+    next_payment_date = timezone.datetime.combine(next_payment_date, timezone.localtime().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           subscription=instance,
                                           date=next_payment_date)
