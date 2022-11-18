@@ -7,7 +7,7 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.utils import timezone
-from studios.serializers.studio_detail import ScheduleSerializer
+from studios.serializers.studio_detail import ScheduleSerializer, HistorySerializer
 from django.http import HttpResponseRedirect
 
 
@@ -105,6 +105,8 @@ class DeleteEventView(APIView):
         return Response("Send post request to unenroll in this session!")
 
     def post(self, request, *args, **kwargs):
+
+        user = request.user
         try:
             event = Event.objects.get(id=kwargs['pk'])
         except Event.DoesNotExist:
@@ -120,7 +122,6 @@ class DeleteEventView(APIView):
         except Event.DoesNotExist:
             return Response("Error! You are not enrolled in this session!")
 
-        user = request.user
         user.schedule.remove(event)
         event.curr_capacity -= 1
         event.save()
@@ -148,4 +149,4 @@ class HistoryView(APIView):
 
     def get(self, request, *args, **kwargs):
         updateScheduleHistory(request.user)
-        return Response(ScheduleSerializer(request.user).data)
+        return Response(HistorySerializer(request.user).data)
