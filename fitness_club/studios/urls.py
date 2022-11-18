@@ -7,7 +7,11 @@ from studios.views.studio_filter import StudioFilterView
 
 urlpatterns = [
     path('all/', AllStudiosView.as_view(), name='studio'),
+<<<<<<< HEAD
     path('search-location/', SearchView.as_view(), name='search'),
+=======
+    path('search-location/', SearchView.as_view(), name='search-location'),
+>>>>>>> fd2422ac27550aec74f6a410828541b60943d117
     path('studio-detail/<int:pk>/', StudiosDetailView.as_view(), name='studio-detail'),
     path('enroll-class/<int:pk>/', EnrollClassView.as_view(), name="enroll-class"),
     path('delete-class/<int:pk>/', DeleteClassView.as_view(), name="delete-class"),
