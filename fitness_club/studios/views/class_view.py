@@ -27,12 +27,21 @@ class EnrollClassView(APIView):
                 'Error! This class either does not exist or has no more future session!'
             )
         user = request.user
+        filled_events = []
         for e in events:
             user.schedule.add(e)
-            if e.curr_capacity >= e.belonged_class.capacity:
-                return Response('Error! There is no more space in this class!')
-            e.curr_capacity += 1
-            e.save()
+            if e.curr_size == e.belonged_class.capacity:
+                filled_events.append(e.id)
+            else:
+                e.curr_size += 1
+                e.save()
+
+        if len(filled_events) == len(events):
+            return Response("Sorry, all events for this class are filled!")
+
+        if len(filled_events) > 0:
+            return Response("You have successfully enrolled in events of this class that are not filled.")
+
         return Response(
             'You have successfully enrolled in all future sessions for this class!'
         )
@@ -48,13 +57,17 @@ class DeleteClassView(APIView):
         )
 
     def post(self, request, *args, **kwargs):
+        if not request.user.active_subscription:
+            return Response(
+                "You must have an active subscription to unenroll in classes!")
+
         user = request.user
         if len(user.schedule.filter(belonged_class=kwargs['pk'])) == 0:
             return Response('Error! You are not enrolled in this class!')
         for e in user.schedule.all():
             if e.belonged_class.id == kwargs['pk']:
                 user.schedule.remove(e)
-                e.curr_capacity -= 1
+                e.curr_size -= 1
                 e.save()
         return Response(
             'You have successfully deleted all future sessions for this class from your schedule!'
@@ -72,7 +85,7 @@ class EnrollEventView(APIView):
         if not request.user.active_subscription:
             print(request.user.active_subscription)
             return Response(
-                "You must have an active subscription to enroll in classes!")
+                "You must have an active subscription to enroll in event!")
         try:
             event = Event.objects.get(id=kwargs['pk'])
         except Event.DoesNotExist:
@@ -84,9 +97,9 @@ class EnrollEventView(APIView):
             )
 
         user = request.user
-        if event.curr_capacity >= event.belonged_class.capacity:
+        if event.curr_size == event.belonged_class.capacity:
             return Response('Error! There is no more space in this class!')
-        event.curr_capacity += 1
+        event.curr_size += 1
         user.schedule.add(event)
         event.save()
         return Response("You have successfully enrolled in this session!")
@@ -100,6 +113,10 @@ class DeleteEventView(APIView):
         return Response("Send post request to unenroll in this session!")
 
     def post(self, request, *args, **kwargs):
+
+        if not request.user.active_subscription:
+            return Response(
+                "You must have an active subscription to unenroll in event!")
 
         user = request.user
         try:
@@ -117,8 +134,9 @@ class DeleteEventView(APIView):
         except Event.DoesNotExist:
             return Response("Error! You are not enrolled in this session!")
 
-        user.schedule.remove(event)
-        event.curr_capacity -= 1
+        user.schedule.remove(to_remove_event)
+        event.curr_size -= 1
+        print(event.curr_size)
         event.save()
         return Response("You have successfully unenrolled this session!")
         # return HttpResponseRedirect(redirect_to='https://studios/schedule.com')
