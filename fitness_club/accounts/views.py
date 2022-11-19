@@ -96,7 +96,9 @@ class FuturePayView(APIView):
     cnt_limit = 3
 
     def get(self, request, *args, **kwargs):
-        current_plan = request.user.subscription.plan
+        if not hasattr(request.user, 'subscription'):
+            return Response({'future_payments': []})
+        current_plan = request.user.subscription.plan.plan
         last_payment = Payment.objects.filter(user=request.user).order_by('-date')[0]
         last_payment_date = last_payment.date
         response = []
