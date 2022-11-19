@@ -21,8 +21,10 @@ class FCUser(AbstractUser):
     # set to false and cannot be changed by admin
     active_subscription = models.BooleanField(default=False)
 
-    schedule = models.ManyToManyField(to='studios.Event', related_name="schedule_events")
-    history = models.ManyToManyField(to='studios.Event', related_name="history_events")
+    schedule = models.ManyToManyField(to='studios.Event',
+                                      related_name="schedule_events")
+    history = models.ManyToManyField(to='studios.Event',
+                                     related_name="history_events")
 
     USERNAME_FIELD = 'username'
 
@@ -42,8 +44,9 @@ class Plan(models.Model):
                                 default=0.0)
     plan = models.CharField(max_length=50,
                             choices=PLAN_CHOICES,
-                            blank=True,
-                            null=True)
+                            blank=False,
+                            null=False,
+                            default='MONTHLY')
 
     def __str__(self):
         return f"{self.plan} - {self.price}"
@@ -81,7 +84,8 @@ class Payment(models.Model):
 def create_payment(sender, instance, created, **kwargs):
     # create a payment for the subscription with the current date
     print("current time zone time: ", timezone.localtime())
-    print("ZONE:", timezone.localdate(timezone=timezone.get_current_timezone()))
+    print("ZONE:",
+          timezone.localdate(timezone=timezone.get_current_timezone()))
     print("current instance time: ", instance.start_date)
     if instance.start_date > timezone.localdate():
         print("HHHHHHHAHSHSHAHSHD")
@@ -92,7 +96,8 @@ def create_payment(sender, instance, created, **kwargs):
     print("next_payment_date: ", next_payment_date)
 
     # next_payment_date -= relativedelta(hours=5)
-    next_payment_date = timezone.datetime.combine(next_payment_date, timezone.localtime().time())
+    next_payment_date = timezone.datetime.combine(next_payment_date,
+                                                  timezone.localtime().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           subscription=instance,
                                           date=next_payment_date)
