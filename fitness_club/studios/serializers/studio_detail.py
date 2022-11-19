@@ -8,6 +8,7 @@ from studios.models import Studio, StudioImage, Amenity, Class, Event
 class FilteredEventsSerializer(serializers.ListSerializer):
 
     def to_representation(self, data):
+        print(data)
         data = data.filter(start_time__gt=timezone.now())
         return super(FilteredEventsSerializer, self).to_representation(data)
 
@@ -28,7 +29,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
-                  "curr_capacity")
+                  "curr_size")
         list_serializer_class = FilteredEventsSerializer
 
 
@@ -41,7 +42,7 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
-                  "curr_capacity")
+                  "curr_size")
         list_serializer_class = FilteredEventsSerializer
 
 
@@ -54,7 +55,7 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
-                  "curr_capacity")
+                  "curr_size")
         list_serializer_class = FilteredHistoryEventsSerializer
 
 
@@ -109,7 +110,7 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ("id", "start_time", "class_name", "class_length_in_hour",
-                  "curr_capacity")
+                  "curr_size")
         list_serializer_class = FilteredHistoryEventsSerializer
 
 
