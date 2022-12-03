@@ -7,8 +7,8 @@ import ResponsiveAppBar from './Pages/components/Navbar';
 import Footer from './Pages/components/Footer';
 
 import LoginPage from './Pages/LoginPage';
-import RegisterPage from './Pages/RegisterPage';
 import Dashboard from './Pages/Dashboard';
+import SignUp from './Pages/SignUpPage';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* <Route exact path='/' element={<RegisterPage />} /> */}
-        <Route exact path='/register' element={<RegisterPage />} />
+        <Route exact path='/signup' element={<SignUp/>} />
         <Route exact path='/login' element={<LoginPage />} />
         <Route exact path='/dashboard' element={<Dashboard />} />
       </Routes>

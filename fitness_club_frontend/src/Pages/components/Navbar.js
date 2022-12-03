@@ -38,13 +38,14 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" style={{ background: '#F8CA5A' }}>
+    <AppBar position="static">  
+    {/* style={{ background: '#F8CA5A' }} */}
 
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Avatar variant={"rounded"} alt="The image" src={logo} style={{
-    width: 150,
-    height: 100,
+    width: 70,
+    height: 60,
   }} />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
