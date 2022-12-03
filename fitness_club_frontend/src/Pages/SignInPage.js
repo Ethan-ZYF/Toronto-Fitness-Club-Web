@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useState, useEffect}from 'react';
 import { login } from '../api';
 import { validateSignInForm } from './utils/validators';
-import {Redirect} from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 const Copyright = (props) => {
   return (
@@ -37,6 +37,8 @@ const SignIn = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
+
+  const [signInSuccess, setSignInSuccess] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
@@ -63,11 +65,16 @@ const SignIn = () => {
       const user = {...userLoginInfo, token:response.data.access}
       console.log('user', user)
       localStorage.setItem('user', JSON.stringify(user));
+      setSignInSuccess(true);
     })
     .catch((error) => {
       setErrorMsg(error.response.data)
     })
   };
+
+  if (signInSuccess) {
+    return <Navigate replace to="/dashboard" />;
+    } else {
 
   return (
     <ThemeProvider theme={theme}>
@@ -145,6 +152,7 @@ const SignIn = () => {
       </Container>
     </ThemeProvider>
   );
+}
 }
 
 export default SignIn;
