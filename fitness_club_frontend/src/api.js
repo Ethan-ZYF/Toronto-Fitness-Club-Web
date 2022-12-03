@@ -22,5 +22,11 @@ apiClient.interceptors.request.use(
 // public routes
 
 export const register = async(data) => {
-    return await apiClient.post('/accounts/signup/', data);       
+    return await apiClient.post('/accounts/signup/', data, {headers: {
+        'Content-Type': "multipart/form-data"
+      }});       
+}
+
+export const login = async(data) => {
+    return await apiClient.post('/accounts/api/token/', data);       
 }

@@ -16,9 +16,6 @@ import {useState, useEffect}from 'react';
 import { register } from '../api';
 import { validateSignUpForm } from './utils/validators';
 
-
-
-
 const Copyright = (props) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -43,9 +40,14 @@ const SignUp = () => {
   const [mail , setMail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [avatar, setAvatar] = useState(null);
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [signUpSuccess, setSignUpSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
+  // const [timer, setTimer] = useState(10);
+
 
   useEffect(
     () => {
@@ -54,6 +56,11 @@ const SignUp = () => {
     [username, cardNumber, password, password2, setIsFormValid]
   );
 
+
+  const selectAvatarHandler = (e) => {
+    const fname = e.target.files[0];
+    setAvatar(fname);
+  }
   
   const handleSignUp =  async(event) => {
     event.preventDefault();
@@ -63,9 +70,11 @@ const SignUp = () => {
       credit_debit_no: cardNumber,
       password,
       password2,
-      mail,
-      firstName,
-      lastName
+      email: mail,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number:phoneNumber,
+      avatar
     }
     console.log(userDetails)
 
@@ -75,8 +84,7 @@ const SignUp = () => {
       setSignUpSuccess(true);
     })
     .catch((error) => {
-      // TODO: render error message on page
-      console.log(error)
+      setErrorMsg(error.response.data)
     })
   };
 
@@ -86,133 +94,173 @@ const SignUp = () => {
         <CssBaseline />
 
         {signUpSuccess ? 
-                <Box
-                sx={{
-                  marginTop: 12,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                 <Typography component="h1" variant="h5">
-                  You have successfully registered an account! Proceed to sign in <NavLink to='/signin'>here</NavLink>!
-                </Typography>
-      
-              </Box>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              You have successfully registered an account! Proceed to sign in <NavLink to='/signin'>here</NavLink>!        
+            </Typography>
+          </Box>
         :
-                <Box
-                  sx={{
-                    marginTop: 12,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                  <Typography component="h1" variant="h5">
-                    Account Sign Up
-                  </Typography>
-                  <Box component="form" onSubmit={handleSignUp} sx={{ mt: 2}}>
-                    <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          id="username"
-                          label="Username"
-                          name="username"
-                          value={username}
-                          onChange={(e) => setUserName(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          id="firstName"
-                          label="First Name"
-                          name="firstName"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          fullWidth
-                          id="lastName"
-                          label="Last Name"
-                          name="lastName"
-                          autoComplete="family-name"
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          id="email"
-                          label="Email Address"
-                          name="email"
-                          value={lastName}
-                          onChange={(e) => setLastName(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          fullWidth
-                          required
-                          id="credit_debit_no"
-                          label="Credit/Debit Number"
-                          name="credit_debit_no"
-                          value={cardNumber}
-                          onChange={(e) => setCardNumber(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          name="password"
-                          label="Password"
-                          type="password"
-                          id="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          name="password2"
-                          label="Re-enter password"
-                          type="password2"
-                          id="password2"
-                          value={password2}
-                          onChange={(e) => setPassword2(e.target.value)}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Sign Up
-                    </Button>
-                    <Grid container justifyContent="flex-end">
-                      <Grid item>
-                        <Link href="#" variant="body2">
-                          Already have an account? Sign in
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Box>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Account Sign Up
+            </Typography>
+
+            <Box component="form" onSubmit={handleSignUp} sx={{ mt: 2}}>
+              <Grid container spacing={2}>
+              <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUserName(e.target.value)}
+                    error={errorMsg.username}
+                    helperText={errorMsg.username}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    name="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    value={mail}
+                    onChange={(e) => setMail(e.target.value)}
+                    error={errorMsg.email}
+                    helperText={errorMsg.email}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="phoneNumber"
+                    label="Phone Number"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    error={errorMsg.phone_number}
+                    helperText={errorMsg.phone_number}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
+                    id="credit_debit_no"
+                    label="Credit/Debit Number"
+                    name="credit_debit_no"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    error={errorMsg.credit_debit_no}
+                    helperText={errorMsg.credit_debit_no}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    error={errorMsg.password}
+                    helperText={errorMsg.password}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password2"
+                    label="Re-enter password"
+                    type="password"
+                    id="password2"
+                    value={password2}
+                    onChange={(e) => setPassword2(e.target.value)}
+                    error={errorMsg.password2}
+                    helperText={errorMsg.password2}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    component="label"
+                  >
+                    Upload Avatar
+                    <input
+                      type="file"
+                      hidden
+                      value={""}
+                      // accept=".png, .jpg"
+                      onChange={selectAvatarHandler}/>
+                  </Button> 
+                  <p style={{fontSize:'0.8rem', color:'#D7272D'}}>{errorMsg.avatar}</p>
+                </Grid>
+              </Grid>
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                <NavLink variant="body2" to='/signin'>
+                  Already have an account? Sign in
+                </NavLink>
+
+                </Grid>
+              </Grid>
+
+            </Box>
+          </Box>
         }
 
-
-        <Copyright sx={{ mt: 5}} />
+        <Copyright sx={{ mt: 8}} />
       </Container>
     </ThemeProvider>
   );

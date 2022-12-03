@@ -6,7 +6,7 @@ import {BrowserRouter,
 import ResponsiveAppBar from './Pages/components/Navbar';
 import Footer from './Pages/components/Footer';
 
-import LoginPage from './Pages/LoginPage';
+import LoginPage from './Pages/SignInPage';
 import Dashboard from './Pages/Dashboard';
 import SignUp from './Pages/SignUpPage';
 
