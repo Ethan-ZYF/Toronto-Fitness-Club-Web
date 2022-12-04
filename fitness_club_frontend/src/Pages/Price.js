@@ -8,12 +8,13 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import StarIcon from '@mui/icons-material/StarBorder';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import { getPlans } from '../api';
+import { useState, useEffect } from 'react';
 
 function Copyright(props) {
     return (
@@ -31,8 +32,7 @@ function Copyright(props) {
 const tiers = [
     {
         title: 'Monthly',
-        price: '10',
-        subheader: 'Cancel anytime',
+        price: 0,
         description: [
             'unlimited access to gym',
             'unlimited access to pool',
@@ -44,8 +44,7 @@ const tiers = [
     },
     {
         title: 'Yearly',
-        subheader: 'Most popular',
-        price: '100',
+        price: 0,
         description: [
             'unlimited access to gym',
             'unlimited access to pool',
@@ -57,7 +56,33 @@ const tiers = [
     },
 ];
 
+
 function PricingContent() {
+    const [monthly, setMonthly] = useState(false);
+    const [yearly, setYearly] = useState(false);
+    useEffect(() => {
+        getPlans()
+            .then((response) => {
+                const results = response.data.results;
+                if (results[0].plan === 'MONTHLY') {
+                    setMonthly(results[0]);
+                }
+                else {
+                    setYearly(results[0]);
+                }
+                if (results[1].plan === 'YEARLY') {
+                    setYearly(results[1]);
+                }
+                else {
+                    setMonthly(results[1]);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+    tiers[0].price = monthly.price;
+    tiers[1].price = yearly.price;
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -75,12 +100,13 @@ function PricingContent() {
                 </Toolbar>
             </AppBar>
             {/* Hero unit */}
-            <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+            <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 4, pb: 3 }}>
                 <Typography
                     component="h1"
                     variant="h2"
                     align="center"
                     color="text.primary"
+                    fontWeight="bold"
                     gutterBottom
                 >
                     Pricing
@@ -100,15 +126,19 @@ function PricingContent() {
                         >
                             <Card>
                                 <CardHeader
+                                    //bold title
                                     title={tier.title}
-                                    subheader={tier.subheader}
-                                    titleTypographyProps={{ align: 'center' }}
-                                    action={<StarIcon />}
+                                    titleTypographyProps={{
+                                        align: 'center',
+                                        variant: 'h4',
+                                        fontWeight: 'bold',
+                                        color: tier.title === 'Monthly' ? 'black' : 'white',
+                                    }}
                                     subheaderTypographyProps={{
                                         align: 'center',
                                     }}
                                     sx={{
-                                        backgroundColor: (theme) => theme.palette.grey[200],
+                                        backgroundColor: tier.title === 'Yearly' ? 'primary.main' : 'grey.200',
                                     }}
                                 />
                                 <CardContent>
@@ -141,7 +171,18 @@ function PricingContent() {
                                     </ul>
                                 </CardContent>
                                 <CardActions>
-                                    <Button fullWidth variant={tier.buttonVariant}>
+                                    <Button
+                                        fullWidth variant={tier.buttonVariant}
+                                        //set action for button
+                                        onClick={() => {
+                                            if (tier.title === 'Monthly') {
+                                                window.location.href = monthly.url;
+                                            }
+                                            else {
+                                                window.location.href = yearly.url;
+                                            }
+                                        }}
+                                    >
                                         {tier.buttonText}
                                     </Button>
                                 </CardActions>
@@ -160,24 +201,6 @@ function PricingContent() {
                     py: [3, 6],
                 }}
             >
-                {/* <Grid container spacing={4} justifyContent="space-evenly">
-                    {footers.map((footer) => (
-                        <Grid item xs={6} sm={3} key={footer.title}>
-                            <Typography variant="h6" color="text.primary" gutterBottom>
-                                {footer.title}
-                            </Typography>
-                            <ul>
-                                {footer.description.map((item) => (
-                                    <li key={item}>
-                                        <Link href="#" variant="subtitle1" color="text.secondary">
-                                            {item}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Grid>
-                    ))}
-                </Grid> */}
                 <Copyright sx={{ mt: 5 }} />
             </Container>
             {/* End footer */}

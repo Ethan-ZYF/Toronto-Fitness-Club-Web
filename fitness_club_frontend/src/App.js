@@ -26,7 +26,7 @@ function App() {
                     <Route exact path='/signin' element={<LoginPage />} />
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/edit' element={<EditProfile />} />
-                    <Route exact path='/pricing' element={<Pricing />} />
+                    <Route exact path='/plans' element={<Pricing />} />
                 </Routes>
             </BrowserRouter>
             <Footer />

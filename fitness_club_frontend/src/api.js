@@ -40,3 +40,7 @@ export const editProfile = async (data) => {
         'Content-Type': "multipart/form-data"
       }});
 }
+
+export const getPlans = async () => {
+    return await apiClient.get('/accounts/plans/');
+}
