@@ -11,8 +11,8 @@ const loggedInState = (username, token) => {
     return {signedIn: true,
     username: username,
     token: token}
-
 }
+
 const userContext = React.createContext(loggedOutState);
 
 export { userContext, loggedOutState, loggedInState };
