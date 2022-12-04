@@ -26,10 +26,11 @@ function App() {
                 <Routes>
                     {/* <Route exact path='/' element={<RegisterPage />} /> */}
                     <Route exact path='/signup' element={<SignUp />} />
-                    <Route exact path='/signin' element={<LoginPage />} />
+                    <Route exact path='/signin' element={<SignInPage />} />
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/edit' element={<EditProfile />} />
                     <Route exact path='/plans' element={<Pricing />} />
+                    <Route exact path='/studios' element={<AllStudiosPage />} />
                 </Routes>
             </BrowserRouter>
             <Footer />
