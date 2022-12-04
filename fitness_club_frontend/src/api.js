@@ -32,7 +32,7 @@ export const login = async(data) => {
 }
 
 export const logout = async () => {
-    return await apiClient.post('/accounts/api/logout/');       
+    return await apiClient.post('/accounts/logout/');       
 }
 
 export const editProfile = async (data) => {
