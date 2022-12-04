@@ -31,7 +31,16 @@ export const login = async(data) => {
     return await apiClient.post('/accounts/api/token/', data);       
 }
 
-// auth routes
+export const logout = async () => {
+    return await apiClient.post('/accounts/api/logout/');       
+}
 
+export const editProfile = async (data) => {
+    return await apiClient.put('/accounts/edit/', data, {headers: {
+        'Content-Type': "multipart/form-data"
+      }});
+}
 
-
+export const getPlans = async () => {
+    return await apiClient.get('/accounts/plans/');
+}
