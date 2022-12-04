@@ -13,7 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState, useEffect } from 'react';
-import { register } from '../api';
+import { Navigate } from "react-router-dom";
+import { editProfile } from '../api';
 import { validateSignUpForm } from './utils/validators';
 
 const Copyright = (props) => {
@@ -31,8 +32,7 @@ const Copyright = (props) => {
 
 const theme = createTheme();
 
-const SignUp = () => {
-
+const EditProfile = () => {
     const [username, setUserName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [password, setPassword] = useState('');
@@ -44,10 +44,8 @@ const SignUp = () => {
     const [avatar, setAvatar] = useState(null);
 
     const [isFormValid, setIsFormValid] = useState(false);
-    const [signUpSuccess, setSignUpSuccess] = useState(false);
+    const [editSuccess, setEditSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState(false);
-    // const [timer, setTimer] = useState(10);
-
 
     useEffect(
         () => {
@@ -62,38 +60,33 @@ const SignUp = () => {
         setAvatar(fname);
     }
 
-    const handleSignUp = async (event) => {
-        event.preventDefault();
+    const EditHandler = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('cardNumber', cardNumber);
+        formData.append('password', password);
+        formData.append('password2', password2);
+        formData.append('mail', mail);
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('phoneNumber', phoneNumber);
+        formData.append('avatar', avatar);
 
-        const userDetails = {
-            username,
-            credit_debit_no: cardNumber,
-            password,
-            password2,
-            email: mail,
-            first_name: firstName,
-            last_name: lastName,
-            phone_number: phoneNumber,
-            avatar
+        const res = await editProfile(formData);
+        if (res.status === 200) {
+            setEditSuccess(true);
+        } else {
+            setErrorMsg(res.data.msg);
         }
-        console.log(userDetails)
-
-        register(userDetails)
-            .then((response) => {
-                console.log(response)
-                setSignUpSuccess(true);
-            })
-            .catch((error) => {
-                setErrorMsg(error.response.data)
-            })
-    };
+    }
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
 
-                {signUpSuccess ?
+                {editSuccess ?
                     <Box
                         sx={{
                             marginTop: 8,
@@ -103,7 +96,7 @@ const SignUp = () => {
                         }}
                     >
                         <Typography component="h1" variant="h5">
-                            You have successfully registered an account! Proceed to sign in <NavLink to='/signin'>here</NavLink>!
+                            You have updated your profile, continue to dashboard <NavLink to='/dashboard'>here</NavLink>!
                         </Typography>
                     </Box>
                     :
@@ -119,10 +112,10 @@ const SignUp = () => {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Account Sign Up
+                            Updated Profile
                         </Typography>
 
-                        <Box component="form" onSubmit={handleSignUp} sx={{ mt: 2 }}>
+                        <Box component="form" onSubmit={EditHandler} sx={{ mt: 2 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -245,25 +238,15 @@ const SignUp = () => {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Sign Up
+                                Update
                             </Button>
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <NavLink variant="body2" to='/signin'>
-                                        Already have an account? Sign in
-                                    </NavLink>
-
-                                </Grid>
-                            </Grid>
-
                         </Box>
                     </Box>
                 }
-
                 <Copyright sx={{ mt: 8 }} />
             </Container>
         </ThemeProvider>
-    );
+    )
 }
 
-export default SignUp;
+export default EditProfile;
