@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.urls import path
 from .views import SignupView, LoginView, LogoutView, PaymentHistoryView, PayView, FuturePayView, PlansView, \
-    SubscribeView, EditView, CancelView, EditPlanView
+    SubscribeView, EditView, CancelView, EditPlanView, ProfileView
 
 urlpatterns = [
     path('signup/', SignupView.as_view(), name='signup'),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('cancel/', CancelView.as_view(), name='cancel'),
     path("api/token/", TokenObtainPairView.as_view(),
          name="token_obtain_pair"),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]

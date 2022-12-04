@@ -50,6 +50,13 @@ class EditView(RetrieveAPIView, UpdateAPIView):
     def get_object(self):
         return self.request.user
 
+class ProfileView(RetrieveAPIView):
+    serializer_class = EditSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
 
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
