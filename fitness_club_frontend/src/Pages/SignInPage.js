@@ -12,10 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import {useState, useEffect}from 'react';
+import { userContext, loggedInState } from '../userContext';
+
+import {useState, useEffect, useContext}from 'react';
 import { login } from '../api';
 import { validateSignInForm } from './utils/validators';
 import { Navigate } from "react-router-dom";
+
 
 const Copyright = (props) => {
   return (
@@ -42,6 +45,8 @@ const SignIn = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
+  const context = useContext(userContext);
+  
   useEffect(
     () => {
       setIsFormValid(validateSignInForm({username, password}));
@@ -64,6 +69,8 @@ const SignIn = () => {
       setErrorMsg("");
       const user = {...userLoginInfo, token:response.data.access}
       console.log('user', user)
+      context.setContext(loggedInState(user.username, user.token));
+      console.log(context)
       localStorage.setItem('user', JSON.stringify(user));
       setSignInSuccess(true);
     })

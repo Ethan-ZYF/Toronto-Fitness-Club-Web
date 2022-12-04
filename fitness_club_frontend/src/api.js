@@ -30,3 +30,8 @@ export const register = async(data) => {
 export const login = async(data) => {
     return await apiClient.post('/accounts/api/token/', data);       
 }
+
+// auth routes
+
+
+
