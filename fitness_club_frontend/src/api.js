@@ -31,6 +31,8 @@ export const login = async(data) => {
     return await apiClient.post('/accounts/api/token/', data);       
 }
 
+// auth routes 
+
 export const logout = async () => {
     return await apiClient.post('/accounts/logout/');       
 }
@@ -43,4 +45,16 @@ export const editProfile = async (data) => {
 
 export const getPlans = async () => {
     return await apiClient.get('/accounts/plans/');
+}
+
+export const getAllStudios = async() => {
+    return await apiClient.get('/studios/all/');
+}
+
+export const filterStudios = async(data) => {
+    return await apiClient.get('/studios/filter-studio/', {params: {data}});
+}
+
+export const searchLocationStudios = async(data) => {
+    return await apiClient.post('/studios/search-location/', data);
 }

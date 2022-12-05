@@ -25,8 +25,8 @@ function App() {
         <>
         <userContext.Provider value={{context, setContext}}>
             {/* Use Browser Router to add routes here */}
-            <ResponsiveAppBar />
             <BrowserRouter>
+            <ResponsiveAppBar />
                 <Routes>
                     {/* <Route exact path='/' element={<RegisterPage />} /> */}
                     <Route exact path='/signup' element={<SignUp />} />
@@ -35,9 +35,11 @@ function App() {
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/edit' element={<EditProfile />} />
                     <Route exact path='/plans' element={<Pricing />} />
+                    <Route exact path='/studios' element={<AllStudiosPage />} />
+                    <Route exact path='/studios/1/' element={<Dashboard />} />
                 </Routes>
+                <Footer />
             </BrowserRouter>
-            <Footer />
             </userContext.Provider>
         </>
     );

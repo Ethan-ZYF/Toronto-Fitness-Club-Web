@@ -17,19 +17,6 @@ import { Navigate } from "react-router-dom";
 import { editProfile } from '../api';
 import { validateSignUpForm } from './utils/validators';
 
-const Copyright = (props) => {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Toronto Fitness Club
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 const theme = createTheme();
 
 const EditProfile = () => {
@@ -243,7 +230,6 @@ const EditProfile = () => {
                         </Box>
                     </Box>
                 }
-                <Copyright sx={{ mt: 8 }} />
             </Container>
         </ThemeProvider>
     )

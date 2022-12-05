@@ -5,13 +5,14 @@ import { userContext, loggedOutState } from '../userContext';
 const SignOutPage = () => {
     const [logoutSuccess, setLogOutSuccess] = useState(true);
     const [errorMsg, setErrorMsg] = useState('');
+    const context = useContext(userContext);
 
     useEffect(
         () => {
             logout().then((response) => {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                // const context = useContext(userContext);
-                // context.setContext(loggedOutState);
+
+                context.setContext(loggedOutState);
                 localStorage.clear();
                 localStorage.clear();
                 setLogOutSuccess(true);

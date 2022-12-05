@@ -1,139 +1,289 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { getAllStudios } from '../api';
+import { Studio } from './utils/constructors';
+import { useState, useEffect } from 'react';
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import StudioMapComponent from './components/StudioMapComponent';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import ClassIcon from '@mui/icons-material/Class';
+
+import { filterStudios, searchLocationStudios } from '../api';
 
 const theme = createTheme();
 
-const AllStudios = () => {
+const StudiosPage = () => {
+  const [studioLst, setStudioLst] = useState([]);
+
+  const [filterName, setFilterName] = useState('');
+  const [filterAmenity, setFilterAmenity] = useState('');
+  const [filterClassName, setFilterClassName] = useState('');
+  const [filterCoachName, setFilterCoachName] = useState('');
+
+  const[showFilter, setShowFilter] = useState(false);
+  const[showDistanceInput, setShowDistanceInput] = useState(false);
+
+  const [searchLat, setSearchLat] = useState(43.666663);
+  const [searchLng, setSearchLng] = useState(-79.40233);
+
+  useEffect(
+    () => {
+      getAllStudios().then((response)=> {
+        const studios = response.data.results.map((s) => {
+          const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
+          console.log(ns);
+          return ns;
+        });
+        console.log(studios);
+        setStudioLst(studios);
+      });
+    },[]);
+
+  console.log(studioLst);
+
+  const handleSearchLocation = async(event) => {
+    event.preventDefault();
+    const location = {
+      latitude: searchLat,
+      longitude: searchLng
+    }
+    searchLocationStudios(location)
+      .then((response)=> {
+        console.log(response);
+        const studios = response.data.results.map((s) => {
+          const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, "http://127.0.0.1:8000/studios/studio-detail/"+s.id+"/"); // TODO: fix backend, passback url too
+          console.log(ns);
+          return ns;
+        });
+        console.log(studios);
+        setStudioLst(studios);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response.data);
+      })
+  }
+
+  const handleFilter = async(event) => {
+    event.preventDefault();
+    const params = {
+      name: filterName,
+      amenities: filterAmenity,
+      class_name: filterClassName,
+      coach_name: filterCoachName
+    }
+    filterStudios(params)
+      .then((response)=> {
+        console.log(response);
+        const studios = response.data.map((s) => {
+          const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, "http://127.0.0.1:8000/studios/studio-detail/"+s.id+"/"); // TODO: fix backend, passback url too
+          console.log(ns);
+          return ns;
+        });
+        console.log(studios);
+        setStudioLst(studios);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response.data);
+      })
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
-          }}
-        >
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
+    <>
+      
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <main>
+          {/* Hero unit */}
+          <Box
+            sx={{
+              bgcolor: 'background.paper',
+              pt: 8,
+              pb: 0,
+            }}
+          >
+            <Container maxWidth="sm">
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="text.primary"
+                gutterBottom
+              >
+                View Studios 
+              </Typography>
+              <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                Here is the list of all of  our studios. <br/>
+                Click on any to view more details. <br /> 
+              </Typography>
+              <Stack
+                sx={{ pt: 4 }}
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+              >
+                <Button variant="contained" onClick={(e)=> {setShowFilter(!showFilter); setShowDistanceInput(false);}}>Search</Button>
+                <Button variant="outlined" onClick={(e)=> {setShowDistanceInput(!showDistanceInput); setShowFilter(false);}}>View in order of distance</Button>
+              </Stack>
+            </Container>
+          </Box>
+
+          {/* search  */}
+          {showFilter && !showDistanceInput && 
+          <div>
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                pt: 8,
+                pb: 0,
+              }}
+              component="form" onSubmit={handleFilter}
             >
-              Album layout
-            </Typography>
-            <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              Something short and leading about the collection below—its contents,
-              the creator, etc. Make it short and sweet, but not too short so folks
-              don&apos;t simply skip over it entirely.
-            </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
+              <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center'}}>
+              <TextField
+                id="outlined-start-adornment"
+                sx={{ m: 1, width: '25ch' }}
+                label="Enter Studio Name"
+                name="filterName"
+                value={filterName}
+                onChange={(e) => setFilterName(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+  id="outlined-start-adornment"
+  sx={{ m: 1, width: '25ch' }}
+                label="Enter Amenity"
+                name="filterAmenity"
+                value={filterAmenity}
+                onChange={(e) => setFilterAmenity(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FitnessCenterIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+  id="outlined-start-adornment"
+  sx={{ m: 1, width: '25ch' }}
+                label="Enter Class Name"
+                name="filterClassName"
+                value={filterClassName}
+                onChange={(e) => setFilterClassName(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <ClassIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            <TextField
+  id="outlined-start-adornment"
+  sx={{ m: 1, width: '25ch' }}
+                label="Enter Coach Name"
+                name="filterCoachName"
+                value={filterCoachName}
+                onChange={(e) => setFilterCoachName(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              </div>
+              <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center', marginTop:'2rem'}}>
+              <Button variant="contained" type="submit">Apply Filters</Button>
+              </div>
+            </Box>
+
+          </div>}
+
+          {/* search location */}
+          {showDistanceInput && !showFilter && 
+          <div>
+            <Box
+              sx={{
+                bgcolor: 'background.paper',
+                pt: 8,
+                pb: 0,
+              }}
+              component="form" onSubmit={handleSearchLocation}
             >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack>
+              <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center'}}>
+              <TextField
+                id="searchLat"
+                sx={{ m: 1, width: '25ch' }}
+                label="Enter your latitude"
+                name="searchLat"
+                value={searchLat}
+                onChange={(e) => setSearchLat(e.target.value)}
+                InputProps={{
+                  inputMode: 'numeric',
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+  id="searchLng"
+  sx={{ m: 1, width: '25ch' }}
+                label="Enter your longitude "
+                name="searchLng"
+                value={searchLng}
+                onChange={(e) => setSearchLng(e.target.value)}
+                InputProps={{
+                  inputMode: 'numeric',
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FitnessCenterIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              </div>
+              <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center', marginTop:'2rem'}}>
+              <Button variant="outlined" type="submit">Find Closest Studios</Button>
+              </div>
+            </Box>
+
+          </div>
+          }
+
+          <Container sx={{ py: 8, width:'100'}}>
+            <StudioMapComponent 
+              studioLst={studioLst}
+            />
           </Container>
-        </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
-    </ThemeProvider>
+        </main>
+        
+      </ThemeProvider>
+      
+    </>
   );
 }
 
-export default AllStudios;
+export default StudiosPage;
