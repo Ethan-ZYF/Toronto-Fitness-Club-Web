@@ -39,7 +39,7 @@ class SearchView(ListCreateAPIView):
                 'address': studio.address,
                 'location': studio.location,
                 'amenities': amenity_set,
-                'images': images,
+                'images': [image.image.url for image in images],
             })
         return Response({'studios': studio_list})
 

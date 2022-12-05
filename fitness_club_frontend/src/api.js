@@ -37,7 +37,7 @@ export const logout = async () => {
     return await apiClient.post('/accounts/logout/');       
 }
 
-export const editProfile = async (data) => {
+export const editProfile = async(data) => {
     return await apiClient.put('/accounts/edit/', data, {headers: {
         'Content-Type': "multipart/form-data"
       }});

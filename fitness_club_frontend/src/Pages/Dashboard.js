@@ -8,7 +8,7 @@ const Dashboard = () => {
 
     return (
         <div>
-           <StudiosMapComponent></StudiosMapComponent>
+           {context.context.username}
         </div>
     );
 };
