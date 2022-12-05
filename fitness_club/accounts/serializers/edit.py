@@ -94,6 +94,8 @@ class EditSerializer(serializers.ModelSerializer):
         return password2
 
     def validate_phone_number(self, phone_number):
+        if phone_number == "":
+            return phone_number
         regex = re.compile('^\d{3}-\d{3}-\d{4}$')
         if not regex.match(phone_number):
             raise ValidationError("Phone number must be in the format XXX-XXX-XXXX")

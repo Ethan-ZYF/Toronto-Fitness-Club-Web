@@ -52,7 +52,7 @@ const EditProfile = () => {
         () => {
             setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
             getProfile().then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 setUserName(response.data.username);
                 setCardNumber(response.data.credit_debit_no);
                 setMail(response.data.email);
@@ -63,7 +63,7 @@ const EditProfile = () => {
             }
             );
         },
-        [username, cardNumber, password, password2]
+        []
     );
 
     const selectAvatarHandler = (e) => {
@@ -73,19 +73,19 @@ const EditProfile = () => {
 
     const EditHandler = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('cardNumber', cardNumber);
-        formData.append('password', password);
-        formData.append('password2', password2);
-        formData.append('mail', mail);
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('phoneNumber', phoneNumber);
-        formData.append('avatar', avatar);
-        console.log(formData);
-
-        const res = await editProfile(formData);
+        const editData = {
+            username, 
+            credit_debit_no: cardNumber,
+            password,
+            password2,
+            email: mail,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNumber,
+            avatar
+        }
+        console.log(editData);
+        const res = await editProfile(editData);
         if (res.status === 200) {
             setEditSuccess(true);
         } else {
@@ -191,7 +191,6 @@ const EditProfile = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        required
                                         id="credit_debit_no"
                                         label="Credit/Debit Number"
                                         name="credit_debit_no"
@@ -203,7 +202,6 @@ const EditProfile = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         fullWidth
                                         name="password"
                                         label="Password"
@@ -217,7 +215,6 @@ const EditProfile = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         fullWidth
                                         name="password2"
                                         label="Re-enter password"
