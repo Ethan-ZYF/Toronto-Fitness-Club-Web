@@ -18,6 +18,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import ClassIcon from '@mui/icons-material/Class';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 import { filterStudios, searchLocationStudios } from '../api';
 
@@ -243,7 +244,7 @@ const StudiosPage = () => {
                   inputMode: 'numeric',
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <MyLocationIcon />
                     </InputAdornment>
                   ),
                 }}
@@ -259,7 +260,7 @@ const StudiosPage = () => {
                   inputMode: 'numeric',
                   startAdornment: (
                     <InputAdornment position="start">
-                      <FitnessCenterIcon />
+                       <MyLocationIcon />
                     </InputAdornment>
                   ),
                 }}

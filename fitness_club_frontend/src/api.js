@@ -52,7 +52,7 @@ export const getAllStudios = async() => {
 }
 
 export const filterStudios = async(data) => {
-    return await apiClient.get('/studios/filter-studio/', {params: {data}});
+    return await apiClient.get('/studios/filter-studio/', {params: {name: data.name, amenities: data.amenities, class_name: data.class_name, coach_name: data.coach_name}});
 }
 
 export const searchLocationStudios = async(data) => {
