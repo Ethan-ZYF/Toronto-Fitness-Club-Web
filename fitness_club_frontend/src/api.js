@@ -51,6 +51,10 @@ export const getAllStudios = async() => {
     return await apiClient.get('/studios/all/');
 }
 
+export const getProfile = async() => {
+    return await apiClient.get('/accounts/profile/');
+}
+
 export const filterStudios = async(data) => {
     return await apiClient.get('/studios/filter-studio/', {params: {data}});
 }
