@@ -14,30 +14,32 @@ import EditProfile from './Pages/EditPage';
 import Pricing from './Pages/Price';
 import AllStudiosPage from './Pages/AllStudiosPage';
 import SignOutPage from './Pages/SignOutPage';
+import ProfilePage from './Pages/ProfilePage';
 
 import { userContext, loggedOutState } from './userContext';
 import { useState } from 'react';
 
 
 function App() {
-  const [context, setContext] = useState(userContext);
+    const [context, setContext] = useState(userContext);
     return (
         <>
-        <userContext.Provider value={{context, setContext}}>
-            {/* Use Browser Router to add routes here */}
-            <ResponsiveAppBar />
-            <BrowserRouter>
-                <Routes>
-                    {/* <Route exact path='/' element={<RegisterPage />} /> */}
-                    <Route exact path='/signup' element={<SignUp />} />
-                    <Route exact path='/signin' element={<SignInPage />} />
-                    <Route exact path='/signout' element={<SignOutPage />} />
-                    <Route exact path='/dashboard' element={<Dashboard />} />
-                    <Route exact path='/edit' element={<EditProfile />} />
-                    <Route exact path='/plans' element={<Pricing />} />
-                </Routes>
-            </BrowserRouter>
-            <Footer />
+            <userContext.Provider value={{ context, setContext }}>
+                {/* Use Browser Router to add routes here */}
+                <ResponsiveAppBar />
+                <BrowserRouter>
+                    <Routes>
+                        {/* <Route exact path='/' element={<RegisterPage />} /> */}
+                        <Route exact path='/signup' element={<SignUp />} />
+                        <Route exact path='/signin' element={<SignInPage />} />
+                        <Route exact path='/signout' element={<SignOutPage />} />
+                        <Route exact path='/dashboard' element={<Dashboard />} />
+                        <Route exact path='/edit' element={<EditProfile />} />
+                        <Route exact path='/plans' element={<Pricing />} />
+                        <Route exact path='/profile' element={<ProfilePage />} />
+                    </Routes>
+                </BrowserRouter>
+                <Footer />
             </userContext.Provider>
         </>
     );

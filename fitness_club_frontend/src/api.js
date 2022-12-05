@@ -44,3 +44,7 @@ export const editProfile = async (data) => {
 export const getPlans = async () => {
     return await apiClient.get('/accounts/plans/');
 }
+
+export const getProfile = async () => {
+    return await apiClient.get('/accounts/profile/');
+}

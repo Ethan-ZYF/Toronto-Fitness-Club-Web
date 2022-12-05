@@ -14,8 +14,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState, useEffect } from 'react';
 import { Navigate } from "react-router-dom";
-import { editProfile } from '../api';
+import { editProfile, getProfile } from '../api';
 import { validateSignUpForm } from './utils/validators';
+
 
 const Copyright = (props) => {
     return (
@@ -41,7 +42,7 @@ const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [avatar, setAvatar] = useState(null);
+    const [avatar, setAvatar] = useState('');
 
     const [isFormValid, setIsFormValid] = useState(false);
     const [editSuccess, setEditSuccess] = useState(false);
@@ -50,10 +51,20 @@ const EditProfile = () => {
     useEffect(
         () => {
             setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
+            getProfile().then((response) => {
+                console.log(response.data);
+                setUserName(response.data.username);
+                setCardNumber(response.data.credit_debit_no);
+                setMail(response.data.email);
+                setFirstName(response.data.first_name);
+                setLastName(response.data.last_name);
+                setPhoneNumber(response.data.phone_number);
+                setAvatar(response.data.avatar);
+            }
+            );
         },
-        [username, cardNumber, password, password2, setIsFormValid]
+        [username, cardNumber, password, password2]
     );
-
 
     const selectAvatarHandler = (e) => {
         const fname = e.target.files[0];
@@ -72,14 +83,17 @@ const EditProfile = () => {
         formData.append('lastName', lastName);
         formData.append('phoneNumber', phoneNumber);
         formData.append('avatar', avatar);
+        console.log(formData);
 
         const res = await editProfile(formData);
         if (res.status === 200) {
             setEditSuccess(true);
         } else {
+            // console.log(res);
             setErrorMsg(res.data.msg);
         }
     }
+    // console.log(username);
 
     return (
         <ThemeProvider theme={theme}>
