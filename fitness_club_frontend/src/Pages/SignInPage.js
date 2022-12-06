@@ -77,7 +77,7 @@ const SignIn = () => {
             })
             .catch((error) => {
                 console.log("err", error);
-                setErrorMsg(error.response);
+                setErrorMsg(error.response.data);
             })
     };
 
