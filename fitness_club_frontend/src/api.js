@@ -5,15 +5,16 @@ const apiClient = axios.create({
     timeout: 1000
 })
 
+
 apiClient.interceptors.request.use(
     (config) => {
         const userDetails = localStorage.getItem('user');
-        if(userDetails){ // if user is signed in then add token to request header
+        if (userDetails) { // if user is signed in then add token to request header
             const token = JSON.parse(userDetails).token;
             config.headers.Authorization = `Bearer ${token}`
         }
         return config;
-    }, 
+    },
     (error) => {
         return Promise.reject(error);
     }
@@ -21,56 +22,60 @@ apiClient.interceptors.request.use(
 
 // public routes
 
-export const register = async(data) => {
-    return await apiClient.post('/accounts/signup/', data, {headers: {
-        'Content-Type': "multipart/form-data"
-      }});       
+export const register = async (data) => {
+    return await apiClient.post('/accounts/signup/', data, {
+        headers: {
+            'Content-Type': "multipart/form-data"
+        }
+    });
 }
 
-export const login = async(data) => {
-    return await apiClient.post('/accounts/api/token/', data);       
+export const login = async (data) => {
+    return await apiClient.post('/accounts/api/token/', data);
 }
 
 // auth routes 
 
 export const logout = async () => {
-    return await apiClient.post('/accounts/logout/');       
+    return await apiClient.post('/accounts/logout/');
 }
 
-export const editProfile = async(data) => {
-    return await apiClient.put('/accounts/edit/', data, {headers: {
-        'Content-Type': "multipart/form-data"
-      }});
+export const editProfile = async (data) => {
+    return await apiClient.put('/accounts/edit/', data, {
+        headers: {
+            'Content-Type': "multipart/form-data"
+        }
+    });
 }
 
 export const getPlans = async () => {
     return await apiClient.get('/accounts/plans/');
 }
 
-export const getAllStudios = async() => {
+export const getAllStudios = async () => {
     return await apiClient.get('/studios/all/');
 }
 
-export const getProfile = async() => {
+export const getProfile = async () => {
     return await apiClient.get('/accounts/profile/');
 }
 
-export const filterStudios = async(data) => {
-    return await apiClient.get('/studios/filter-studio/', {params: {name: data.name, amenities: data.amenities, class_name: data.class_name, coach_name: data.coach_name}});
+export const filterStudios = async (data) => {
+    return await apiClient.get('/studios/filter-studio/', { params: { name: data.name, amenities: data.amenities, class_name: data.class_name, coach_name: data.coach_name } });
 }
 
-export const searchLocationStudios = async(data) => {
+export const searchLocationStudios = async (data) => {
     return await apiClient.post('/studios/search-location/', data);
 }
 
-export const subscribePlan = async(data) => {
+export const subscribePlan = async (data) => {
     return await apiClient.post('/accounts/subscribe/', data);
 }
 
-export const getCurrPlan = async() => {
+export const getCurrPlan = async () => {
     return await apiClient.get('/accounts/cancel/');
 }
 
-export const unsubscribe = async() => {
+export const unsubscribe = async () => {
     return await apiClient.delete('/accounts/cancel/');
 }

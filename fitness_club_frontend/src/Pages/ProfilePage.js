@@ -39,7 +39,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const UserProfile = (props) => {
-    const { username, firstName, lastName, avatar, phoneNumber, email, cardInfo} = props;
+    const { username, firstName, lastName, avatar, phoneNumber, email, cardInfo } = props;
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -111,7 +111,7 @@ const UserProfile = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                        {localStorage.getItem('plan')? 'Yes' : 'No'}
+                        {localStorage.getItem('plan') ? 'Yes' : 'No'}
                     </Typography>
                 </Grid>
             </Grid>
@@ -152,7 +152,7 @@ export default function ProfilePage() {
     console.log(profile);
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="md">
                 <UserProfile
                     username={profile?.username}
                     firstName={profile?.first_name}
@@ -175,7 +175,7 @@ export default function ProfilePage() {
                     Edit Profile
                 </Button>
             </Container>
-            
+
         </ThemeProvider>
     );
 }

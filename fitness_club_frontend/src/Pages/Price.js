@@ -86,6 +86,7 @@ function PricingContent() {
     tiers[0].id = monthly.id;
     tiers[1].price = yearly.price;
     tiers[1].id = yearly.id;
+    // console.log("Price", tiers)
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -185,7 +186,7 @@ function PricingContent() {
                                             const current = new Date();
                                             const subscribeInfo = {
                                                 plan: tier.id,
-                                                start_date: `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`,
+                                                start_date: `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`,
                                             }
                                             subscribePlan(subscribeInfo)
                                                 .then((response) => {

@@ -20,7 +20,6 @@ import SubscribePage from './Pages/Subscribe';
 import { userContext, loggedOutState } from './userContext';
 import { useState } from 'react';
 
-
 function App() {
     const [context, setContext] = useState(userContext);
     return (
@@ -48,5 +47,4 @@ function App() {
         </>
     );
 }
-
 export default App
