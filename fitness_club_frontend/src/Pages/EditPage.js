@@ -37,18 +37,20 @@ const EditProfile = () => {
 
     useEffect(
         () => {
-            setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
-            getProfile().then((response) => {
-                // console.log(response.data);
-                setUserName(response.data.username);
-                setCardNumber(response.data.credit_debit_no);
-                setMail(response.data.email);
-                setFirstName(response.data.first_name);
-                setLastName(response.data.last_name);
-                setPhoneNumber(response.data.phone_number);
-                setAvatar(response.data.avatar);
+            if (localStorage.getItem('user') !== null) {
+                setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
+                getProfile().then((response) => {
+                    // console.log(response.data);
+                    setUserName(response.data.username);
+                    setCardNumber(response.data.credit_debit_no);
+                    setMail(response.data.email);
+                    setFirstName(response.data.first_name);
+                    setLastName(response.data.last_name);
+                    setPhoneNumber(response.data.phone_number);
+                    setAvatar(response.data.avatar);
+                }
+                );
             }
-            );
         },
         []
     );
@@ -81,6 +83,27 @@ const EditProfile = () => {
         }
     }
     // console.log(username);
+
+    if (localStorage.getItem('user') === null) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Container component="main" maxWidth="xs">
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Typography component="h1" variant="h5">
+                            You haven't signed in yet, signin <NavLink to='/signin'>here</NavLink> or signup <NavLink to='/signup'>here</NavLink>!
+                        </Typography>
+                    </Box>
+                </Container>
+            </ThemeProvider>
+        );
+    }
 
     return (
         <ThemeProvider theme={theme}>
