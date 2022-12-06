@@ -195,7 +195,7 @@ function PricingContent() {
                                                 .catch((error) => {
                                                     console.log(error);
                                                 });
-                                            console.log(subscribeInfo);
+                                            console.log("subscibeInfo", subscribeInfo);
                                             window.location.href = '/myplan';
                                             localStorage.setItem('plan', tier.id);
                                         }}
