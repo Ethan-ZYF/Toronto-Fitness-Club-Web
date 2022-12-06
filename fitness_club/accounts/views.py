@@ -131,7 +131,7 @@ class FuturePayView(APIView):
 
 
 class PlansView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
 

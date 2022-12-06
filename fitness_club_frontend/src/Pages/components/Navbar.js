@@ -51,12 +51,42 @@ const signupin_settings = {
     }
 }
 
+const club_subs = {
+    homepage: {
+        text: 'Homepage',
+        onclick: () => {
+            window.location.href = '/dashboard';
+        }
+    },
+    Plans: {
+        text: 'Plans',
+        onclick: () => {
+            window.location.href = '/plans';
+        }
+    },
+    Studios: {
+        text: 'Studios',
+        onclick: () => {
+            window.location.href = '/studios';
+        }
+    },
+    Classes: {
+        text: 'Classes',
+        onclick: () => {
+            window.location.href = '/classes';
+        }
+    }
+}
+
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [avatar, setAvatar] = React.useState(null);
 
     useEffect(() => {
+        if (localStorage.getItem('user') === null) {
+            return;
+        }
         const fetchData = async () => {
             const result = await getProfile();
             const profile = result.data;
@@ -121,25 +151,14 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages_left.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
-
-
                         </Menu>
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages_left.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                        {Object.keys(club_subs).map((page) => (
+                            <MenuItem key={page} onClick={club_subs[page].onclick}>
+                                {club_subs[page].text}
+                            </MenuItem>
                         ))}
 
                     </Box>

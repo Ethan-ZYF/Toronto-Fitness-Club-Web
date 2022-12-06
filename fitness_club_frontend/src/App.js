@@ -29,7 +29,6 @@ function App() {
                 <BrowserRouter>
                     <ResponsiveAppBar />
                     <Routes>
-                        {/* <Route exact path='/' element={<RegisterPage />} /> */}
                         <Route exact path='/signup' element={<SignUp />} />
                         <Route exact path='/signin' element={<SignInPage />} />
                         <Route exact path='/signout' element={<SignOutPage />} />
@@ -39,6 +38,7 @@ function App() {
                         <Route exact path='/plans' element={<Pricing />} />
                         <Route exact path='/studios' element={<AllStudiosPage />} />
                         <Route exact path='/studios/1/' element={<Dashboard />} />
+                        <Route exact path='/classes' element={<Dashboard />} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>
