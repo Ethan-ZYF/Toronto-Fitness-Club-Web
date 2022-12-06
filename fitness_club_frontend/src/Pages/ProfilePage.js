@@ -142,7 +142,7 @@ export default function ProfilePage() {
     console.log(profile);
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="md">
                 <UserProfile
                     username={profile?.username}
                     firstName={profile?.first_name}

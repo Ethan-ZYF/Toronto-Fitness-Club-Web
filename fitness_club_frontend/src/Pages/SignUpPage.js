@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -123,9 +123,10 @@ const SignUp = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <Typography component="h1" variant="h5">
+                        {/* <Typography component="h1" variant="h5">
                             You have successfully registered an account! Proceed to sign in <NavLink to='/signin'>here</NavLink>!
-                        </Typography>
+                        </Typography> */}
+                    <Navigate to='/signin' />
                     </Box>
                     :
                     <Box
