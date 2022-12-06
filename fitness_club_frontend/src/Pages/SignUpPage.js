@@ -88,6 +88,27 @@ const SignUp = () => {
             })
     };
 
+    if (localStorage.getItem('user') !== null) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Container component="main" maxWidth="xs">
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Typography component="h1" variant="h5">
+                            You have already signed in! Proceed to sign out <NavLink to='/signout'>here</NavLink> to continue!
+                        </Typography>
+                    </Box>
+                </Container>
+            </ThemeProvider>
+        );
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
