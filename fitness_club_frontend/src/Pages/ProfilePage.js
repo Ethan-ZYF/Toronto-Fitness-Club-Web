@@ -21,6 +21,90 @@ import { useState, useEffect, useContext } from 'react';
 import { login } from '../api';
 import { validateSignInForm } from './utils/validators';
 import { getProfile } from '../api';
+// import { withStyles, Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
+import { Col } from 'react-bootstrap';
+
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
+
+const UserProfile = (props) => {
+    const { username, firstName, lastName, avatar, phoneNumber, email, cardInfo } = props;
+
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Item>
+                {/* avatar */}
+                <img src={avatar
+                    ? avatar
+                    : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"}
+                    alt="avatar"
+                    style={{ width: "200px", height: "200px", borderRadius: "50%" }}
+                />
+            </Item>
+            <Grid container rowSpacing={0} columnSpacing={0}>
+                {/* squared item */}
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        Username:
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                        {username}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        Full name:
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                        {firstName} {lastName}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        Email:
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                        {email}
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        Phone number:
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                        {phoneNumber}
+                    </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        Card Info:
+                    </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                        {cardInfo}
+                    </Typography>
+                </Grid>
+            </Grid>
+        </Box>
+    );
+};
+
 
 const Copyright = (props) => {
     return (
@@ -35,13 +119,7 @@ const Copyright = (props) => {
     );
 }
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
+
 
 const theme = createTheme();
 
@@ -60,7 +138,7 @@ export default function ProfilePage() {
     console.log(profile);
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            {/* <Container component="main" maxWidth="xs">
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Item>
@@ -81,7 +159,26 @@ export default function ProfilePage() {
                         >Edit</Button>
                     </Grid>
                 </Grid>
+            </Container> */}
+            <Container component="main" maxWidth="xs">
+                <UserProfile
+                    username={profile?.username}
+                    firstName={profile?.first_name}
+                    lastName={profile?.last_name}
+                    avatar={profile?.avatar}
+                    phoneNumber={profile?.phone_number}
+                    email={profile?.email}
+                    cardInfo={profile?.credit_debit_no}
+                />
+                <Button
+                    onClick={() => {
+                        // localStorage.removeItem("token");
+                        window.location.href = "/edit";
+                    }}
+                    variant="contained"
+                >Edit</Button>
             </Container>
+            
         </ThemeProvider>
     );
 }
