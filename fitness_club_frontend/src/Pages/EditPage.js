@@ -30,6 +30,7 @@ const EditProfile = () => {
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [avatar, setAvatar] = useState('');
+    const [avatarMsg, setAvatarMsg] = useState('');
 
     const [isFormValid, setIsFormValid] = useState(false);
     const [editSuccess, setEditSuccess] = useState(false);
@@ -57,6 +58,8 @@ const EditProfile = () => {
     const selectAvatarHandler = (e) => {
         const fname = e.target.files[0];
         setAvatar(fname);
+        console.log('avatar uploaded');
+        setAvatarMsg('Avatar uploaded');
     }
 
     const EditHandler = async (e) => {
@@ -73,13 +76,12 @@ const EditProfile = () => {
             avatar
         }
         console.log(editData);
-        const res = await editProfile(editData);
-        if (res.status === 200) {
+        await editProfile(editData).then((response) => {
             setEditSuccess(true);
-        } else {
-            // console.log(res);
-            setErrorMsg(res.data.msg);
-        }
+        }).catch((error) => {
+            console.log(error);
+            setErrorMsg(error.response.data);
+        });
     }
     // console.log(username);
 
@@ -249,7 +251,9 @@ const EditProfile = () => {
                                             // accept=".png, .jpg"
                                             onChange={selectAvatarHandler} />
                                     </Button>
-                                    <p style={{ fontSize: '0.8rem', color: '#D7272D' }}>{errorMsg.avatar}</p>
+                                    <Typography variant="body2" color="red" component="p">
+                                        {avatar ? avatar.name : "No file selected"}
+                                    </Typography>
                                 </Grid>
                             </Grid>
 
