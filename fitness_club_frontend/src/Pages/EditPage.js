@@ -110,18 +110,19 @@ const EditProfile = () => {
                 <CssBaseline />
 
                 {editSuccess ?
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography component="h1" variant="h5">
-                            You have updated your profile, continue to dashboard <NavLink to='/dashboard'>here</NavLink>!
-                        </Typography>
-                    </Box>
+                    // <Box
+                    //     sx={{
+                    //         marginTop: 8,
+                    //         display: 'flex',
+                    //         flexDirection: 'column',
+                    //         alignItems: 'center',
+                    //     }}
+                    // >
+                    //     <Typography component="h1" variant="h5">
+                    //         You have updated your profile, continue to dashboard <NavLink to='/dashboard'>here</NavLink>!
+                    //     </Typography>
+                    // </Box>
+                    <Navigate to="/dashboard" />
                     :
                     <Box
                         sx={{

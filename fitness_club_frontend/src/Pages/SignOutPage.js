@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { logout } from '../api';
 import { userContext, loggedOutState } from '../userContext';
+import { Navigate } from 'react-router-dom';
 
 const SignOutPage = () => {
     const [logoutSuccess, setLogOutSuccess] = useState(true);
@@ -26,7 +27,8 @@ const SignOutPage = () => {
 
     return (
         <div>
-            Sign out: {logoutSuccess? 'Successfully Logged Out' : "Failed"}
+            Sign out: {logoutSuccess ? 'Successfully Logged Out' : "Failed"}
+            {logoutSuccess ? <Navigate to="/" /> : <div>{errorMsg}</div>}
         </div>
     );
 };
