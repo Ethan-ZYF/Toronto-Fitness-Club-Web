@@ -24,23 +24,24 @@ function App() {
     const [context, setContext] = useState(userContext);
     return (
         <>
-        <userContext.Provider value={{context, setContext}}>
-            {/* Use Browser Router to add routes here */}
-            <BrowserRouter>
-            <ResponsiveAppBar />
-                <Routes>
-                    {/* <Route exact path='/' element={<RegisterPage />} /> */}
-                    <Route exact path='/signup' element={<SignUp />} />
-                    <Route exact path='/signin' element={<SignInPage />} />
-                    <Route exact path='/signout' element={<SignOutPage />} />
-                    <Route exact path='/dashboard' element={<Dashboard />} />
-                    <Route exact path='/edit' element={<EditProfile />} />
-                    <Route exact path='/plans' element={<Pricing />} />
-                    <Route exact path='/studios' element={<AllStudiosPage />} />
-                    <Route exact path='/studios/1/' element={<Dashboard />} />
-                </Routes>
-                <Footer />
-            </BrowserRouter>
+            <userContext.Provider value={{ context, setContext }}>
+                {/* Use Browser Router to add routes here */}
+                <BrowserRouter>
+                    <ResponsiveAppBar />
+                    <Routes>
+                        {/* <Route exact path='/' element={<RegisterPage />} /> */}
+                        <Route exact path='/signup' element={<SignUp />} />
+                        <Route exact path='/signin' element={<SignInPage />} />
+                        <Route exact path='/signout' element={<SignOutPage />} />
+                        <Route exact path='/dashboard' element={<Dashboard />} />
+                        <Route exact path='profile' element={<ProfilePage />} />
+                        <Route exact path='/edit' element={<EditProfile />} />
+                        <Route exact path='/plans' element={<Pricing />} />
+                        <Route exact path='/studios' element={<AllStudiosPage />} />
+                        <Route exact path='/studios/1/' element={<Dashboard />} />
+                    </Routes>
+                    <Footer />
+                </BrowserRouter>
             </userContext.Provider>
         </>
     );
