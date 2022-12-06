@@ -31,6 +31,11 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    height: '200px',
+    width: '200px',
+    margin: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
 }));
 
 const UserProfile = (props) => {
@@ -137,28 +142,6 @@ export default function ProfilePage() {
     console.log(profile);
     return (
         <ThemeProvider theme={theme}>
-            {/* <Container component="main" maxWidth="xs">
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Item>
-                            <h1>Profile</h1>
-                            <img src={profile?.avatar} alt="avatar" />
-                            <h2>Username: {profile?.username}</h2>
-                            <h2>First Name: {profile?.first_name}</h2>
-                            <h2>Last Name: {profile?.last_name}</h2>
-                            <h2>Email: {profile?.email}</h2>
-                            <h2>Phone Number: {profile?.phone_number}</h2>
-                            <h2>Card Info: {profile?.credit_debit_no}</h2>
-                        </Item>
-                        <Button
-                            onClick={() => {
-                                // localStorage.removeItem("token");
-                                window.location.href = "/edit";
-                            }}
-                        >Edit</Button>
-                    </Grid>
-                </Grid>
-            </Container> */}
             <Container component="main" maxWidth="xs">
                 <UserProfile
                     username={profile?.username}
@@ -174,8 +157,13 @@ export default function ProfilePage() {
                         // localStorage.removeItem("token");
                         window.location.href = "/edit";
                     }}
-                    variant="contained"
-                >Edit</Button>
+                    variant="outlined"
+                    align="center"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    Edit Profile
+                </Button>
             </Container>
             
         </ThemeProvider>
