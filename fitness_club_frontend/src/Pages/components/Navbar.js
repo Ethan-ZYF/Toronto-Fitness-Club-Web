@@ -20,12 +20,18 @@ import { getProfile } from '../../api';
 
 const pages_left = ['Membership', 'Clubs', 'Classes'];
 
-// const settings = ['Profile', 'Logout'];
+
 const settings = {
     Profile: {
         text: 'Profile',
         onclick: () => {
             window.location.href = '/profile';
+        }
+    },
+    MyPlan: {
+        text: 'My Plan',
+        onclick: () => {
+            window.location.href = '/myplan';
         }
     },
     Logout: {

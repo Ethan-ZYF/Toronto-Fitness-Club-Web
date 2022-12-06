@@ -15,6 +15,7 @@ import Pricing from './Pages/Price';
 import AllStudiosPage from './Pages/AllStudiosPage';
 import SignOutPage from './Pages/SignOutPage';
 import ProfilePage from './Pages/ProfilePage';
+import SubscribePage from './Pages/Subscribe';
 
 import { userContext, loggedOutState } from './userContext';
 import { useState } from 'react';
@@ -39,6 +40,7 @@ function App() {
                         <Route exact path='/studios' element={<AllStudiosPage />} />
                         <Route exact path='/studios/1/' element={<Dashboard />} />
                         <Route exact path='/classes' element={<Dashboard />} />
+                        <Route exact path='/myplan' element={<SubscribePage />} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>

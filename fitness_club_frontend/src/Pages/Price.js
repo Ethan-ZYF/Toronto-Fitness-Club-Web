@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import { subscribePlan } from '../api';
 import { getPlans } from '../api';
 import { useState, useEffect } from 'react';
 
@@ -82,7 +83,9 @@ function PricingContent() {
             });
     }, []);
     tiers[0].price = monthly.price;
+    tiers[0].id = monthly.id;
     tiers[1].price = yearly.price;
+    tiers[1].id = yearly.id;
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -175,12 +178,25 @@ function PricingContent() {
                                         fullWidth variant={tier.buttonVariant}
                                         //set action for button
                                         onClick={() => {
-                                            if (tier.title === 'Monthly') {
-                                                window.location.href = monthly.url;
+                                            if (localStorage.getItem('plan') !== null) {
+                                                window.location.href = '/myplan';
+                                                return;
                                             }
-                                            else {
-                                                window.location.href = yearly.url;
+                                            const current = new Date();
+                                            const subscribeInfo = {
+                                                plan: tier.id,
+                                                start_date: `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`,
                                             }
+                                            subscribePlan(subscribeInfo)
+                                                .then((response) => {
+                                                    console.log(response);
+                                                })
+                                                .catch((error) => {
+                                                    console.log(error);
+                                                });
+                                            console.log(subscribeInfo);
+                                            window.location.href = '/myplan';
+                                            localStorage.setItem('plan', tier.id);
                                         }}
                                     >
                                         {tier.buttonText}

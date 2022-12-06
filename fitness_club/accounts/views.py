@@ -174,7 +174,7 @@ class CancelView(DestroyAPIView):
 
     def get_queryset(self):
         return Subscription.objects.filter(user=self.request.user)
-
+    
     def delete(self, request, *args, **kwargs):
         if hasattr(request.user, 'subscription'):
             # delete from queryset
@@ -195,8 +195,10 @@ class CancelView(DestroyAPIView):
     def get(self, request, *args, **kwargs):
         # get current subscription
         if hasattr(request.user, 'subscription'):
+            my_plan = request.user.subscription
             return Response({
-                'detail':
-                    f'You are currently subscribed to {str(request.user.subscription)}.'
+                'plan': my_plan.plan.plan,
+                'price': my_plan.plan.price,
+                'expire_date': my_plan.start_date.strftime("%m/%d/%Y %H:%M:%S")
             })
         return Response({'detail': 'You are not subscribed.'})

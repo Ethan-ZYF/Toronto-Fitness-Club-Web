@@ -62,3 +62,15 @@ export const filterStudios = async(data) => {
 export const searchLocationStudios = async(data) => {
     return await apiClient.post('/studios/search-location/', data);
 }
+
+export const subscribePlan = async(data) => {
+    return await apiClient.post('/accounts/subscribe/', data);
+}
+
+export const getCurrPlan = async() => {
+    return await apiClient.get('/accounts/cancel/');
+}
+
+export const unsubscribe = async() => {
+    return await apiClient.delete('/accounts/cancel/');
+}
