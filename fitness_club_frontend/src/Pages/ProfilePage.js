@@ -23,7 +23,6 @@ import { validateSignInForm } from './utils/validators';
 import { getProfile } from '../api';
 // import { withStyles, Card, CardContent, Typography } from '@material-ui/core';
 import { Card, CardContent } from '@mui/material';
-import { Col } from 'react-bootstrap';
 
 
 const Item = styled(Paper)(({ theme }) => ({

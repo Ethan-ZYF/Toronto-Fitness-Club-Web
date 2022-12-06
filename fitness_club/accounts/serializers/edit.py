@@ -66,7 +66,7 @@ class EditSerializer(serializers.ModelSerializer):
             instance.first_name = validated_data['first_name']
         if 'last_name' in validated_data:
             instance.last_name = validated_data['last_name']
-        if 'avatar' in validated_data:
+        if 'avatar' in validated_data and validated_data['avatar'] is not None:
             instance.avatar = validated_data['avatar']
         instance.save()
         return instance

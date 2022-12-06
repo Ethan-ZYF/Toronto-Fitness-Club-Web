@@ -47,7 +47,6 @@ const EditProfile = () => {
                     setFirstName(response.data.first_name);
                     setLastName(response.data.last_name);
                     setPhoneNumber(response.data.phone_number);
-                    setAvatar(response.data.avatar);
                 }
                 );
             }
