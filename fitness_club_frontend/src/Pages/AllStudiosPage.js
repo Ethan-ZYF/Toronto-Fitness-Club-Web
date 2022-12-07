@@ -44,6 +44,9 @@ const StudiosPage = () => {
   const [currPage, setCurrPage] = useState(1);
   const [count, setCount] = useState(0);
 
+  const [latErr, setLatErr] = useState('');
+  const [lonErr, setLonErr] = useState('');
+
   useEffect(
     () => {
       getAllStudios({link:link}).then((response)=> {
@@ -62,6 +65,22 @@ const StudiosPage = () => {
 
   const handleSearchLocation = async(event) => {
     event.preventDefault();
+
+    // regex to check if input is a valid float
+    const regex = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
+    let hasInvalid = false;
+    if (!regex.test(searchLat)) {
+      setLatErr('Numeric Value Required');
+      hasInvalid = true;
+    }
+    else setLatErr('');
+    if (!regex.test(searchLng)) {
+      setLonErr('Numeric Value Required');
+      hasInvalid = true;
+    }
+    else setLonErr('');
+    if (hasInvalid) return;
+
     const location = {
       location: searchLat + "," + searchLng
     }
@@ -260,6 +279,7 @@ const StudiosPage = () => {
                 name="searchLat"
                 value={searchLat}
                 onChange={(e) => setSearchLat(e.target.value)}
+                helperText={latErr}
                 InputProps={{
                   inputMode: 'numeric',
                   startAdornment: (
@@ -276,6 +296,7 @@ const StudiosPage = () => {
                 name="searchLng"
                 value={searchLng}
                 onChange={(e) => setSearchLng(e.target.value)}
+                helperText={lonErr}
                 InputProps={{
                   inputMode: 'numeric',
                   startAdornment: (
