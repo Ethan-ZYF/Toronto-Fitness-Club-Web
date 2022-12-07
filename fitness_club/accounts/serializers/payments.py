@@ -8,7 +8,7 @@ from rest_framework import serializers
 class PaymentHistorySerializer(serializers.ModelSerializer):
     amount = serializers.SerializerMethodField('get_amount')
     card_info = serializers.SerializerMethodField('get_card_info')
-    date_and_time = serializers.DateTimeField(source='date', read_only=True, format="%d/%m/%Y %H:%M:%S")
+    date_and_time = serializers.DateTimeField(source='date', read_only=True, format="%m/%d/%Y %H:%M:%S")
 
     def get_amount(self, obj):
         return obj.plan.price
@@ -17,7 +17,7 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
         return obj.user.credit_debit_no
 
     def get_date_and_time(self, obj):
-        return obj.date.strftime("%d/%m/%Y %H:%M:%S")
+        return obj.date.strftime("%m/%d/%Y %H:%M:%S")
 
     class Meta:
         model = Payment
