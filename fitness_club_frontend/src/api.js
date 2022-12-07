@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://100.65.50.152:8000',
     timeout: 1000
 })
 
@@ -78,4 +78,8 @@ export const getCurrPlan = async () => {
 
 export const unsubscribe = async () => {
     return await apiClient.delete('/accounts/cancel/');
+}
+
+export const getPayments = async () => {
+    return await apiClient.get('/accounts/payments/');
 }
