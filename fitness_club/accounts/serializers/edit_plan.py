@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 class EditSubSerializer(serializers.ModelSerializer):
     new_start_date = serializers.SerializerMethodField('get_new_start_date')
+    current_plans = serializers.SerializerMethodField('get_current_plans')
 
     def get_new_start_date(self, obj):
         curr_subscription = Subscription.objects.get(
@@ -18,11 +19,14 @@ class EditSubSerializer(serializers.ModelSerializer):
             else:
                 start_date += relativedelta(years=1)
         return start_date
+    
+    def get_current_plans(self, obj):
+        return Plan.objects.all().values()
 
     class Meta:
         model = Subscription
-        fields = ('new_start_date', 'plan')
-        read_only_fields = ('new_start_date',)
+        fields = ('new_start_date', 'plan', 'current_plans')
+        read_only_fields = ('new_start_date', 'current_plans')
 
     def validate(self, data):
         # check if the user has the field subscription

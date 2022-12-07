@@ -88,16 +88,29 @@ export default function SubscribePage() {
                     alignItems="center"
                     marginTop='10px'
                 >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ height: 40 }}
-                        onClick={() => {
-                            window.location.href = '/classes';
-                        }}
-                    >
-                        View Classes
-                    </Button>
+                    {localStorage.getItem('plan')?
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ height: 40 }}
+                            onClick={() => {
+                                window.location.href = '/edit_plan';
+                            }}
+                        >
+                            Edit Plan
+                        </Button>
+                        :
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ height: 40 }}
+                            onClick={() => {
+                                window.location.href = '/plans';
+                            }}
+                        >
+                            View Plans
+                        </Button>
+                    }
                     <Button
                         variant="contained"
                         color="error"

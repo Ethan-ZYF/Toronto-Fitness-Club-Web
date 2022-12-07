@@ -100,7 +100,7 @@ class PayView(CreateAPIView):
 
 class FuturePayView(APIView):
     permission_classes = (IsAuthenticated,)
-    cnt_limit = 3
+    cnt_limit = 1
 
     def get(self, request, *args, **kwargs):
         if not hasattr(request.user, 'subscription'):
@@ -115,7 +115,7 @@ class FuturePayView(APIView):
                 response.append({
                     'amount': request.user.subscription.plan.price,
                     'card_info': request.user.credit_debit_no,
-                    'date': next_date.strftime("%d/%m/%Y %H:%M:%S")
+                    'date_and_time': next_date.strftime("%d/%m/%Y %H:%M:%S")
                 })
                 last_payment_date += relativedelta(months=1)
             else:
@@ -123,7 +123,7 @@ class FuturePayView(APIView):
                 response.append({
                     'amount': request.user.subscription.plan.price,
                     'card_info': request.user.credit_debit_no,
-                    'date': next_date.strftime("%d/%m/%Y %H:%M:%S")
+                    'date_and_time': next_date.strftime("%d/%m/%Y %H:%M:%S")
                 })
                 last_payment_date += relativedelta(years=1)
         final_response = {'future_payments': response}

@@ -28,8 +28,8 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
 class CreatePaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ['user', 'subscription', 'date']
-        read_only_fields = ['user', 'subscription', 'date']
+        fields = ['user', 'plan', 'date']
+        read_only_fields = ['user', 'plan', 'date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

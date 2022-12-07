@@ -19,6 +19,7 @@ import ProfilePage from './Pages/ProfilePage';
 import SubscribePage from './Pages/Subscribe';
 import MyPayments from './Pages/Payment';
 import StudioDetail from './Pages/StudioDetail';
+import EditPlanPage from './Pages/EditPlan';
 
 import { userContext, loggedOutState } from './userContext';
 import { useState } from 'react';
@@ -44,6 +45,7 @@ function App() {
                         <Route exact path='/classes' element={<Dashboard />} />
                         <Route exact path='/myplan' element={<SubscribePage />} />
                         <Route exact path='/payments' element={<MyPayments />} />
+                        <Route exact path='/edit_plan' element={<EditPlanPage />} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>

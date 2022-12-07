@@ -85,6 +85,14 @@ export const getStudioDetail = async (id) => {
     return await apiClient.get('/studios/studio-detail/' + id + '/');
 }
 
-export const getPayments = async () => {
-    return await apiClient.get('/accounts/payments/');
+export const getPayments = async (offset) => {
+    return await apiClient.get('/accounts/payments/?offset=' + offset);
+}
+
+export const editPlan = async (data) => {
+    return await apiClient.put('/accounts/edit-plan/', data);
+}
+
+export const getFuturePayments = async() => {
+    return await apiClient.get('/accounts/bill/');
 }
