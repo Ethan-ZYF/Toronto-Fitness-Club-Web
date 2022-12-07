@@ -79,3 +79,7 @@ export const getCurrPlan = async () => {
 export const unsubscribe = async () => {
     return await apiClient.delete('/accounts/cancel/');
 }
+
+export const getPayments = async () => {
+    return await apiClient.get('/accounts/payments/');
+}
