@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://100.65.50.152:8000',
+    baseURL: 'http://localhost:8000',
     timeout: 1000
 })
 
@@ -65,7 +65,8 @@ export const filterStudios = async (data) => {
 }
 
 export const searchLocationStudios = async (data) => {
-    return await apiClient.post('/studios/search-location/', data);
+    await apiClient.post('/studios/search-location/', data);
+    return await apiClient.get('/studios/search-location/');
 }
 
 export const subscribePlan = async (data) => {

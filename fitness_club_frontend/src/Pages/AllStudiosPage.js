@@ -63,8 +63,7 @@ const StudiosPage = () => {
   const handleSearchLocation = async(event) => {
     event.preventDefault();
     const location = {
-      latitude: searchLat,
-      longitude: searchLng
+      location: searchLat + "," + searchLng
     }
     searchLocationStudios(location)
       .then((response)=> {
