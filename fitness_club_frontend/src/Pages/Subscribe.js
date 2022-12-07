@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { NavLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { useState, useEffect, useContext } from 'react';
@@ -53,6 +54,7 @@ const theme = createTheme();
 
 export default function SubscribePage() {
     const [plan, setPlan] = useState({});
+    const [errorMsg, setErrorMsg] = useState('');
     useEffect(() => {
         getCurrPlan()
             .then((response) => {
@@ -62,7 +64,18 @@ export default function SubscribePage() {
                 console.log("Error", error);
             });
     }, []);
-    console.log(plan);
+    // console.log(plan);
+    if (localStorage.getItem('user') === null) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Container component="main" maxWidth="xs">
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop='100px'>
+                        You are not logged in. Please <NavLink to='/login'>signin</NavLink> or <NavLink to='/signup'>signup</NavLink> to view this page.
+                    </Typography>
+                </Container>
+            </ThemeProvider >
+        );
+    }
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -92,6 +105,11 @@ export default function SubscribePage() {
                         onClick={() => {
                             unsubscribe()
                                 .then((response) => {
+                                    console.log(response);
+                                    if (response.data['detail'] === 'You are not subscribed.') {
+                                        setErrorMsg('You are not subscribed.');
+                                        return;
+                                    }
                                     setPlan({});
                                     localStorage.removeItem('plan');
                                 })
@@ -103,6 +121,12 @@ export default function SubscribePage() {
                         Unsubscribe
                     </Button>
                 </Box>
+                <Typography variant="h6" 
+                component="div" 
+                sx={{ flexGrow: 1 }} 
+                align='right'>
+                    {errorMsg}
+                </Typography>
             </Container>
         </ThemeProvider >
     );
