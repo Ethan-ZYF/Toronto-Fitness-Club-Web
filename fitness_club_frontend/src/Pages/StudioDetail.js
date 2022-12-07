@@ -174,78 +174,96 @@ export default function StudioDetail() {
     // console.log("images", detail.images);
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" sx={{
-                width: 700
-            }}>
-                <CssBaseline />
-                <StandardImageList />
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container rowSpacing={0} columnSpacing={0} paddingTop={0}>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Studio Name:
-                            </Typography>
+            <CssBaseline />
+            <Grid container spacing={2}
+                sx={{
+                    width: '100%',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    minWidth: 1000,
+                }}
+            >
+                <Grid item xs={6} md={6}>
+                    <StandardImageList />
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container rowSpacing={0} columnSpacing={0} paddingTop={0}
+                            sx={{
+                                width: '100%',
+                                maxWidth: 500,
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                            }}
+                        >
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    Studio Name:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {detail['name']}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    Address:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {detail['address'] ? detail['address'] : 'Not Provided'}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    Map:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {
+                                        detail['direction_link'] ?
+                                            <a href={detail['direction_link']} target='_blank'>
+                                                <LocationOnIcon />
+                                            </a> :
+                                            'Not Provided'
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    Postcode:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {detail['postcode'] ? detail['postcode'] : 'Not Provided'}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    Phone Number:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {detail['phone_number'] ? detail['phone_number'] : 'Not Provided'}
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {detail['name']}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Address:
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {detail['address'] ? detail['address'] : 'Not Provided'}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Map:
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {
-                                    detail['direction_link'] ?
-                                        <a href={detail['direction_link']} target='_blank'>
-                                            <LocationOnIcon />
-                                        </a> :
-                                        'Not Provided'
-                                }
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Postcode:
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {detail['postcode'] ? detail['postcode'] : 'Not Provided'}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Phone Number:
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {detail['phone_number'] ? detail['phone_number'] : 'Not Provided'}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Container>
-            <Box style={{
-                overflow: 'auto',
-                maxHeight: '200px',
-            }}>
-                <Events />
-            </Box>
+                    </Box>
+                </Grid>
+                <Grid item
+                    xs={6}
+                    md={6}
+                    sx={{
+                        overflow: 'auto',
+                        maxHeight: '565px',
+                        marginTop: '20px',
+                    }}>
+                    <Events />
+                </Grid>
+            </Grid>
             <Container>
                 <StudioTable classes={detail.classes} />
             </Container>
