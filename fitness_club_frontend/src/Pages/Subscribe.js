@@ -67,34 +67,6 @@ export default function SubscribePage() {
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <PlanDetails plan={plan} />
-                {/* <Grid container style={{ marginTop: '20px' }}>
-                    <Button
-                        variant="contained"
-                        style={{ marginLeft: '0px' }}
-                        onClick={() => {
-                            window.location.href = '/classes';
-                        }}
-                    >
-                        View Classes
-                    </Button>
-                    
-                    <Button
-                        variant="contained"
-                        style={{ marginRight: '0px' }}
-                        onClick={() => {
-                            unsubscribe()
-                                .then((response) => {
-                                    setPlan({});
-                                    localStorage.removeItem('plan');
-                                })
-                                .catch((error) => {
-                                    console.log("Error", error);
-                                });
-                        }}
-                    >
-                        Unsubscribe
-                    </Button>
-                </Grid> */}
                 <Box
                     component="span"
                     m={1}

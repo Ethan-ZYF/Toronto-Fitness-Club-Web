@@ -157,6 +157,11 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
+                            {Object.keys(club_subs).map((page) => (
+                            <MenuItem key={page} onClick={club_subs[page].onclick}>
+                                {club_subs[page].text}
+                            </MenuItem>
+                        ))}
                         </Menu>
                     </Box>
 
