@@ -110,7 +110,7 @@ const StudiosPage = () => {
 
   const handlePageChange = async(event) => {
     getAllStudios({link:link+'?offset='+String((event.target.value-1) * 5)}).then((response)=> {
-      console.log(link+'?offset='+String(event.target.value))
+      console.log(link+'?offset='+String((event.target.value-1) * 5))
       const studios = response.data.results.map((s) => {
         const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
         console.log(ns);
