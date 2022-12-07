@@ -124,7 +124,7 @@ const StandardImageList = () => {
             rowHeight={164}
         >
             {itemData.map((item) => (
-                <ImageListItem key={item}>
+                <ImageListItem>
                     <img
                         src={`${item.image}?w=164&h=164&fit=crop&auto=format`}
                         srcSet={`${item.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
