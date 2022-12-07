@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://100.65.50.123:8000',
     timeout: 1000
 })
 
@@ -93,6 +93,6 @@ export const editPlan = async (data) => {
     return await apiClient.put('/accounts/edit-plan/', data);
 }
 
-export const getFuturePayments = async() => {
+export const getFuturePayments = async () => {
     return await apiClient.get('/accounts/bill/');
 }
