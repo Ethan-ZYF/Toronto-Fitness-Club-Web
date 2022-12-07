@@ -101,7 +101,7 @@ const VirtualizedList = () => {
             marginTop="20px"
         >
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
-                History Payments
+                Paymeny History
             </Typography>
             <Box
                 sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
