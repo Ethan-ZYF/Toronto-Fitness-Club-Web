@@ -74,12 +74,12 @@ export default function StudioDetail() {
                         </Grid>
                         <Grid item xs={6}>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                Location:
+                                Direction:
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                {detail['direction_link']? <NavLink to={detail['direction_link']}> Google Map Link</NavLink>: 'Not Provided'}
+                                {detail['direction_link']? <a href={detail['direction_link']} target='_blank'>Google Map Link</a> : 'Not Provided'}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
