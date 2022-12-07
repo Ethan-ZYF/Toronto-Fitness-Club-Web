@@ -79,3 +79,7 @@ export const getCurrPlan = async () => {
 export const unsubscribe = async () => {
     return await apiClient.delete('/accounts/cancel/');
 }
+
+export const getStudioDetail = async (id) => {
+    return await apiClient.get('/studios/studio-detail/' + id + '/');
+}
