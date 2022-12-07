@@ -13,6 +13,9 @@ import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getStudioDetail } from '../api';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
@@ -35,10 +38,78 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 let itemData = []
+let events = []
+
+
+function renderRow(e) {
+    return (
+        <ListItem
+            height={400}
+            // width={1000}
+            component="div"
+            disablePadding
+            sx={{
+                marginBottom: '10px',
+            }}
+        >
+            <ListItemButton sx={{
+                borderRadius: '10px',
+                border: '1px solid #3c59ff',
+                width: '100%',
+            }}>
+                {/* <ListItemText primary={"$ " + payment.amount} /> */}
+                {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                    {"Amount: $ " + payment.amount}<br />
+                    {payment.date_and_time}<br />
+                    {payment.card_info}
+                </Typography> */}
+                <Grid container rowSpacing={0} columnSpacing={0} >
+                    {/* squared item */}
+                    <Grid item xs={6}>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
+                            Name
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6} paddingBottom="5px">
+                        <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                            align='right'
+                            color='#3c59ff'
+                        >
+                            {e.class_name}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
+                            Time
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right' >
+                            {e.start_time}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
+                            Length
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
+                            {e.class_length_in_hour + " hours"}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </ListItemButton>
+        </ListItem>
+    );
+}
 
 
 const StandardImageList = () => {
-    console.log("itemData", itemData);
+    // console.log("itemData", itemData);
     return (
         <ImageList
             sx={{
@@ -47,6 +118,7 @@ const StandardImageList = () => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginTop: '20px',
+                marginBottom: '40px',
             }}
             cols={3}
             rowHeight={164}
@@ -64,7 +136,26 @@ const StandardImageList = () => {
         </ImageList>
     );
 }
-
+const Events = () => {
+    return (
+        <Box
+            sx={{
+                width: '100%',
+                maxHeight: events.length * 400,
+                maxWidth: 500,
+                // display: 'flex',
+                bgcolor: 'background.paper'
+            }}
+            marginLeft="auto"
+            marginRight="auto"
+            marginTop="20px"
+        >
+            {events.map((event) => (
+                renderRow(event)
+            ))}
+        </Box>
+    );
+}
 
 
 export default function StudioDetail() {
@@ -76,21 +167,21 @@ export default function StudioDetail() {
                 setDetail(response.data);
                 // console.log(response.data)
                 itemData = response.data.images;
+                events = response.data.event_set;
             })
             .catch((error) => {
                 console.log(error);
             });
     });
-    console.log("details", detail);
-    console.log("images", detail.images);
+    // console.log("details", detail);
+    // console.log("images", detail.images);
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" sx={{
                 width: 700
             }}>
-                <StandardImageList />
-
                 <CssBaseline />
+                <StandardImageList />
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container rowSpacing={0} columnSpacing={0} paddingTop={0}>
                         <Grid item xs={6}>
@@ -151,6 +242,7 @@ export default function StudioDetail() {
                         </Grid>
                     </Grid>
                 </Box>
+                <Events />
             </Container>
         </ThemeProvider>
     )
