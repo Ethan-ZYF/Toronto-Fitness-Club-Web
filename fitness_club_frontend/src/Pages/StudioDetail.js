@@ -18,6 +18,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import StudioTable from './components/StudioTable';
 
 // import MapIcon from '@mui/icons-material/Map';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -174,7 +175,7 @@ export default function StudioDetail() {
             .catch((error) => {
                 console.log(error);
             });
-    });
+    }, []);
     // console.log("details", detail);
     // console.log("images", detail.images);
     return (
@@ -245,6 +246,9 @@ export default function StudioDetail() {
                     </Grid>
                 </Box>
                 <Events />
+            </Container>
+            <Container>
+                <StudioTable classes={detail.classes} />
             </Container>
         </ThemeProvider>
     )
