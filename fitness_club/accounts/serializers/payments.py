@@ -11,7 +11,7 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
     date_and_time = serializers.DateTimeField(source='date', read_only=True, format="%d/%m/%Y %H:%M:%S")
 
     def get_amount(self, obj):
-        return obj.subscription.plan.price
+        return obj.plan.price
 
     def get_card_info(self, obj):
         return obj.user.credit_debit_no
@@ -62,9 +62,9 @@ class CreatePaymentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        subscription = self.context['request'].user.subscription
+        plan = self.context['request'].user.subscription.plan
         date = datetime.today().date()
         payment = Payment.objects.create(user=user,
-                                         subscription=subscription,
+                                         plan=plan,
                                          date=date)
         return payment

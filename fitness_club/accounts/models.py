@@ -69,15 +69,15 @@ class Payment(models.Model):
     user = models.ForeignKey(to=FCUser,
                              on_delete=models.CASCADE,
                              related_name='payments')
-    subscription = models.ForeignKey(to='Subscription',
-                                     on_delete=models.CASCADE,
-                                     related_name='payments')
+    plan = models.ForeignKey(to=Plan,
+                            on_delete=models.CASCADE,
+                            related_name='payments')
     date = models.DateTimeField(default=datetime.now)
 
     # date = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.subscription.plan.price}"
+        return f"{self.user.username} - {self.plan.price}"
 
 
 @receiver(models.signals.post_save, sender=Subscription)
@@ -99,7 +99,7 @@ def create_payment(sender, instance, created, **kwargs):
     next_payment_date = timezone.datetime.combine(next_payment_date,
                                                   timezone.localtime().time())
     curr_payment = Payment.objects.create(user=instance.user,
-                                          subscription=instance,
+                                          plan=instance.plan,
                                           date=next_payment_date)
     curr_payment.save()
     if instance.plan.plan == 'MONTHLY':
