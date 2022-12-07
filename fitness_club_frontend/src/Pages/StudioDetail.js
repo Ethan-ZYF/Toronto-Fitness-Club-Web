@@ -19,6 +19,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import StudioTable from './components/StudioTable';
+import usePagination from './components/Paginate';
+import Pagination from '@mui/material/Pagination';
+import Divider from '@mui/material/Divider';
 
 // import MapIcon from '@mui/icons-material/Map';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -38,8 +41,59 @@ const Item = styled(Paper)(({ theme }) => ({
     marginBottom: '20px',
 }));
 
+
 let itemData = []
 let events = []
+
+
+const PaginatedEvents = () => {
+    let [page, setPage] = useState(1);
+    const PER_PAGE = 4;
+
+    const count = Math.ceil(events.length / PER_PAGE);
+    const _DATA = usePagination(events, PER_PAGE);
+    console.log("data", _DATA.currentData())
+
+    const handleChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
+    };
+
+    return (
+        <Box
+            p="5"
+            sx={{
+                width: '100%',
+                maxWidth: 500,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+            }}
+        >
+            <List p="10" pt="3" spacing={2}>
+                {_DATA.currentData().map(v => {
+                    return (
+                        // <ListItem key={v.id} listStyleType="disc">
+                        //     <span>{v.class_name}</span>{" "}
+                        //     <Divider display="inline" orientation="vertical" />
+                        //     <span> {v.start_time}</span>{" "}
+                        //     <Divider display="inline" orientation="vertical" />
+                        // </ListItem>
+                        renderRow(v)
+                    );
+                })}
+            </List>
+
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChange}
+            />
+        </Box>
+    );
+}
 
 
 function renderRow(e) {
@@ -177,7 +231,7 @@ export default function StudioDetail() {
             <CssBaseline />
             <Grid container spacing={2}
                 sx={{
-                    width: '100%',
+                    width: 1200,
                     marginLeft: 'auto',
                     marginRight: 'auto',
                     minWidth: 1000,
@@ -257,11 +311,26 @@ export default function StudioDetail() {
                     xs={6}
                     md={6}
                     sx={{
-                        overflow: 'auto',
-                        maxHeight: '565px',
-                        marginTop: '20px',
-                    }}>
-                    <Events />
+                        maxWidth: 500,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                    }}
+                >
+                    <Typography variant="h4" component="div" sx={{
+                        flexGrow: 1,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        maxWidth: 500,
+                    }}
+                        align='center'
+                        fontFamily={'Verdana'}
+                        fontWeight='bold'
+                        color='primary.main'
+                        marginTop={5}>
+                        Upcoming Events
+                    </Typography>
+                    {/* <Events /> */}
+                    <PaginatedEvents />
                 </Grid>
             </Grid>
             <Container>
@@ -273,6 +342,6 @@ export default function StudioDetail() {
                     </Typography>
                 }
             </Container>
-        </ThemeProvider>
+        </ThemeProvider >
     )
 }

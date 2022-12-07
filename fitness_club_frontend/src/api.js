@@ -93,7 +93,7 @@ export const editPlan = async (data) => {
     return await apiClient.put('/accounts/edit-plan/', data);
 }
 
-export const getFuturePayments = async() => {
+export const getFuturePayments = async () => {
     return await apiClient.get('/accounts/bill/');
 }
 
