@@ -96,3 +96,25 @@ export const editPlan = async (data) => {
 export const getFuturePayments = async () => {
     return await apiClient.get('/accounts/bill/');
 }
+
+// Enrollment 
+export const enrollClass = async(data) => {
+    return await apiClient.post('/studios/enroll-class/'+data.id+'/');
+}
+
+export const unenrollClass = async(data) => {
+    return await apiClient.post('/studios/delete-class/'+data.id+'/');
+}
+
+export const enrollEvent = async(data) => {
+    return await apiClient.post('/studios/enroll-event/'+data.id+'/');
+}
+
+export const unenrollEvent = async(data) => {
+    return await apiClient.post('/studios/delete-event/'+data.id+'/');
+}
+
+// User schedule
+export const getUserSchedule = async() => {
+    return await apiClient.get('/studios/schedule/');
+}
