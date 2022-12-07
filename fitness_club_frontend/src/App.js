@@ -17,6 +17,7 @@ import AllStudiosPage from './Pages/AllStudiosPage';
 import SignOutPage from './Pages/SignOutPage';
 import ProfilePage from './Pages/ProfilePage';
 import SubscribePage from './Pages/Subscribe';
+import MyPayments from './Pages/Payment';
 import StudioDetail from './Pages/StudioDetail';
 
 import { userContext, loggedOutState } from './userContext';
@@ -42,6 +43,7 @@ function App() {
                         <Route exact path='/studios/:id' element={<StudioDetail />} />
                         <Route exact path='/classes' element={<Dashboard />} />
                         <Route exact path='/myplan' element={<SubscribePage />} />
+                        <Route exact path='/payments' element={<MyPayments />} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>

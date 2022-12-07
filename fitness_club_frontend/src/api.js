@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://100.65.50.152:8000',
     timeout: 1000
 })
 
@@ -82,4 +82,8 @@ export const unsubscribe = async () => {
 
 export const getStudioDetail = async (id) => {
     return await apiClient.get('/studios/studio-detail/' + id + '/');
+}
+
+export const getPayments = async () => {
+    return await apiClient.get('/accounts/payments/');
 }
