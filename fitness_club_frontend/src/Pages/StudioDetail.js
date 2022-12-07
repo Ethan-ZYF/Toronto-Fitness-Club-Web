@@ -265,7 +265,13 @@ export default function StudioDetail() {
                 </Grid>
             </Grid>
             <Container>
-                <StudioTable classes={detail.classes} />
+                {localStorage.getItem('user') ?
+                    <StudioTable classes={detail.classes} />
+                    :
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                        Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+                    </Typography>
+                }
             </Container>
         </ThemeProvider>
     )
