@@ -69,7 +69,7 @@ const StudioMapComponent = ({studioLst}) => {
                                 </Typography>
                                 </CardContent>
                                 <CardActions>
-                                <Button size="small"> <Link to="/studios/1/">Details</Link></Button>
+                                <Button size="small"> <Link to={"/studios/"+String(studio.id)+"/"}>Details</Link></Button>
                                 </CardActions>
                             </Card>
                             </Grid>
