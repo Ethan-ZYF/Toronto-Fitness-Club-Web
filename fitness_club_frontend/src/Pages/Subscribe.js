@@ -124,7 +124,9 @@ export default function SubscribePage() {
                 <Typography variant="h6" 
                 component="div" 
                 sx={{ flexGrow: 1 }} 
-                align='right'>
+                align='right'
+                color='error'
+                fontSize='12px'>
                     {errorMsg}
                 </Typography>
             </Container>
