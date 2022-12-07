@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {Select, MenuItem, InputLabel} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
@@ -19,6 +20,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import ClassIcon from '@mui/icons-material/Class';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import FormControl from '@mui/material/FormControl';
 
 import { filterStudios, searchLocationStudios } from '../api';
 
@@ -38,9 +40,13 @@ const StudiosPage = () => {
   const [searchLat, setSearchLat] = useState(43.666663);
   const [searchLng, setSearchLng] = useState(-79.40233);
 
+  const link = '/studios/all/';
+  const [currPage, setCurrPage] = useState(1);
+  const [count, setCount] = useState(0);
+
   useEffect(
     () => {
-      getAllStudios().then((response)=> {
+      getAllStudios({link:link}).then((response)=> {
         const studios = response.data.results.map((s) => {
           const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
           console.log(ns);
@@ -48,6 +54,7 @@ const StudiosPage = () => {
         });
         console.log(studios);
         setStudioLst(studios);
+        setCount(Math.ceil(response.data.count / 5) );
       });
     },[]);
 
@@ -99,6 +106,20 @@ const StudiosPage = () => {
         console.log(error);
         console.log(error.response.data);
       })
+  }
+
+  const handlePageChange = async(event) => {
+    getAllStudios({link:link+'?offset='+String((event.target.value-1) * 5)}).then((response)=> {
+      console.log(link+'?offset='+String((event.target.value-1) * 5))
+      const studios = response.data.results.map((s) => {
+        const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
+        console.log(ns);
+        return ns;
+      });
+      console.log(studios);
+      setStudioLst(studios);
+      setCurrPage(event.target.value);
+    });
   }
 
   return (
@@ -275,6 +296,17 @@ const StudiosPage = () => {
           }
 
           <Container sx={{ py: 8, width:'100'}}>
+          <FormControl style={{width:'12.5%'}}>
+          <InputLabel>Page</InputLabel>
+          <Select
+            value={currPage}
+            label="Page"
+            onChange={handlePageChange}
+          >
+             {Array.from({ length: count  }, (_, i) => <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>)}
+          </Select>
+          </FormControl>
+
             <StudioMapComponent 
               studioLst={studioLst}
             />
