@@ -9,7 +9,7 @@ const SignOutPage = () => {
     const context = useContext(userContext);
 
     useEffect(
-        () => {
+        () => {localStorage.clear();
             logout().then((response) => {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 context.setContext(loggedOutState);

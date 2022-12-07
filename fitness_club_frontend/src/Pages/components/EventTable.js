@@ -7,8 +7,10 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import TableFooter from '@mui/material/TableFooter';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -20,6 +22,18 @@ function Row(props) {
     const [open, setOpen] = React.useState(false);
     const handleEnrollClass = (e) => { }
     const handleEnrollEvent = (e) => { }
+
+    //pagination
+    const [rowsPerPage, setRowsPerPage] = React.useState(3);  
+    const [page, setPage] = React.useState(0);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+      };
+    
+    const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+    };
 
     return (
         <React.Fragment>
@@ -46,32 +60,53 @@ function Row(props) {
                             <Typography variant="h6" gutterBottom component="div">
                                 Events
                             </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Start Time</TableCell>
-                                        <TableCell>Weekday</TableCell>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>Availabilities</TableCell>
-                                        <TableCell></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.events.map((e) => (
-                                        <TableRow key={e.id}>
-                                            <TableCell component="th" scope="row">
-                                                {e.start_time}
-                                            </TableCell>
-                                            <TableCell>{e.start_time}</TableCell>
-                                            <TableCell>{e.start_time}</TableCell>
-                                            <TableCell >
-                                                {row.capacity - e.curr_size}
-                                            </TableCell>
-                                            <TableCell ><Button onClick={handleEnrollEvent}>Enroll Session</Button></TableCell>
+                            <TableContainer>
+                                <Table size="small" aria-label="purchases">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Start Time</TableCell>
+                                            <TableCell>Weekday</TableCell>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>Availabilities</TableCell>
+                                            <TableCell></TableCell>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                                    </TableHead>
+                                    <TableBody>
+                                        {row.events.map((e) => (
+                                            <TableRow key={e.id}>
+                                                <TableCell component="th" scope="row">
+                                                    {e.start_time}
+                                                </TableCell>
+                                                <TableCell>{e.start_time}</TableCell>
+                                                <TableCell>{e.start_time}</TableCell>
+                                                <TableCell >
+                                                    {row.capacity - e.curr_size}
+                                                </TableCell>
+                                                <TableCell ><Button onClick={handleEnrollEvent}>Enroll Session</Button></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                    <TableFooter>
+
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              colSpan={3}
+              count={row.events.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: {
+                  'aria-label': 'rows per page',
+                },
+                native: true,
+              }}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </TableFooter>
+                                </Table>
+                                
+                            </TableContainer>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -84,9 +119,22 @@ function Row(props) {
 export default function StudioTable({ classes }) {
     console.log(JSON.stringify(classes))
     const rows = classes
+    //pagination
+    const [rowsPerPage, setRowsPerPage] = React.useState(2);  
+    const [page, setPage] = React.useState(0);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+      };
+    
+    const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+    };
+
     return (
         <>
             {typeof (classes) !== 'undefined' &&
+            <Paper>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -106,6 +154,18 @@ export default function StudioTable({ classes }) {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                
+                <TablePagination
+                rowsPerPageOptions={[1, 2]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+
+            </Paper>
             }
         </>
 
