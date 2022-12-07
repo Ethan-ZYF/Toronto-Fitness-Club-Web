@@ -172,7 +172,7 @@ export default function StudioDetail() {
             .catch((error) => {
                 console.log(error);
             });
-    });
+    }, []);
     // console.log("details", detail);
     // console.log("images", detail.images);
     return (
