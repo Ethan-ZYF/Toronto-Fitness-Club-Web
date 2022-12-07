@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.db.models import F
 
-
 class StudioFilterView(generics.ListAPIView):
     serializer_class = StudioSerializer
     permission_classes = (IsAuthenticated,)
@@ -32,7 +31,6 @@ class StudioFilterView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
 
 class FilterStudioScheduleView(generics.ListAPIView):
     serializer_class = EventSerializer

@@ -1,47 +1,42 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from studios.models import Studio
 from studios.serializers.search import SearchSerializer
+from studios.serializers.all_studios import ListSerializer, FilterLocationSerializer
+import copy
 
-
-class SearchView(ListCreateAPIView):
-    serializer_class = SearchSerializer
+class SearchView(ListAPIView):
+    serializer_class = FilterLocationSerializer
     permission_classes = (IsAuthenticated,)
+    model = Studio
+    
+    def __init__(self, *args, **kwargs):
+        super(SearchView, self).__init__(*args, **kwargs)
+        self.target_lat = 0.0
+        self.target_lon = 0.0
 
     # post request to search for studios based on location
     def post(self, request, *args, **kwargs):
-        target_lat = request.POST.get('latitude')
-        target_lon = request.POST.get('longitude')
-        print(target_lat, target_lon)
-        target_lat = float(target_lat)
-        target_lon = float(target_lon)
-        # target_lon, target_lat = 39.740986355883564,116.27929687499999
-        all_studios = Studio.objects.all()
-        dist_idx_pair = []
-        for i, studio in enumerate(all_studios):
-            lat, lon = studio.location.split(',')
-            lon = float(lon)
-            lat = float(lat)
-            dist = (lon - target_lon) ** 2 + (lat - target_lat) ** 2
-            dist_idx_pair.append((dist, i))
-        dist_idx_pair.sort()
-        studio_list = []
-        for dist, idx in dist_idx_pair:
-            studio = all_studios[idx]
-            images = studio.images.all()
-            amenities = studio.amenities.all()
-            amenity_set = ()
-            for amenity in amenities:
-                amenity_set += ({'type': amenity.type, 'quantity': amenity.quantity},)
-            studio_list.append({
-                'name': studio.name,
-                'address': studio.address,
-                'location': studio.location,
-                'amenities': amenity_set,
-                'images': [image.image.url for image in images],
-            })
-        return Response({'studios': studio_list})
+        # print(f'post:{self.target_lat}, {self.target_lon}')
+        self.target_lat = request.POST.get('latitude')
+        self.target_lon = request.POST.get('longitude')
+        return Response({'Success': 'Location received'})
 
-    def get(self, request, *args, **kwargs):
-        return Response({'success': 'Class created'})
+    # def get(self, request, *args, **kwargs):
+    #     return Response({'success': 'Class created'})
+    
+    def get_queryset(self):
+        lat = float(self.target_lat)
+        lon = float(self.target_lon)
+        all_studios = Studio.objects.all()
+        print(len(all_studios))
+        studio_list = sorted(all_studios, key=lambda x: (float(x.location.split(',')[0]) - lat) ** 2 + (float(x.location.split(',')[1]) - lon) ** 2)
+        
+        return studio_list
+
+    # def list(self, request, *args, **kwargs):
+    #     query_set = self.get_queryset()
+    #     serializer = ListSerializer(context={'request': request}, instance=query_set, many=True)
+    #     return Response(serializer.data)
+    

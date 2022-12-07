@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from studios.models import Loc
 
-
 class SearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loc
