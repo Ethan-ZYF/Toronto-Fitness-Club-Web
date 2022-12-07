@@ -231,7 +231,7 @@ export default function StudioDetail() {
             <CssBaseline />
             <Grid container spacing={2}
                 sx={{
-                    width: '100%',
+                    width: 1200,
                     marginLeft: 'auto',
                     marginRight: 'auto',
                     minWidth: 1000,
