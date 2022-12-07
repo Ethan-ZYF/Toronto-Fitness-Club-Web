@@ -51,6 +51,7 @@ function renderRow(e) {
             sx={{
                 marginBottom: '10px',
             }}
+            key={e.id}
         >
             <ListItemButton sx={{
                 borderRadius: '10px',
@@ -77,6 +78,7 @@ function renderRow(e) {
                             sx={{ flexGrow: 1 }}
                             align='right'
                             color='#3c59ff'
+                            key={e.id}
                         >
                             {e.class_name}
                         </Typography>
@@ -124,7 +126,7 @@ const StandardImageList = () => {
             rowHeight={164}
         >
             {itemData.map((item) => (
-                <ImageListItem>
+                <ImageListItem key={item}>
                     <img
                         src={`${item.image}?w=164&h=164&fit=crop&auto=format`}
                         srcSet={`${item.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
