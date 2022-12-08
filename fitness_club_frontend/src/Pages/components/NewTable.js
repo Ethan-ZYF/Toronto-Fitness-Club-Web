@@ -18,7 +18,8 @@ import { useState, useEffect } from 'react';
 import { enrollEvent, unenrollEvent, enrollClass, unenrollClass, getUserSchedule } from '../../api';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-
+import Grid from '@mui/material/Grid';
+import { color } from '@mui/system';
 
 function Row(props) {
     const { row, UserScheduleEvents, UserScheduleClasses } = props;
@@ -119,15 +120,54 @@ function Row(props) {
                     paddingBottom: 0, paddingTop: 0,
 
                 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{
+                    <Collapse
+                        sx={{
                             maxWidth: 700,
                             marginLeft: 'auto',
                             marginRight: 'auto',
+                        }}
+                        in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{
+                            width: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 1,
+                            marginBottom: 1,
                         }}>
-                            <Typography variant="h7" gutterBottom component="div">
-                                {row.description}
-                            </Typography>
+                            <Grid container rowSpacing={0} columnSpacing={2}>
+                                <Grid item xs={9}>
+                                    <Typography variant="h7" gutterBottom component="div">
+                                        {row.description}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={3}
+                                    sx={{
+                                        width: '100%',
+                                        wrap: 'wrap'
+                                    }}
+                                >
+                                    <Stack
+                                        sx={{
+                                            width: '80%',
+                                            marginLeft: 'auto',
+                                            marginRight: 'auto',
+                                        }}
+                                        direction="column" spacing={0.5}>
+                                        {row.tags.map((t) => (
+                                            <Chip
+                                                sx={{
+                                                    width: '100%',
+                                                    color: 'black',
+                                                    backgroundColor: 'lightblue',
+                                                    margin: 'auto',
+                                                }}
+                                                label={t}
+                                                variant="outlined"
+                                            />
+                                        ))}
+                                    </Stack>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -190,11 +230,10 @@ export default function StudioTable({ classes }) {
             {rows !== null && UserScheduleEvents !== null &&
                 <Paper
                     sx={{
-                        maxHeight: 440,
-                        maxWidth: 800,
                         marginLeft: 'auto',
                         marginRight: 'auto',
                         marginTop: 2,
+                        width: '90%',
                     }}
                 >
                     <TableContainer
