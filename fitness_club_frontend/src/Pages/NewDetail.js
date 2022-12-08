@@ -403,10 +403,7 @@ export default function StudioDetail() {
         // console.log("fileter", data)
         filterEvents(data)
     }
-
-    // useEffect(() => {
-    //     console.log(day, timeBegin, timeEnd, className, coach_name)
-    // }, [day, timeBegin, timeEnd, className, coach_name]);
+    
     const [day, setDay] = useState('')
     const [timeBegin, setTimeBegin] = useState('')
     const [timeEnd, setTimeEnd] = useState('')
@@ -414,7 +411,6 @@ export default function StudioDetail() {
     const [coach_name, setCoachName] = useState('')
 
     const FilterForm = () => {
-        // console.log("410")
         return (
             <Box
                 sx={{
