@@ -385,27 +385,34 @@ export default function StudioDetail() {
 
     const applyEventFilters = () => {
         // get data from 5 text inputs 
+        console.log("388")
         const date = document.getElementById('filterDay').value;
         const timeBegin = document.getElementById('filterTimeBegin').value;
         const timeEnd = document.getElementById('filterTimeEnd').value;
         const className = document.getElementById('filterClassName').value;
         const coach_name = document.getElementById('filterCoachName').value;
         const data = {
-            date, 
+            date,
             timeBegin,
             timeEnd,
             className,
             coach_name
         }
-        console.log(data)
+        // console.log("fileter", data)
         filterEvents(data)
     }
 
     // useEffect(() => {
     //     console.log(day, timeBegin, timeEnd, className, coach_name)
     // }, [day, timeBegin, timeEnd, className, coach_name]);
-    
+    const [day, setDay] = useState('')
+    const [timeBegin, setTimeBegin] = useState('')
+    const [timeEnd, setTimeEnd] = useState('')
+    const [className, setClassName] = useState('')
+    const [coach_name, setCoachName] = useState('')
+
     const FilterForm = () => {
+        // console.log("410")
         return (
             <Box
                 sx={{
@@ -414,7 +421,9 @@ export default function StudioDetail() {
                     pb: 0,
                     width: '100%',
                 }}
-                component="form" onSubmit={applyEventFilters}
+                component="form" onSubmit={
+                    applyEventFilters
+                }
             >
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <TextField
@@ -422,8 +431,8 @@ export default function StudioDetail() {
                         sx={{ m: 1, width: 300 }}
                         label="On Day"
                         name="filterDay"
-                        // value={day}
-                        // onChange={(e) => setDay(e.target.value)}
+                        value={day}
+                        onChange={(e) => setDay(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -437,8 +446,8 @@ export default function StudioDetail() {
                         sx={{ m: 1, width: 300 }}
                         label="After"
                         name="filterTimeBegin"
-                        // value={timeBegin}
-                        // onChange={(e) => setTimeBegin(e.target.value)}
+                        value={timeBegin}
+                        onChange={(e) => setTimeBegin(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -452,8 +461,8 @@ export default function StudioDetail() {
                         sx={{ m: 1, width: 300 }}
                         label="Before"
                         name="filterTimeEnd"
-                        // value={timeEnd}
-                        // onChange={(e) => setTimeEnd(e.target.value)}
+                        value={timeEnd}
+                        onChange={(e) => setTimeEnd(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -467,8 +476,8 @@ export default function StudioDetail() {
                         sx={{ m: 1, width: 300 }}
                         label="Class"
                         name="filterClassName"
-                        // value={className}
-                        // onChange={(e) => setClassName(e.target.value)}
+                        value={className}
+                        onChange={(e) => setClassName(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -482,8 +491,8 @@ export default function StudioDetail() {
                         sx={{ m: 1, width: 300 }}
                         label="Enter Coach Name"
                         name="filterCoachName"
-                        // value={coach_name}
-                        // onChange={(e) => setCoachName(e.target.value)}
+                        value={coach_name}
+                        onChange={(e) => setCoachName(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -494,12 +503,13 @@ export default function StudioDetail() {
                     />
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem' }}>
-                    <Button 
-                        variant="contained" 
+                    <Button
+                        variant="contained"
                         type="submit"
-                        >
-                            Apply Filters
-                        </Button>
+                        onClick={applyEventFilters}
+                    >
+                        Apply Filters
+                    </Button>
                 </div>
             </Box>
         )
