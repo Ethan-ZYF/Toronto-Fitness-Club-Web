@@ -175,7 +175,7 @@ class CancelView(DestroyAPIView):
             # delete from queryset
             self.get_queryset().delete()
             # reset to default value (one century ago)
-            request.user.active_subscription = datetime(2000, 1, 1)
+            # request.user.active_subscription = datetime(2000, 1, 1)
             # delete all the user's events in schedule that are later than start date
             request.user.save()
             request.user.schedule.filter(

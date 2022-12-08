@@ -118,7 +118,7 @@ def createEvents(sender, **kwargs):
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=50, blank=False, null=False)
-    corresponding_class = models.ForeignKey(Class, on_delete=models.CASCADE)
+    corresponding_class = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='tags')
 
     def __str__(self):
         return self.tag_name

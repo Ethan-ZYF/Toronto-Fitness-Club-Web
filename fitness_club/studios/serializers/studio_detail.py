@@ -61,10 +61,14 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
 
 class ClassSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
+    tags = serializers.SerializerMethodField()
+    
+    def get_tags(self, obj):
+        return obj.tags.all().values_list('tag_name', flat=True)
 
     class Meta:
         model = Class
-        fields = ('id', 'name', 'description', 'coach', 'capacity', 'duration',
+        fields = ('id', 'name', 'description', 'tags', 'coach', 'capacity', 'duration',
                   'events')
 
 
