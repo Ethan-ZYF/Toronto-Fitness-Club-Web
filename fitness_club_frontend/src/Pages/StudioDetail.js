@@ -247,7 +247,7 @@ export default function StudioDetail() {
                 marginRight="auto"
                 marginTop="20px"
             >
-                {detail.amenities.map((amenity) => (
+                {detail.amenities ? detail.amenities.map((amenity) => (
                     <ListItem key={amenity.id} listStyleType="disc">
                         <Grid container spacing={2}>
                             <Grid item xs={8}>
@@ -262,7 +262,11 @@ export default function StudioDetail() {
                             </Grid>
                         </Grid>
                     </ListItem>
-                ))}
+                )) :
+                    <Typography variant="p" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                        No amenities
+                    </Typography>
+                }
             </Box>
         );
     }
