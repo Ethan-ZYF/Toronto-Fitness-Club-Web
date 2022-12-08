@@ -83,7 +83,7 @@ const SignIn = () => {
 
     if (signInSuccess) {
       // get user avatar and store in local storage
-      return <Navigate replace to="/dashboard" />;
+      return <Navigate replace to="/" />;
     }
 
     if (localStorage.getItem('user') != null) {

@@ -63,7 +63,7 @@ const signupin_settings = {
     }
 }
 
-const hasPlan = localStorage.getItem('plan') !== null;
+const hasPlan = localStorage.getItem('plan') !== undefined && localStorage.getItem('plan') !== null;
 
 let club_subs = {
     Plans: {

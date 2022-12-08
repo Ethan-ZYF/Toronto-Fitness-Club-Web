@@ -7,10 +7,15 @@ const Dashboard = () => {
     console.log(context)
 
     useEffect(() => {
-        if (localStorage.getItem('user') === null) return;
+        if (localStorage.getItem('user') === null) {
+            localStorage.clear();
+            return;
+        }
         getCurrPlan()
             .then((response) => {
-                console.log(response.data);
+                if (response.data['detail'] === "You are not subscribed.") {
+                    return;
+                }
                 localStorage.setItem('plan', response.data.id);
             })
             .catch((error) => {
