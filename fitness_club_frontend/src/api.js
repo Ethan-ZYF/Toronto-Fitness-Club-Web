@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://100.65.50.123:8000',
+    baseURL: 'http://localhost:8000',
     timeout: 1000
 })
 
@@ -114,7 +114,11 @@ export const unenrollEvent = async(data) => {
     return await apiClient.post('/studios/delete-event/'+data.id+'/');
 }
 
-// User schedule
+// User Info
 export const getUserSchedule = async() => {
     return await apiClient.get('/studios/schedule/');
+}
+
+export const getUserHistorySchedule = async() => {
+    return await apiClient.get('/studios/history/');
 }
