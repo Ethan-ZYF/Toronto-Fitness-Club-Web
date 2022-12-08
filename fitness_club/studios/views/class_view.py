@@ -16,7 +16,7 @@ class EnrollClassView(APIView):
         )
 
     def post(self, request, *args, **kwargs):
-        if request.user.active_subscription < datetime.now():
+        if request.user.active_subscription.date() < datetime.now().date():
             print(request.user.active_subscription)
             return Response(
                 "You must have an active subscription to enroll in classes!")
@@ -57,7 +57,7 @@ class DeleteClassView(APIView):
         )
 
     def post(self, request, *args, **kwargs):
-        if request.user.active_subscription < datetime.now():
+        if request.user.active_subscription.date() < datetime.now().date():
             return Response(
                 "You must have an active subscription to unenroll in classes!")
 
@@ -82,7 +82,7 @@ class EnrollEventView(APIView):
         return Response("Send post request to enroll in this session!")
 
     def post(self, request, *args, **kwargs):
-        if request.user.active_subscription < datetime.now():
+        if request.user.active_subscription.date() < datetime.now().date():
             print(request.user.active_subscription)
             return Response(
                 "You must have an active subscription to enroll in event!")
@@ -114,7 +114,7 @@ class DeleteEventView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        if request.user.active_subscription < datetime.now():
+        if request.user.active_subscription.date() < datetime.now().date():
             return Response(
                 "You must have an active subscription to unenroll in event!")
 

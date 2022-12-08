@@ -24,12 +24,13 @@ class EventSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
     class_length_in_hour = serializers.CharField(
         source='belonged_class.duration')
+    class_capacity = serializers.IntegerField(source='belonged_class.capacity')
     start_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Event
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
-                  "curr_size")
+                  "curr_size", 'class_capacity')
         list_serializer_class = FilteredEventsSerializer
 
 
@@ -37,12 +38,13 @@ class EventDetailsSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(source='belonged_class.name')
     class_length_in_hour = serializers.CharField(
         source='belonged_class.duration')
+    class_capacity = serializers.IntegerField(source='belonged_class.capacity')
     start_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Event
         fields = ('id', "start_time", "class_name", "class_length_in_hour",
-                  "curr_size")
+                  "curr_size", 'class_capacity')
         list_serializer_class = FilteredEventsSerializer
 
 
@@ -61,10 +63,14 @@ class HistoryEventDetailsSerializer(serializers.ModelSerializer):
 
 class ClassSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
+    tags = serializers.SerializerMethodField()
+    
+    def get_tags(self, obj):
+        return obj.tags.all().values_list('tag_name', flat=True)
 
     class Meta:
         model = Class
-        fields = ('id', 'name', 'description', 'coach', 'capacity', 'duration',
+        fields = ('id', 'name', 'description', 'tags', 'coach', 'capacity', 'duration',
                   'events')
 
 
