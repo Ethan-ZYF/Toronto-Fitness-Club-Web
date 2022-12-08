@@ -14,8 +14,8 @@ class EditSerializer(serializers.ModelSerializer):
     class Meta:
         model = FCUser
         fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'credit_debit_no',
-                  'password', 'password2')
-        read_only_fields = ('username',)
+                  'password', 'password2', 'active_subscription')
+        read_only_fields = ('username', 'active_subscription')
         extra_kwargs = {
             'username': {
                 'validators': []

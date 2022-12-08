@@ -9,16 +9,7 @@ class EditSubSerializer(serializers.ModelSerializer):
     current_plans = serializers.SerializerMethodField('get_current_plans')
 
     def get_new_start_date(self, obj):
-        curr_subscription = Subscription.objects.get(
-            user=self.context['request'].user)
-        start_date = curr_subscription.start_date
-        prev_plan = curr_subscription.plan.plan
-        while start_date <= timezone.now().date():
-            if prev_plan == 'MONTHLY':
-                start_date += relativedelta(months=1)
-            else:
-                start_date += relativedelta(years=1)
-        return start_date
+        return self.context['request'].user.active_subscription
     
     def get_current_plans(self, obj):
         return Plan.objects.all().values()

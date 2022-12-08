@@ -23,7 +23,12 @@ import { validateSignInForm } from './utils/validators';
 import { getProfile } from '../api';
 // import { withStyles, Card, CardContent, Typography } from '@material-ui/core';
 import { Card, CardContent } from '@mui/material';
+import moment from 'moment';
 
+const formatDatetime = (datetime) => {
+    console.log(datetime);
+    return moment(datetime).format('MMMM Do YYYY');
+}
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,7 +44,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const UserProfile = (props) => {
-    const { username, firstName, lastName, avatar, phoneNumber, email, cardInfo } = props;
+    const { username, firstName, lastName, avatar, phoneNumber, email, cardInfo, activeSubscription } = props;
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -106,12 +111,12 @@ const UserProfile = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                        Active Subscription:
+                        Subscribe till:
                     </Typography>
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                        {localStorage.getItem('plan') ? 'Yes' : 'No'}
+                        {activeSubscription < new Date().toISOString() ? "No active subscription" : formatDatetime(activeSubscription)}
                     </Typography>
                 </Grid>
             </Grid>
@@ -161,6 +166,7 @@ export default function ProfilePage() {
                     phoneNumber={profile?.phone_number}
                     email={profile?.email}
                     cardInfo={profile?.credit_debit_no}
+                    activeSubscription={profile?.active_subscription}
                 />
                 <Button
                     onClick={() => {

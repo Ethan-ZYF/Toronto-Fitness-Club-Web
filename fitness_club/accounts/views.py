@@ -1,3 +1,4 @@
+from datetime import datetime
 from accounts.models import Payment, Subscription, Plan
 from accounts.serializers.edit import EditSerializer
 from accounts.serializers.edit_plan import EditSubSerializer
@@ -154,13 +155,20 @@ class SubscribeView(CreateAPIView):
         # check if the user has the field subscription
         if hasattr(request.user, 'subscription'):
             return Response({'detail': 'You have already subscribed.'})
+        sub_end_date = datetime.now()
+        print(request.data)
+        plan_id = request.data['plan']
+        if Plan.objects.get(id=plan_id).plan == 'MONTHLY':
+            sub_end_date += relativedelta(months=1)
+        else:
+            sub_end_date += relativedelta(years=1)
+        request.user.active_subscription = sub_end_date - relativedelta(hours=5)
+        request.user.save()
+        print(request.user.active_subscription)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         # change the user's subscription field to True
-        request.user.active_subscription = True
-        request.user.save()
-        print(request.user.active_subscription)
         return Response({'detail': 'You have successfully enrolled.'})
 
 
@@ -186,7 +194,8 @@ class CancelView(DestroyAPIView):
         if hasattr(request.user, 'subscription'):
             # delete from queryset
             self.get_queryset().delete()
-            request.user.active_subscription = False
+            # reset to default value (one century ago)
+            request.user.active_subscription = datetime(2000, 1, 1)
             # delete all the user's events in schedule that are later than start date
             request.user.save()
             request.user.schedule.filter(
@@ -206,6 +215,6 @@ class CancelView(DestroyAPIView):
             return Response({
                 'plan': my_plan.plan.plan,
                 'price': my_plan.plan.price,
-                'expire_date': my_plan.start_date.strftime("%m/%d/%Y %H:%M:%S")
+                'expire_date': request.user.active_subscription
             })
         return Response({'detail': 'You are not subscribed.'})

@@ -10,6 +10,12 @@ import { styled } from '@mui/material/styles';
 import { useState, useEffect, useContext } from 'react';
 import { getCurrPlan } from '../api';
 import { unsubscribe } from '../api';
+import moment from 'moment';
+
+const formatDatetime = (datetime) => {
+    console.log(datetime);
+    return moment(datetime).format('MMMM Do YYYY');
+}
 
 const PlanDetails = ({ plan }) => {
     return (
@@ -42,7 +48,7 @@ const PlanDetails = ({ plan }) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                        {plan['expire_date'] ? plan['expire_date'] : 'Not Subscribed Currently'}
+                    {plan['expire_date'] < new Date().toISOString() ? "No active subscription" : formatDatetime(plan['expire_date'])}
                     </Typography>
                 </Grid>
             </Grid>

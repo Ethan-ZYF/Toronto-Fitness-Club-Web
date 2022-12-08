@@ -18,8 +18,8 @@ class FCUser(AbstractUser):
     avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
     is_admin = models.BooleanField(default=False)
     credit_debit_no = models.CharField(max_length=50, blank=True, null=True)
-    # set to false and cannot be changed by admin
-    active_subscription = models.BooleanField(default=False)
+    # set default to one centry ago
+    active_subscription = models.DateTimeField(default=datetime(2000, 1, 1))
 
     schedule = models.ManyToManyField(to='studios.Event',
                                       related_name="schedule_events")
@@ -83,29 +83,19 @@ class Payment(models.Model):
 @receiver(models.signals.post_save, sender=Subscription)
 def create_payment(sender, instance, created, **kwargs):
     # create a payment for the subscription with the current date
-    print("current time zone time: ", timezone.localtime())
-    print("ZONE:",
-          timezone.localdate(timezone=timezone.get_current_timezone()))
-    print("current instance time: ", instance.start_date)
-    if instance.start_date > timezone.localdate():
-        print("HHHHHHHAHSHSHAHSHD")
+    # change left to offset aware
+    if instance.user.active_subscription.date() >= datetime.now().date():
+        print("Already covered by active subscription") 
         return
-    next_payment_date = instance.start_date
+    next_payment_date = instance.user.active_subscription
     # change next_payment_date to datetime with current time
     # get time of current timezone (new york)
     print("next_payment_date: ", next_payment_date)
 
     # next_payment_date -= relativedelta(hours=5)
-    next_payment_date = timezone.datetime.combine(next_payment_date,
-                                                  timezone.localtime().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           plan=instance.plan,
                                           date=next_payment_date)
     curr_payment.save()
-    if instance.plan.plan == 'MONTHLY':
-        next_payment_date += relativedelta(months=1)
-    else:
-        next_payment_date += relativedelta(years=1)
-    # change start_date of subscription to next_payment_date
     instance.start_date = next_payment_date.date()
     instance.save()
