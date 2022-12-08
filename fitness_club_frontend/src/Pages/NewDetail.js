@@ -189,7 +189,9 @@ const StandardImageList = () => {
             rowHeight={164}
         >
             {itemData.map((item) => (
-                <ImageListItem key={item}>
+                <ImageListItem
+                    key={item.image}
+                >
                     <img
                         // src={`${item.image}?h=164&fit=crop&auto=format`}
                         // srcSet={`${item.image}?h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -360,7 +362,7 @@ export default function StudioDetail() {
                 marginTop="20px"
             >
                 {detail.amenities ? detail.amenities.map((amenity) => (
-                    <ListItem key={amenity.id} listStyleType="disc">
+                    <ListItem key={amenity.type} listStyleType="disc">
                         <Grid container spacing={2}>
                             <Grid item xs={8}>
                                 <Typography variant="p" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
