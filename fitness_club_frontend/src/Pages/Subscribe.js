@@ -134,6 +134,7 @@ export default function SubscribePage() {
                                     }
                                     setPlan({});
                                     localStorage.removeItem('plan');
+                                    window.location.href = '/myplan';
                                 })
                                 .catch((error) => {
                                     console.log("Error", error);
