@@ -18,7 +18,8 @@ import SignOutPage from './Pages/SignOutPage';
 import ProfilePage from './Pages/ProfilePage';
 import SubscribePage from './Pages/Subscribe';
 import MyPayments from './Pages/Payment';
-import StudioDetail from './Pages/StudioDetail';
+// import StudioDetail from './Pages/StudioDetail';
+import StudioDetail from './Pages/NewDetail';
 import EditPlanPage from './Pages/EditPlan';
 import ViewSchedulePage from './Pages/ViewSchedulePage';
 import ViewHistoryPage from './Pages/ViewHistoryPage';
@@ -49,7 +50,7 @@ function App() {
                         <Route exact path='/payments' element={<MyPayments />} />
                         <Route exact path='/edit_plan' element={<EditPlanPage />} />
                         <Route exact path='/view_schedule' element={<ViewSchedulePage />} />
-                        <Route exact path='/view_history' element={<ViewHistoryPage/>} />
+                        <Route exact path='/view_history' element={<ViewHistoryPage />} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>

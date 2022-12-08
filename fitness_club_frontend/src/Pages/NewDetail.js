@@ -171,11 +171,14 @@ const StandardImageList = () => {
         <ImageList
             sx={{
                 width: 500,
-                height: 328,
+                height: 164,
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginTop: '20px',
                 marginBottom: '40px',
+                gridAutoFlow: "column",
+                gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr)) !important",
+                gridAutoColumns: "minmax(160px, 1fr)"
             }}
             cols={3}
             rowHeight={164}
