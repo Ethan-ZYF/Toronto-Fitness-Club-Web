@@ -97,6 +97,8 @@ class FilterStudioScheduleView(generics.ListAPIView):
         if time_end is not None:
             time_end = datetime.strptime(time_end, "%H:%M:%S")
             time_end = time_end.time()
-            queryset = queryset.filter(start_time__time__lt=(time_end - F("belonged_class__duration")))
+            queryset = queryset.filter(start_time__time__lt=time_end)
+            # queryset = queryset.filter(start_time__time__gt=(time_end - F("belonged_class__duration")))
+            print(time_end)
 
         return queryset

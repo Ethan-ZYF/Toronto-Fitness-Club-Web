@@ -246,6 +246,7 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
         return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
     }
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    console.log(rows)
 
     return (
         <TableContainer component={Paper}>
@@ -262,7 +263,7 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows !== null && userScheduleEvents !== null && 
+                    {rows !== null  && userScheduleEvents !== null && 
                     rows.map((e)=>(
                         <TableRow  key={e.id}>
                         <TableCell>{e.class_name}</TableCell>
@@ -513,7 +514,12 @@ export default function StudioDetail() {
         filterEvents({id, params})
             .then((response) => {
                 console.log(response);
+                if (response.data.constructor === Array){
                 setFilteredEvents(response.data);
+                }
+                else{
+                    setFilteredEvents([]);
+                }
                 console.log(filteredEvents);
             })
             .catch((error) => {
@@ -632,14 +638,39 @@ export default function StudioDetail() {
             });
     }
 
-    // useEffect(()=>{
-    //     getUserSchedule()
-    //     .then((response)=>{
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error);
-    //     });
-    // },[handleEnrollEvent, handleEnrollClass, handleUnenrollEvent, handleUnenrollClass]);
+    const checkAuthPlan = () => {
+        // {localStorage.getItem('user') ?
+        //     {localStorage.getItem('plan') ?
+        //         <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
+        //         handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
+        //         />
+        //         :
+        //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+        //             Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
+        //         </Typography>
+        //     }
+        //     :
+        //     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+        //         Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+        //     </Typography>
+        // }
+        if (localStorage.getItem('user')) {
+            if (localStorage.getItem('plan')) {
+                return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
+                        handleEnrollClass={handleEnrollClass}
+                        handleUnenrollClass={handleUnenrollClass}
+                    />;
+            } else {
+                return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                    Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
+                </Typography>;
+            }
+        } else {
+            return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+            </Typography>;
+        }
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -661,7 +692,7 @@ export default function StudioDetail() {
                     justifyContent:'center', alignContent:'center', alignItems:'center', padding:'3rem', paddingTop:'1.25rem'}}>
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="On Day"
+                            label="On Date: xxxx(year)-xx(month)-xx(day)"
                             value={day}
                             onChange={(e) => setDay(e.target.value)}
                             InputProps={{
@@ -674,7 +705,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="After"
+                            label="Start After Time: xx(hour):xx(min):xx(sec)"
                             value={timeBegin}
                             onChange={(e) => setTimeBegin(e.target.value)}
                             InputProps={{
@@ -687,7 +718,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Before"
+                            label="Start Before Time: xx(hour):xx(min):xx(sec)"
                             value={timeEnd}
                             onChange={(e) => setTimeEnd(e.target.value)}
                             InputProps={{
@@ -700,7 +731,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Class"
+                            label="Class Name:"
                             value={className}
                             onChange={(e) => setClassName(e.target.value)}
                             InputProps={{
@@ -713,7 +744,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Enter Coach Name"
+                            label="Coach Name:"
                             value={coachName}
                             onChange={(e) => setCoachName(e.target.value)}
                             InputProps={{
@@ -751,15 +782,7 @@ export default function StudioDetail() {
                 {/* info: classes */}
                 <div style={{width:'65%'}}>
                     <Container>
-                        {localStorage.getItem('user') ?
-                            <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
-                            handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
-                            />
-                            :
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-                                Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
-                            </Typography>
-                        }
+                        {checkAuthPlan()}
                     </Container>
                 </div>
             </div>

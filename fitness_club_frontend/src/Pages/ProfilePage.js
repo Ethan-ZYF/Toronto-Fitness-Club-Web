@@ -32,7 +32,7 @@ const formatDatetime = (datetime) => {
     console.log(datetime);
     let hour = datetime.slice(11, 13);
     let date = datetime.slice(0, 10);
-    if (hour >= 17) {
+    if (hour >= 19) {
         // add 1 day
         let newDate = new Date(date);
         newDate.setDate(newDate.getDate() + 1);
