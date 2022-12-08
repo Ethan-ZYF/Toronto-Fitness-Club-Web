@@ -220,7 +220,7 @@ const StandardImageList = () => {
     );
 }
 
-const FilteredEventsTable = ({ filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent }) => {
+const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent, hasSubscription}) => {
     //pagination
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -270,22 +270,24 @@ const FilteredEventsTable = ({ filteredEvents, userScheduleEvents, handleEnrollE
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows !== null && userScheduleEvents !== null &&
-                        rows.map((e) => (
-                            <TableRow key={e.id}>
-                                <TableCell>{e.class_name}</TableCell>
-                                <TableCell>{e.start_time.split(" ")[0]}</TableCell>
-                                <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
-                                <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
-                                <TableCell>{e.class_length_in_hour}</TableCell>
-                                <TableCell>{e.class_capacity - e.curr_size}</TableCell>
-                                <TableCell>{userScheduleEvents.has(e.id) ?
-                                    <Button variant="contained" color='error' onClick={(event) => handleUnenrollEvent(event, e)}>Unenroll</Button> :
-                                    <Button variant="contained" color='primary' onClick={(event) => handleEnrollEvent(event, e)}>Enroll</Button>}
-                                </TableCell>
-                            </TableRow>
-                        )
-                        )}
+                    {rows !== null  && userScheduleEvents !== null && 
+                    rows.map((e)=>(
+                        <TableRow  key={e.id}>
+                        <TableCell>{e.class_name}</TableCell>
+                        <TableCell>{e.start_time.split(" ")[0]}</TableCell>
+                        <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
+                        <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
+                        <TableCell>{e.class_length_in_hour}</TableCell>
+                        <TableCell>{e.class_capacity - e.curr_size}</TableCell>
+                        {hasSubscription &&
+                            <TableCell>{userScheduleEvents.has(e.id) ?
+                                        <Button variant="contained" color='error' onClick={(event)=>handleUnenrollEvent(event, e)}>Unenroll</Button>:
+                                        <Button variant="contained" color='primary'onClick={(event)=>handleEnrollEvent(event, e)}>Enroll</Button>}
+                            </TableCell>
+                        }
+                        </TableRow>
+                    )
+                    )}
                 </TableBody>
             </Table>
             <TablePagination
@@ -646,21 +648,6 @@ export default function StudioDetail() {
     }
 
     const checkAuthPlan = () => {
-        // {localStorage.getItem('user') ?
-        //     {localStorage.getItem('plan') ?
-        //         <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
-        //         handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
-        //         />
-        //         :
-        //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-        //             Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
-        //         </Typography>
-        //     }
-        //     :
-        //     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-        //         Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
-        //     </Typography>
-        // }
         if (localStorage.getItem('user')) {
             if (localStorage.getItem('plan')) {
                 return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses}
