@@ -180,10 +180,10 @@ class CancelView(DestroyAPIView):
             # request.user.active_subscription = datetime(2000, 1, 1)
             # delete all the user's events in schedule that are later than start date
             request.user.save()
-            request.user.schedule.filter(
-                start_time__gt=request.user.subscription.start_date).delete()
-            print(request.user.schedule.all())
-            request.user.save()
+            # request.user.schedule.filter(
+            #     start_time__gt=request.user.active_subscription).delete()
+            # print(request.user.schedule.all())
+            # request.user.save()
             return Response({
                 'detail':
                     f'You have unsubscribed, expire_date: {request.user.subscription.start_date}.'
