@@ -37,6 +37,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 // import MapIcon from '@mui/icons-material/Map';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -53,7 +60,7 @@ const PaginatedEvents = () => {
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
-    // console.log("data", _DATA.currentData())
+    // // console.log("data", _DATA.currentData())
 
     const handleChange = (e, p) => {
         setPage(p);
@@ -176,7 +183,7 @@ function renderRow(e) {
 
 
 const StandardImageList = () => {
-    // console.log("itemData", itemData);
+    // // console.log("itemData", itemData);
     return (
         <ImageList
             sx={{
@@ -213,9 +220,9 @@ const StandardImageList = () => {
     );
 }
 
-const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent}) => {
+const FilteredEventsTable = ({ filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent }) => {
     //pagination
-    const [rowsPerPage, setRowsPerPage] = useState(5);  
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
     const [rows, setRows] = useState(null);
     useEffect(() => {
@@ -224,11 +231,11 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
             setPage(0);
             setRows(filteredEvents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
         }
-        console.log(rows)
+        // console.log(rows)
     }, [filteredEvents]);
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        console.log(newPage);
+        // console.log(newPage);
         setRows(filteredEvents.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
     };
     const handleChangeRowsPerPage = (event) => {
@@ -246,7 +253,7 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
         return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
     }
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    console.log(rows)
+    // console.log(rows)
 
     return (
         <TableContainer component={Paper}>
@@ -263,37 +270,37 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows !== null  && userScheduleEvents !== null && 
-                    rows.map((e)=>(
-                        <TableRow  key={e.id}>
-                        <TableCell>{e.class_name}</TableCell>
-                        <TableCell>{e.start_time.split(" ")[0]}</TableCell>
-                        <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
-                        <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
-                        <TableCell>{e.class_length_in_hour}</TableCell>
-                        <TableCell>{e.class_capacity - e.curr_size}</TableCell>
-                        <TableCell>{userScheduleEvents.has(e.id)? 
-                                    <Button variant="contained" color='error' onClick={(event)=>handleUnenrollEvent(event, e)}>Unenroll</Button>:
-                                    <Button variant="contained" color='primary'onClick={(event)=>handleEnrollEvent(event, e)}>Enroll</Button>}
-                        </TableCell>
-                        </TableRow>
-                    )
-                    )}
+                    {rows !== null && userScheduleEvents !== null &&
+                        rows.map((e) => (
+                            <TableRow key={e.id}>
+                                <TableCell>{e.class_name}</TableCell>
+                                <TableCell>{e.start_time.split(" ")[0]}</TableCell>
+                                <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
+                                <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
+                                <TableCell>{e.class_length_in_hour}</TableCell>
+                                <TableCell>{e.class_capacity - e.curr_size}</TableCell>
+                                <TableCell>{userScheduleEvents.has(e.id) ?
+                                    <Button variant="contained" color='error' onClick={(event) => handleUnenrollEvent(event, e)}>Unenroll</Button> :
+                                    <Button variant="contained" color='primary' onClick={(event) => handleEnrollEvent(event, e)}>Enroll</Button>}
+                                </TableCell>
+                            </TableRow>
+                        )
+                        )}
                 </TableBody>
             </Table>
-                            <TablePagination
-                            // sx={{
-                            //     maxWidth: 800,
-                            // }}
-                                rowsPerPageOptions={[1, 2, 3, 4]}
-                                component="div"
-                                count={filteredEvents !== null ? filteredEvents.length : 0}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
-                            </TableContainer>
+            <TablePagination
+                // sx={{
+                //     maxWidth: 800,
+                // }}
+                rowsPerPageOptions={[1, 2, 3, 4, 5]}
+                component="div"
+                count={filteredEvents !== null ? filteredEvents.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </TableContainer>
     )
 
 }
@@ -308,7 +315,7 @@ export default function StudioDetail() {
     const [filteredEvents, setFilteredEvents] = useState(null);
     const [userScheduleEvents, setUserScheduleEvents] = useState(null);
     const [userScheduleClasses, setUserScheduleClasses] = useState(null);
-        
+
     const [day, setDay] = useState('')
     const [timeBegin, setTimeBegin] = useState('')
     const [timeEnd, setTimeEnd] = useState('')
@@ -319,35 +326,35 @@ export default function StudioDetail() {
         getStudioDetail(id)
             .then((response) => {
                 setDetail(response.data);
-                // console.log(response.data)
+                // // console.log(response.data)
                 itemData = response.data.images;
                 events = response.data.event_set;
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
 
-        filterEvents({id, params: null})
+        filterEvents({ id, params: null })
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 setFilteredEvents(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
 
         getUserSchedule()
-            .then((response)=>{
+            .then((response) => {
                 const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
-                console.log(scheduled_events_id);
+                // console.log(scheduled_events_id);
                 setUserScheduleEvents(scheduled_events_id);
 
                 const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
-                console.log('user schedule classes', scheduled_classes_name);
+                // console.log('user schedule classes', scheduled_classes_name);
                 setUserScheduleClasses(scheduled_classes_name);
             })
-            .catch((error)=>{
-                console.log(error);
+            .catch((error) => {
+                // console.log(error);
             });
     }, []);
 
@@ -411,7 +418,7 @@ export default function StudioDetail() {
             <Container
                 maxWidth="sm"
                 sx={{
-                    pt:8,
+                    pt: 8,
                     marginBottom: '20px',
                     marginLeft: 'auto',
                     marginRight: 'auto',
@@ -423,7 +430,7 @@ export default function StudioDetail() {
                     align="center"
                     color="text.primary"
                     gutterBottom
-                    // fontFamily={'Verdana'}
+                // fontFamily={'Verdana'}
                 >
                     {detail.name}
                 </Typography>
@@ -504,137 +511,137 @@ export default function StudioDetail() {
 
     const applyFilter = (event) => {
         const params = {
-            ...day !== '' && {'date': day},
-            ...timeBegin !== '' && {'time_begin': timeBegin},
-            ...timeEnd !== '' && {'time_end': timeEnd},
+            ...day !== '' && { 'date': day ? day.format('YYYY-MM-DD') : null },
+            ...timeBegin !== '' && { 'time_begin': timeBegin ? timeBegin.format('HH:mm') + ':00' : null },
+            ...timeEnd !== '' && { 'time_end': timeEnd ? timeEnd.format('HH:mm') + ':59' : null },
             'class_name': className,
             'coach_name': coachName
         }
-        console.log(params);
-        filterEvents({id, params})
+        console.log("params", params);
+        filterEvents({ id, params })
             .then((response) => {
                 console.log(response);
-                if (response.data.constructor === Array){
-                setFilteredEvents(response.data);
+                if (response.data.constructor === Array) {
+                    setFilteredEvents(response.data);
                 }
-                else{
+                else {
                     setFilteredEvents([]);
                 }
-                console.log(filteredEvents);
+                // console.log(filteredEvents);
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 
     const handleEnrollEvent = async (event, e) => {
         event.preventDefault();
-        console.log(e.id);
+        // console.log(e.id);
         enrollEvent({ id: e.id })
             .then((response) => {
-                console.log(response);
-                console.log('You have successfully enrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
+                // console.log(response);
+                // console.log('You have successfully enrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
                 // window.location.reload();
                 // instead of reload page we send request to get new user schedule 
                 getUserSchedule()
-                    .then((response)=>{
+                    .then((response) => {
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
-                        console.log(scheduled_events_id);
+                        // console.log(scheduled_events_id);
                         setUserScheduleEvents(scheduled_events_id);
-        
+
                         const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
-                        console.log('user schedule classes', scheduled_classes_name);
+                        // console.log('user schedule classes', scheduled_classes_name);
                         setUserScheduleClasses(scheduled_classes_name);
                     })
-                    .catch((error)=>{
-                        console.log(error);
+                    .catch((error) => {
+                        // console.log(error);
                     });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 
     const handleUnenrollEvent = async (event, e) => {
         event.preventDefault();
-        console.log(e.id);
+        // console.log(e.id);
         unenrollEvent({ id: e.id })
             .then((response) => {
-                console.log(response);
-                console.log('You have successfully unenrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
+                // console.log(response);
+                // console.log('You have successfully unenrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
                 // window.location.reload();
                 getUserSchedule()
-                    .then((response)=>{
+                    .then((response) => {
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
-                        console.log(scheduled_events_id);
+                        // console.log(scheduled_events_id);
                         setUserScheduleEvents(scheduled_events_id);
-        
+
                         const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
-                        console.log('user schedule classes', scheduled_classes_name);
+                        // console.log('user schedule classes', scheduled_classes_name);
                         setUserScheduleClasses(scheduled_classes_name);
                     })
-                    .catch((error)=>{
-                        console.log(error);
+                    .catch((error) => {
+                        // console.log(error);
                     });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 
     const handleEnrollClass = async (event, row) => {
         event.preventDefault();
-        console.log(row.name);
+        // console.log(row.name);
         enrollClass({ id: row.id })
             .then((response) => {
-                console.log(response);
-                console.log('You have successfully enrolled in class ' + row.name);
+                // console.log(response);
+                // console.log('You have successfully enrolled in class ' + row.name);
                 // window.location.reload();
                 getUserSchedule()
-                .then((response)=>{
-                    const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
-                    console.log(scheduled_events_id);
-                    setUserScheduleEvents(scheduled_events_id);
-    
-                    const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
-                    console.log('user schedule classes', scheduled_classes_name);
-                    setUserScheduleClasses(scheduled_classes_name);
-                })
-                .catch((error)=>{
-                    console.log(error);
-                });
+                    .then((response) => {
+                        const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
+                        // console.log(scheduled_events_id);
+                        setUserScheduleEvents(scheduled_events_id);
+
+                        const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
+                        // console.log('user schedule classes', scheduled_classes_name);
+                        setUserScheduleClasses(scheduled_classes_name);
+                    })
+                    .catch((error) => {
+                        // console.log(error);
+                    });
 
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 
     const handleUnenrollClass = async (event, row) => {
         event.preventDefault();
-        console.log(row.name);
+        // console.log(row.name);
         unenrollClass({ id: row.id })
             .then((response) => {
-                console.log(response);
-                console.log('You have successfully unenrolled in class ' + row.name);
+                // console.log(response);
+                // console.log('You have successfully unenrolled in class ' + row.name);
                 // window.location.reload();
 
                 getUserSchedule()
-                .then((response)=>{
-                    const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
-                    console.log(scheduled_events_id);
-                    setUserScheduleEvents(scheduled_events_id);
-    
-                    const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
-                    console.log('user schedule classes', scheduled_classes_name);
-                    setUserScheduleClasses(scheduled_classes_name);
-                })
-                .catch((error)=>{
-                    console.log(error);
-                });
+                    .then((response) => {
+                        const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
+                        // console.log(scheduled_events_id);
+                        setUserScheduleEvents(scheduled_events_id);
+
+                        const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
+                        // console.log('user schedule classes', scheduled_classes_name);
+                        setUserScheduleClasses(scheduled_classes_name);
+                    })
+                    .catch((error) => {
+                        // console.log(error);
+                    });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 
@@ -656,10 +663,10 @@ export default function StudioDetail() {
         // }
         if (localStorage.getItem('user')) {
             if (localStorage.getItem('plan')) {
-                return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
-                        handleEnrollClass={handleEnrollClass}
-                        handleUnenrollClass={handleUnenrollClass}
-                    />;
+                return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses}
+                    handleEnrollClass={handleEnrollClass}
+                    handleUnenrollClass={handleUnenrollClass}
+                />;
             } else {
                 return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
                     Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
@@ -671,7 +678,7 @@ export default function StudioDetail() {
             </Typography>;
         }
     }
-    
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -680,107 +687,181 @@ export default function StudioDetail() {
                 <StandardImageList />
             </Container>
             <div
-                style={{ width:'80%', margin:'auto', display:'flex', flexWrap:'wrap'}}
+                style={{ width: '80%', margin: 'auto', display: 'flex', flexWrap: 'wrap' }}
             >
-                <div style={{width: '100%', display:'flex',  padding:'3rem'}}>
-                    <Button variant='outlined' onClick={(e)=>{setOpenFilter(!openFilter)}}> Search Sessions Here! </Button>
+                <div style={{ width: '100%', display: 'flex', padding: '3rem' }}>
+                    <Button variant='outlined' onClick={(e) => { setOpenFilter(!openFilter) }}> Search Sessions Here! </Button>
                 </div>
-                { openFilter && 
-                <>
-                    {/* filter */}
-                    <div style={{width:'35%', display:'flex', flexDirection:'column', 
-                    justifyContent:'center', alignContent:'center', alignItems:'center', padding:'3rem', paddingTop:'1.25rem'}}>
-                        <TextField
-                            sx={{ m: 1, width: 300 }}
-                            label="On Date: xxxx(year)-xx(month)-xx(day)"
-                            value={day}
-                            onChange={(e) => setDay(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <ClassIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            sx={{ m: 1, width: 300 }}
-                            label="Start After Time: xx(hour):xx(min):xx(sec)"
-                            value={timeBegin}
-                            onChange={(e) => setTimeBegin(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <ClassIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            sx={{ m: 1, width: 300 }}
-                            label="Start Before Time: xx(hour):xx(min):xx(sec)"
-                            value={timeEnd}
-                            onChange={(e) => setTimeEnd(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <ClassIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            sx={{ m: 1, width: 300 }}
-                            label="Class Name:"
-                            value={className}
-                            onChange={(e) => setClassName(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <ClassIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            sx={{ m: 1, width: 300 }}
-                            label="Coach Name:"
-                            value={coachName}
-                            onChange={(e) => setCoachName(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <ClassIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />                   
-                        <Button
-                            variant="contained"
-                            onClick={applyFilter}
-                            style={{width: '100%', marginTop:'2rem'}}
-                        >
-                            Apply Filter
-                        </Button>
-                    </div>
+                {openFilter &&
+                    <>
+                        {/* filter */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <div
+                                style={{
+                                    width: '35%', display: 'flex', flexDirection: 'column',
+                                    justifyContent: 'center', alignContent: 'center', alignItems: 'center', padding: '3rem', paddingTop: '1.25rem'
+                                }}
+                            >
+                                <DesktopDatePicker
+                                    label="On Date:"
+                                    inputFormat="YYYY-MM-DD"
+                                    value={day || null}
+                                    onChange={
+                                        (e) => setDay(e)
+                                    }
+                                    renderInput={(params) => <TextField
+                                        sx={{ m: 1, width: 300 }}
+                                        {...params} />}
+                                />
+                                <TimePicker
 
-                    {/* filtered events table */}
-                    <div style={{width:'65%'}}>
-                        {/* TODO! put the filtered results here */}
-                        <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents} 
-                        handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
-                        />
-                    </div>
-                </>
+                                    label="Start After Time:"
+                                    value={timeBegin || null}
+                                    onChange={(e) => setTimeBegin(e)}
+                                    renderInput={(params) => <TextField
+                                        sx={{ m: 1, width: 300 }}
+                                        {...params} />}
+                                />
+                                <TimePicker
+
+                                    label="End Before Time:"
+                                    value={timeEnd || null}
+                                    onChange={(e) => setTimeEnd(e)}
+                                    renderInput={(params) => <TextField
+                                        sx={{ m: 1, width: 300 }}
+                                        {...params} />}
+                                />
+                                <TextField
+                                    sx={{ m: 1, width: 300 }}
+                                    label="Class Name:"
+                                    value={className}
+                                    onChange={(e) => setClassName(e.target.value)}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <ClassIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                <TextField
+                                    sx={{ m: 1, width: 300 }}
+                                    label="Coach Name:"
+                                    value={coachName}
+                                    onChange={(e) => setCoachName(e.target.value)}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <ClassIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                <Button
+                                    variant="contained"
+                                    onClick={applyFilter}
+                                    style={{ width: '100%', marginTop: '2rem' }}
+                                >
+                                    Apply Filter
+                                </Button>
+                            </div>
+                        </LocalizationProvider>
+
+                        {/*<div style={{
+                            width: '35%', display: 'flex', flexDirection: 'column',
+                            justifyContent: 'center', alignContent: 'center', alignItems: 'center', padding: '3rem', paddingTop: '1.25rem'
+                        }}>
+                             <TextField
+                                sx={{ m: 1, width: 300 }}
+                                label="On Date: xxxx(year)-xx(month)-xx(day)"
+                                value={day}
+                                onChange={(e) => setDay(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <ClassIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                sx={{ m: 1, width: 300 }}
+                                label="Start After Time: xx(hour):xx(min):xx(sec)"
+                                value={timeBegin}
+                                onChange={(e) => setTimeBegin(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <ClassIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                sx={{ m: 1, width: 300 }}
+                                label="Start Before Time: xx(hour):xx(min):xx(sec)"
+                                value={timeEnd}
+                                onChange={(e) => setTimeEnd(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <ClassIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                sx={{ m: 1, width: 300 }}
+                                label="Class Name:"
+                                value={className}
+                                onChange={(e) => setClassName(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <ClassIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                sx={{ m: 1, width: 300 }}
+                                label="Coach Name:"
+                                value={coachName}
+                                onChange={(e) => setCoachName(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <ClassIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <Button
+                                variant="contained"
+                                onClick={applyFilter}
+                                style={{ width: '100%', marginTop: '2rem' }}
+                            >
+                                Apply Filter
+                            </Button>
+                            
+                        </div>*/}
+                        {/* filtered events table */}
+                        <div style={{ width: '65%' }}>
+                            {/* TODO! put the filtered results here */}
+                            <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents}
+                                handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
+                            />
+                        </div>
+                    </>
                 }
 
                 {/* info: amenities */}
-                <div style={{width:'35%', padding:'3rem', paddingTop:'1.5rem'}}>   
+                <div style={{ width: '35%', padding: '3rem', paddingTop: '1.5rem' }}>
                     <SimpleAccordion />
                     <UpcomingAccordon />
                 </div>
                 {/* info: classes */}
-                <div style={{width:'65%'}}>
+                <div style={{ width: '65%' }}>
                     <Container>
                         {checkAuthPlan()}
                     </Container>
