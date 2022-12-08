@@ -141,7 +141,7 @@ function Row(props) {
 export default function StudioTable({ classes }) {
     console.log(JSON.stringify(classes))
     //pagination
-    const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    const [rowsPerPage, setRowsPerPage] = React.useState(2);
     const [page, setPage] = React.useState(0);
 
     const handleChangePage = (event, newPage) => {
@@ -192,6 +192,9 @@ export default function StudioTable({ classes }) {
                     sx={{
                         maxHeight: 440,
                         maxWidth: 800,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: 2,
                     }}
                 >
                     <TableContainer
@@ -218,7 +221,7 @@ export default function StudioTable({ classes }) {
                         sx={{
                             maxWidth: 800,
                         }}
-                        rowsPerPageOptions={[1, 2]}
+                        rowsPerPageOptions={[2, 3]}
                         component="div"
                         count={classes.length}
                         rowsPerPage={rowsPerPage}

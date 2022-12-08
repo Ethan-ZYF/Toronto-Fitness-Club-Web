@@ -42,7 +42,7 @@ let events = []
 
 const PaginatedEvents = () => {
     let [page, setPage] = useState(1);
-    const PER_PAGE = 5;
+    const PER_PAGE = 3;
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
@@ -55,15 +55,27 @@ const PaginatedEvents = () => {
 
     return (
         <Box
-            p="5"
+            p="0"
             sx={{
                 width: '100%',
-                maxWidth: 500,
-                height: 800,
+                height: '100%',
+                maxWidth: 600,
                 marginLeft: 'auto',
                 marginRight: 'auto',
             }}
         >
+            <Pagination
+                sx={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                }}
+                count={count}
+                size="sm"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChange}
+            />
             <List p="10" pt="3" spacing={2}>
                 {_DATA.currentData().map(v => {
                     return (
@@ -78,14 +90,7 @@ const PaginatedEvents = () => {
                 })}
             </List>
 
-            <Pagination
-                count={count}
-                size="large"
-                page={page}
-                variant="outlined"
-                shape="rounded"
-                onChange={handleChange}
-            />
+
         </Box>
     );
 }
@@ -221,9 +226,10 @@ export default function StudioDetail() {
         return (
             <Accordion
                 sx={{
-                    width: 300,
-                    marginTop: '50px',
-                    display: 'flex-start',
+                    width: 400,
+                    marginTop: 2,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
                 }}
 
             >
@@ -249,6 +255,36 @@ export default function StudioDetail() {
             </Accordion>
         );
     };
+    function UpcomingAccordon() {
+        return (
+            <Accordion
+                sx={{
+                    width: 400,
+                    // marginTop: '50px',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                }}
+            >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                        fontWeight='bold'
+                        align='center'
+                        color='#3c59ff'
+                    >Upcoming Events</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <PaginatedEvents />
+                </AccordionDetails>
+            </Accordion >
+        );
+    }
 
     const Header = () => {
         return (
@@ -480,6 +516,7 @@ export default function StudioDetail() {
                 </Grid>
                 <Grid item xs={4} md={4}>
                     <SimpleAccordion />
+                    <UpcomingAccordon />
                 </Grid>
                 <Grid item xs={8} md={8}>
                     <Container
