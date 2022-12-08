@@ -73,6 +73,8 @@ class Payment(models.Model):
                             on_delete=models.CASCADE,
                             related_name='payments')
     date = models.DateTimeField(default=datetime.now)
+    
+    card_info = models.CharField(max_length=50, default='****-****-****-****')
 
     # date = models.DateField(auto_now=True)
 
@@ -100,7 +102,8 @@ def create_payment(sender, instance, created, **kwargs):
     payment_datetime = datetime.combine(instance.start_date, datetime.now().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           plan=instance.plan,
-                                          date=payment_datetime)
+                                          date=payment_datetime,
+                                          card_info=instance.user.credit_debit_no)
     curr_payment.save()
     instance.start_date = next_payment_date.date()
     instance.save()

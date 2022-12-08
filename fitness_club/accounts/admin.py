@@ -74,7 +74,7 @@ class SubscriptiontInline(admin.TabularInline):
 class PaymentInline(admin.TabularInline):
     model = Payment
     # cannot change the payment details
-    readonly_fields = ('plan', 'date')
+    readonly_fields = ('plan', 'date', 'card_info')
 
     def has_add_permission(self, request, obj):
         return False

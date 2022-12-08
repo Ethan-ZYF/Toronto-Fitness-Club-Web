@@ -14,7 +14,7 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
         return obj.plan.price
 
     def get_card_info(self, obj):
-        return obj.user.credit_debit_no
+        return obj.card_info
 
     def get_date_and_time(self, obj):
         return obj.date.strftime("%m/%d/%Y %H:%M:%S")
