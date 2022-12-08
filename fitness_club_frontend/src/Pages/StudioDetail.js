@@ -23,6 +23,11 @@ import usePagination from './components/Paginate';
 import Pagination from '@mui/material/Pagination';
 import Divider from '@mui/material/Divider';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 // import MapIcon from '@mui/icons-material/Map';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
@@ -48,7 +53,7 @@ let events = []
 
 const PaginatedEvents = () => {
     let [page, setPage] = useState(1);
-    const PER_PAGE = 4;
+    const PER_PAGE = 3;
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
@@ -209,6 +214,9 @@ const Events = () => {
 }
 
 
+
+
+
 export default function StudioDetail() {
     const [detail, setDetail] = useState({});
     const { id } = useParams();
@@ -226,6 +234,104 @@ export default function StudioDetail() {
     }, []);
     // console.log("details", detail);
     // console.log("images", detail.images);
+    const Amenities = () => {
+        return (
+            <Box
+                sx={{
+                    width: '100%',
+                    maxWidth: 500,
+                    // display: 'flex',
+                    bgcolor: 'background.paper'
+                }}
+                marginLeft="auto"
+                marginRight="auto"
+                marginTop="20px"
+            >
+                {detail.amenities.map((amenity) => (
+                    <ListItem key={amenity.id} listStyleType="disc">
+                        <Grid container spacing={2}>
+                            <Grid item xs={8}>
+                                <Typography variant="p" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
+                                    {amenity.type}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant="p" component="div" sx={{ flexGrow: 1 }} align='right'>
+                                    {amenity.quantity}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
+                ))}
+            </Box>
+        );
+    }
+
+
+    function SimpleAccordion() {
+        return (
+            <Accordion
+                sx={{
+                    width: 500,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                }}
+            >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                        fontWeight='bold'
+                        align='center'
+                        color='#3c59ff'
+                    >
+                        Amenities
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Amenities />
+                </AccordionDetails>
+            </Accordion>
+        );
+    }
+
+    function UpcomingAccordon() {
+        return (
+            <Accordion
+                sx={{
+                    width: 500,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                }}
+            >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                        fontWeight='bold'
+                        align='center'
+                        color='#3c59ff'
+                    >Upcoming Events</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <PaginatedEvents />
+                </AccordionDetails>
+            </Accordion>
+        );
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -316,7 +422,7 @@ export default function StudioDetail() {
                         marginRight: 'auto',
                     }}
                 >
-                    <Typography variant="h4" component="div" sx={{
+                    {/* <Typography variant="h4" component="div" sx={{
                         flexGrow: 1,
                         marginLeft: 'auto',
                         marginRight: 'auto',
@@ -327,13 +433,29 @@ export default function StudioDetail() {
                         fontWeight='bold'
                         color='primary.main'
                         marginTop={5}>
-                        Upcoming Events
-                    </Typography>
-                    {/* <Events /> */}
-                    <PaginatedEvents />
+                        
+                    </Typography> */}
+                    <Container
+                        sx={{
+                            width: 500,
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '20px',
+                        }}
+                    >
+                        <SimpleAccordion />
+                        <UpcomingAccordon />
+                    </Container>
                 </Grid>
             </Grid>
-            <Container>
+            <Container
+                sx={{
+                    width: 1200,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    minWidth: 1000,
+                }}
+            >
                 {localStorage.getItem('user') ?
                     <StudioTable classes={detail.classes} />
                     :
