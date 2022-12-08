@@ -204,6 +204,7 @@ export default function StudioDetail() {
                 console.log(error);
             });
     }, []);
+
     function SimpleAccordion() {
         return (
             <Accordion
@@ -235,7 +236,7 @@ export default function StudioDetail() {
                 </AccordionDetails>
             </Accordion>
         );
-    }
+    };
 
     const Header = () => {
         return (
@@ -332,7 +333,9 @@ export default function StudioDetail() {
                 }
             </Box>
         );
-    }
+    };
+
+    
 
     return (
         <ThemeProvider theme={theme}>
