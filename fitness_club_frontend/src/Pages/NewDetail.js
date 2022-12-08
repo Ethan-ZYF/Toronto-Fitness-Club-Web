@@ -689,169 +689,92 @@ export default function StudioDetail() {
             <div
                 style={{ width: '80%', margin: 'auto', display: 'flex', flexWrap: 'wrap' }}
             >
-                <div style={{ width: '100%', display: 'flex', padding: '3rem' }}>
-                    <Button variant='outlined' onClick={(e) => { setOpenFilter(!openFilter) }}> Search Sessions Here! </Button>
-                </div>
-                {openFilter &&
+                {localStorage.getItem('user') &&
                     <>
-                        {/* filter */}
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <div
-                                style={{
-                                    width: '35%', display: 'flex', flexDirection: 'column',
-                                    justifyContent: 'center', alignContent: 'center', alignItems: 'center', padding: '3rem', paddingTop: '1.25rem'
-                                }}
-                            >
-                                <DesktopDatePicker
-                                    label="On Date:"
-                                    inputFormat="YYYY-MM-DD"
-                                    value={day || null}
-                                    onChange={
-                                        (e) => setDay(e)
-                                    }
-                                    renderInput={(params) => <TextField
-                                        sx={{ m: 1, width: 300 }}
-                                        {...params} />}
-                                />
-                                <TimePicker
-
-                                    label="Start After Time:"
-                                    value={timeBegin || null}
-                                    onChange={(e) => setTimeBegin(e)}
-                                    renderInput={(params) => <TextField
-                                        sx={{ m: 1, width: 300 }}
-                                        {...params} />}
-                                />
-                                <TimePicker
-
-                                    label="End Before Time:"
-                                    value={timeEnd || null}
-                                    onChange={(e) => setTimeEnd(e)}
-                                    renderInput={(params) => <TextField
-                                        sx={{ m: 1, width: 300 }}
-                                        {...params} />}
-                                />
-                                <TextField
-                                    sx={{ m: 1, width: 300 }}
-                                    label="Class Name:"
-                                    value={className}
-                                    onChange={(e) => setClassName(e.target.value)}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <ClassIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                <TextField
-                                    sx={{ m: 1, width: 300 }}
-                                    label="Coach Name:"
-                                    value={coachName}
-                                    onChange={(e) => setCoachName(e.target.value)}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <ClassIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                <Button
-                                    variant="contained"
-                                    onClick={applyFilter}
-                                    style={{ width: '100%', marginTop: '2rem' }}
-                                >
-                                    Apply Filter
-                                </Button>
-                            </div>
-                        </LocalizationProvider>
-
-                        {/*<div style={{
-                            width: '35%', display: 'flex', flexDirection: 'column',
-                            justifyContent: 'center', alignContent: 'center', alignItems: 'center', padding: '3rem', paddingTop: '1.25rem'
-                        }}>
-                             <TextField
-                                sx={{ m: 1, width: 300 }}
-                                label="On Date: xxxx(year)-xx(month)-xx(day)"
-                                value={day}
-                                onChange={(e) => setDay(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <ClassIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <TextField
-                                sx={{ m: 1, width: 300 }}
-                                label="Start After Time: xx(hour):xx(min):xx(sec)"
-                                value={timeBegin}
-                                onChange={(e) => setTimeBegin(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <ClassIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <TextField
-                                sx={{ m: 1, width: 300 }}
-                                label="Start Before Time: xx(hour):xx(min):xx(sec)"
-                                value={timeEnd}
-                                onChange={(e) => setTimeEnd(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <ClassIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <TextField
-                                sx={{ m: 1, width: 300 }}
-                                label="Class Name:"
-                                value={className}
-                                onChange={(e) => setClassName(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <ClassIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <TextField
-                                sx={{ m: 1, width: 300 }}
-                                label="Coach Name:"
-                                value={coachName}
-                                onChange={(e) => setCoachName(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <ClassIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <Button
-                                variant="contained"
-                                onClick={applyFilter}
-                                style={{ width: '100%', marginTop: '2rem' }}
-                            >
-                                Apply Filter
-                            </Button>
-                            
-                        </div>*/}
-                        {/* filtered events table */}
-                        <div style={{ width: '65%' }}>
-                            {/* TODO! put the filtered results here */}
-                            <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents}
-                                handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
-                            />
+                        <div style={{ width: '100%', display: 'flex', padding: '3rem' }}>
+                            <Button variant='outlined' onClick={(e) => { setOpenFilter(!openFilter) }}> Search Sessions Here! </Button>
                         </div>
+                        {openFilter &&
+                            <>
+                                {/* filter */}
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <div
+                                        style={{
+                                            width: '35%', display: 'flex', flexDirection: 'column',
+                                            justifyContent: 'center', alignContent: 'center', alignItems: 'center', padding: '3rem', paddingTop: '1.25rem'
+                                        }}
+                                    >
+                                        <DesktopDatePicker
+                                            label="On Date:"
+                                            inputFormat="YYYY-MM-DD"
+                                            value={day || null}
+                                            onChange={
+                                                (e) => setDay(e)
+                                            }
+                                            renderInput={(params) => <TextField
+                                                sx={{ m: 1, width: 300 }}
+                                                {...params} />}
+                                        />
+                                        <TimePicker
+
+                                            label="Start After Time:"
+                                            value={timeBegin || null}
+                                            onChange={(e) => setTimeBegin(e)}
+                                            renderInput={(params) => <TextField
+                                                sx={{ m: 1, width: 300 }}
+                                                {...params} />}
+                                        />
+                                        <TimePicker
+
+                                            label="End Before Time:"
+                                            value={timeEnd || null}
+                                            onChange={(e) => setTimeEnd(e)}
+                                            renderInput={(params) => <TextField
+                                                sx={{ m: 1, width: 300 }}
+                                                {...params} />}
+                                        />
+                                        <TextField
+                                            sx={{ m: 1, width: 300 }}
+                                            label="Class Name:"
+                                            value={className}
+                                            onChange={(e) => setClassName(e.target.value)}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <ClassIcon />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                        <TextField
+                                            sx={{ m: 1, width: 300 }}
+                                            label="Coach Name:"
+                                            value={coachName}
+                                            onChange={(e) => setCoachName(e.target.value)}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <ClassIcon />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            onClick={applyFilter}
+                                            style={{ width: '100%', marginTop: '2rem' }}
+                                        >
+                                            Apply Filter
+                                        </Button>
+                                    </div>
+                                </LocalizationProvider>
+                                <div style={{ width: '65%' }}>
+                                    <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents}
+                                        handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
+                                    />
+                                </div>
+                            </>
+                        }
                     </>
                 }
 
