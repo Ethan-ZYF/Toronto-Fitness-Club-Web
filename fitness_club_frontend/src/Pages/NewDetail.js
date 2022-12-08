@@ -609,7 +609,6 @@ export default function StudioDetail() {
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
                         // console.log(scheduled_events_id);
                         setUserScheduleEvents(scheduled_events_id);
-
                         const scheduled_classes_name = new Set(response.data.schedule.map((event) => { return event.class_name; }));
                         // console.log('user schedule classes', scheduled_classes_name);
                         setUserScheduleClasses(scheduled_classes_name);
