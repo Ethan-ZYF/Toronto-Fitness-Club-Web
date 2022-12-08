@@ -220,7 +220,7 @@ const StandardImageList = () => {
     );
 }
 
-const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent, hasSubscription}) => {
+const FilteredEventsTable = ({ filteredEvents, userScheduleEvents, handleEnrollEvent, handleUnenrollEvent, hasSubscription }) => {
     //pagination
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -256,7 +256,12 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
     // console.log(rows)
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer
+            sx={{
+                width: '100%',
+                minWidth: '',
+            }}
+            component={Paper}>
             <Table >
                 <TableHead>
                     <TableRow>
@@ -270,24 +275,24 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows !== null  && userScheduleEvents !== null && 
-                    rows.map((e)=>(
-                        <TableRow  key={e.id}>
-                        <TableCell>{e.class_name}</TableCell>
-                        <TableCell>{e.start_time.split(" ")[0]}</TableCell>
-                        <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
-                        <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
-                        <TableCell>{e.class_length_in_hour}</TableCell>
-                        <TableCell>{e.class_capacity - e.curr_size}</TableCell>
-                        {hasSubscription &&
-                            <TableCell>{userScheduleEvents.has(e.id) ?
-                                        <Button variant="contained" color='error' onClick={(event)=>handleUnenrollEvent(event, e)}>Unenroll</Button>:
-                                        <Button variant="contained" color='primary'onClick={(event)=>handleEnrollEvent(event, e)}>Enroll</Button>}
-                            </TableCell>
-                        }
-                        </TableRow>
-                    )
-                    )}
+                    {rows !== null && userScheduleEvents !== null &&
+                        rows.map((e) => (
+                            <TableRow key={e.id}>
+                                <TableCell>{e.class_name}</TableCell>
+                                <TableCell>{e.start_time.split(" ")[0]}</TableCell>
+                                <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
+                                <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
+                                <TableCell>{e.class_length_in_hour}</TableCell>
+                                <TableCell>{e.class_capacity - e.curr_size}</TableCell>
+                                {hasSubscription &&
+                                    <TableCell>{userScheduleEvents.has(e.id) ?
+                                        <Button variant="contained" color='error' onClick={(event) => handleUnenrollEvent(event, e)}>Unenroll</Button> :
+                                        <Button variant="contained" color='primary' onClick={(event) => handleEnrollEvent(event, e)}>Enroll</Button>}
+                                    </TableCell>
+                                }
+                            </TableRow>
+                        )
+                        )}
                 </TableBody>
             </Table>
             <TablePagination
@@ -677,7 +682,11 @@ export default function StudioDetail() {
                 <StandardImageList />
             </Container>
             <div
-                style={{ width: '80%', margin: 'auto', display: 'flex', flexWrap: 'wrap' }}
+                style={{
+                    width: '80%',
+                    minWidth: '800px',
+                    margin: 'auto', display: 'flex', flexWrap: 'wrap'
+                }}
             >
                 {localStorage.getItem('user') &&
                     <>
@@ -758,7 +767,10 @@ export default function StudioDetail() {
                                         </Button>
                                     </div>
                                 </LocalizationProvider>
-                                <div style={{ width: '65%' }}>
+                                <div style={{
+                                    width: '65%',
+                                    minWidth: '700px'
+                                }}>
                                     <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents}
                                         handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
                                         hasSubscription={localStorage.getItem('plan') ? true : false}
