@@ -316,17 +316,19 @@ const StudiosPage = () => {
           }
 
           <Container sx={{ py: 8, width:'100'}}>
-          <FormControl style={{width:'12.5%'}}>
-          <InputLabel>Page</InputLabel>
-          <Select
-            value={currPage}
-            label="Page"
-            onChange={handlePageChange}
-          >
-             {Array.from({ length: count  }, (_, i) => <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>)}
-          </Select>
-          </FormControl>
-
+            {/* align to right end */}
+            <Box sx={{display:'flex', justifyContent:'flex-end', width:'100%'}}>
+              <FormControl style={{width:'12.5%'}}>
+              <InputLabel>Page</InputLabel>
+              <Select
+                value={currPage}
+                label="Page"
+                onChange={handlePageChange}
+              >
+                {Array.from({ length: count  }, (_, i) => <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>)}
+              </Select>
+              </FormControl>
+            </Box>
             <StudioMapComponent 
               studioLst={studioLst}
             />
