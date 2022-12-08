@@ -14,7 +14,7 @@ const Dashboard = () => {
         getCurrPlan()
             .then((response) => {
                 if (response.data['detail'] === "You are not subscribed.") {
-                    localStorage.clear();
+                    localStorage.removeItem('plan');
                     return;
                 }
                 localStorage.setItem('plan', response.data.id);
