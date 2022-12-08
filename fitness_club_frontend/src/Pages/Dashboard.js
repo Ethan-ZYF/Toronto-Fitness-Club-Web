@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { userContext } from '../userContext';
 import { getCurrPlan } from '../api';
 
-
 const Dashboard = () => {
     const context = useContext(userContext);
     console.log(context)
@@ -21,7 +20,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            test
+            {window.location.href = '/studios'}
         </div>
     );
 };

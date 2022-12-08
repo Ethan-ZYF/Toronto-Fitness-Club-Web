@@ -28,7 +28,7 @@ const SignOutPage = () => {
     return (
         <div>
             Sign out: {logoutSuccess ? 'Successfully Logged Out' : "Failed"}
-            {logoutSuccess ? <Navigate to="/" /> : <div>{errorMsg}</div>}
+            {logoutSuccess ? <Navigate to="/studios" /> : <div>{errorMsg}</div>}
         </div>
     );
 };
