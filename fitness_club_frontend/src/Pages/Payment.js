@@ -13,6 +13,7 @@ import { getFuturePayments, getPayments } from "../api";
 import { Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const theme = createTheme();
 
@@ -73,9 +74,13 @@ function renderRow(payment) {
 const VirtualizedList = () => {
     const [payments, setPayments] = React.useState([]);
     const [next, setNext ] = React.useState([]);
+    const [pageCnt, setPageCnt] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     useEffect(() => {
-        getPayments(0)
+        getPayments((page - 1) * 5)
             .then((response) => {
+                setPageCnt(response.data.count % 5 == 0 ? response.data.count / 5 : Math.floor(response.data.count / 5) + 1);
+                console.log(pageCnt);
                 setPayments(response.data.results);
             })
             .catch((err) => {
@@ -91,7 +96,7 @@ const VirtualizedList = () => {
                 console.log(err);
             }
         );
-    }, []);
+    }, [page]);
     console.log("payments", payments);
     return (
         <Box 
@@ -103,6 +108,20 @@ const VirtualizedList = () => {
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
                 Paymeny History
             </Typography>
+            <Box sx={{display:'flex', justifyContent:'left', alignItems:'center', marginTop:'20px'}}>
+              <FormControl style={{width:'12.5%'}}>
+              <InputLabel>Page</InputLabel>
+              <Select
+                value={page}
+                label="Page"
+                onChange = {(e) => {
+                    setPage(e.target.value);
+                }}
+              >
+                {Array.from({ length: pageCnt }, (_, i) => <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>)}
+              </Select>
+              </FormControl>
+            </Box>
             <Box
                 sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
                 marginLeft="auto"
