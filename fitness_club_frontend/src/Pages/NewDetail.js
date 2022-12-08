@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getStudioDetail } from '../api';
+import { getStudioDetail, filterEvents } from '../api';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -355,6 +355,11 @@ export default function StudioDetail() {
     const [timeEnd, setTimeEnd] = useState('');
     const [className, setClassName] = useState('');
     const [coach_name, setCoachName] = useState('');
+
+    useEffect(() => {
+        console.log(day, timeBegin, timeEnd, className, coach_name)
+    }, [day, timeBegin, timeEnd, className, coach_name]);
+    
     const FilterForm = () => {
         return (
             <Box

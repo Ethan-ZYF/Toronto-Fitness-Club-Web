@@ -122,3 +122,15 @@ export const getUserSchedule = async() => {
 export const getUserHistorySchedule = async() => {
     return await apiClient.get('/studios/history/');
 }
+
+export const eventFilter = async(data) => {
+    return await apiClient.get('/studios/event-filter/', 
+    { params: { 
+            date: data.date,
+            time_begin: data.time_begin,
+            time_end: data.time_end,
+            class_name: data.class_name,
+            coach_name: data.coach_name
+        } 
+    });
+}
