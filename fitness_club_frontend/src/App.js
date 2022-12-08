@@ -20,6 +20,8 @@ import SubscribePage from './Pages/Subscribe';
 import MyPayments from './Pages/Payment';
 import StudioDetail from './Pages/StudioDetail';
 import EditPlanPage from './Pages/EditPlan';
+import ViewSchedulePage from './Pages/ViewSchedulePage';
+import ViewHistoryPage from './Pages/ViewHistoryPage';
 
 import { userContext, loggedOutState } from './userContext';
 import { useState } from 'react';
@@ -46,6 +48,8 @@ function App() {
                         <Route exact path='/myplan' element={<SubscribePage />} />
                         <Route exact path='/payments' element={<MyPayments />} />
                         <Route exact path='/edit_plan' element={<EditPlanPage />} />
+                        <Route exact path='/view_schedule' element={<ViewSchedulePage />} />
+                        <Route exact path='/view_history' element={<ViewHistoryPage/>} />
                     </Routes>
                     <Footer />
                 </BrowserRouter>

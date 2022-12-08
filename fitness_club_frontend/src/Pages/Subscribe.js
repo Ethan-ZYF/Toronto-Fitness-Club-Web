@@ -38,7 +38,7 @@ const PlanDetails = ({ plan }) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                        {plan['price'] ? plan['price'] : 'Not Subscribed Currently'}
+                        {plan['price'] ? "$ " + plan['price'] : 'Not Subscribed Currently'}
                     </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -94,7 +94,7 @@ export default function SubscribePage() {
                     alignItems="center"
                     marginTop='10px'
                 >
-                    {localStorage.getItem('plan')?
+                    {localStorage.getItem('plan') ?
                         <Button
                             variant="contained"
                             color="primary"
@@ -140,12 +140,12 @@ export default function SubscribePage() {
                         Unsubscribe
                     </Button>
                 </Box>
-                <Typography variant="h6" 
-                component="div" 
-                sx={{ flexGrow: 1 }} 
-                align='right'
-                color='error'
-                fontSize='12px'>
+                <Typography variant="h6"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                    align='right'
+                    color='error'
+                    fontSize='12px'>
                     {errorMsg}
                 </Typography>
             </Container>
