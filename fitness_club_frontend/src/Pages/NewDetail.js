@@ -538,7 +538,7 @@ export default function StudioDetail() {
                     <FilterForm />
                 </Grid>
                 <Grid item xs={8} md={6}>
-                    <PaginatedEvents />
+                    {/* TODO! put the filtered results here */}
                 </Grid>
                 <Grid item xs={4} md={4}>
                     <SimpleAccordion />
