@@ -124,7 +124,7 @@ const EditProfile = () => {
                     //         You have updated your profile, continue to dashboard <NavLink to='/dashboard'>here</NavLink>!
                     //     </Typography>
                     // </Box>
-                    <Navigate to="/dashboard" />
+                    <Navigate to="/profile" />
                     :
                     <Box
                         sx={{
