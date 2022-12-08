@@ -9,7 +9,7 @@ class EditSubSerializer(serializers.ModelSerializer):
     current_plans = serializers.SerializerMethodField('get_current_plans')
 
     def get_new_start_date(self, obj):
-        return self.context['request'].user.active_subscription
+        return self.context['request'].user.active_subscription.date()
     
     def get_current_plans(self, obj):
         return Plan.objects.all().values()

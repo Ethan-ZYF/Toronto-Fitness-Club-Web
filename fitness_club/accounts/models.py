@@ -84,7 +84,7 @@ class Payment(models.Model):
 def create_payment(sender, instance, created, **kwargs):
     # create a payment for the subscription with the current date
     # change left to offset aware
-    if instance and instance.start_date.date() > datetime.now().date():
+    if instance and instance.start_date > datetime.now().date():
         print("Already covered by active subscription") 
         return
     next_payment_date = instance.user.active_subscription
@@ -96,9 +96,11 @@ def create_payment(sender, instance, created, **kwargs):
     if (instance and instance.start_date == next_payment_date.date()):
         print('debug...................')
         return
+    # combine instance date with current time
+    payment_datetime = datetime.combine(instance.start_date, datetime.now().time())
     curr_payment = Payment.objects.create(user=instance.user,
                                           plan=instance.plan,
-                                          date=instance.start_date)
+                                          date=payment_datetime)
     curr_payment.save()
     instance.start_date = next_payment_date.date()
     instance.save()

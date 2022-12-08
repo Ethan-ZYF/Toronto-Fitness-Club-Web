@@ -79,9 +79,7 @@ class PaymentHistoryView(ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        res = Payment.objects.filter(user=self.request.user)
-        print(res.first().date)
-        return res
+        return Payment.objects.filter(user=self.request.user)
 
 
 class PayView(CreateAPIView):
