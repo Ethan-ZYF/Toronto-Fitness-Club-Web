@@ -98,20 +98,20 @@ export const getFuturePayments = async () => {
 }
 
 // Enrollment 
-export const enrollClass = async(data) => {
-    return await apiClient.post('/studios/enroll-class/'+data.id+'/');
+export const enrollClass = async (data) => {
+    return await apiClient.post('/studios/enroll-class/' + data.id + '/');
 }
 
-export const unenrollClass = async(data) => {
-    return await apiClient.post('/studios/delete-class/'+data.id+'/');
+export const unenrollClass = async (data) => {
+    return await apiClient.post('/studios/delete-class/' + data.id + '/');
 }
 
-export const enrollEvent = async(data) => {
-    return await apiClient.post('/studios/enroll-event/'+data.id+'/');
+export const enrollEvent = async (data) => {
+    return await apiClient.post('/studios/enroll-event/' + data.id + '/');
 }
 
-export const unenrollEvent = async(data) => {
-    return await apiClient.post('/studios/delete-event/'+data.id+'/');
+export const unenrollEvent = async (data) => {
+    return await apiClient.post('/studios/delete-event/' + data.id + '/');
 }
 
 // User Info
