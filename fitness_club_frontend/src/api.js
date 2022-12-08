@@ -114,7 +114,11 @@ export const unenrollEvent = async (data) => {
     return await apiClient.post('/studios/delete-event/' + data.id + '/');
 }
 
-// User schedule
-export const getUserSchedule = async () => {
+// User Info
+export const getUserSchedule = async() => {
     return await apiClient.get('/studios/schedule/');
+}
+
+export const getUserHistorySchedule = async() => {
+    return await apiClient.get('/studios/history/');
 }
