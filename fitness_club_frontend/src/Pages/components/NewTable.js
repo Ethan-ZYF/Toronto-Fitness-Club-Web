@@ -20,7 +20,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import { color } from '@mui/system';
 
-function Row( { row, userScheduleClasses, handleEnrollClass, handleUnenrollClass}) {
+function Row( { row, userScheduleClasses, handleEnrollClass, handleUnenrollClass, hasSubscribed}) {
     const [open, setOpen] = React.useState(false);
     useEffect(() => {
     }, [row, userScheduleClasses]);
@@ -41,14 +41,16 @@ function Row( { row, userScheduleClasses, handleEnrollClass, handleUnenrollClass
                 <TableCell align="left">{row.coach}</TableCell>
                 <TableCell align="left">{row.duration}</TableCell>
                 <TableCell align="left">{row.capacity}</TableCell>
-                <TableCell align="left">{userScheduleClasses.has(row.name) ?
-                    <Button variant="contained"
-                        color='error'
-                        onClick={(event) => handleUnenrollClass(event, row)}>Unenroll Class</Button> :
-                    <Button variant="contained"
-                        color='primary'
-                        onClick={(event) => handleEnrollClass(event, row)}>Enroll Class</Button>}
-                </TableCell>
+                {hasSubscribed &&
+                    <TableCell align="left">{userScheduleClasses.has(row.name) ?
+                        <Button variant="contained"
+                            color='error'
+                            onClick={(event) => handleUnenrollClass(event, row)}>Unenroll Class</Button> :
+                        <Button variant="contained"
+                            color='primary'
+                            onClick={(event) => handleEnrollClass(event, row)}>Enroll Class</Button>}
+                    </TableCell>
+                }
             </TableRow>
             <TableRow>
                 <TableCell style={{
@@ -112,7 +114,7 @@ function Row( { row, userScheduleClasses, handleEnrollClass, handleUnenrollClass
     );
 }
 
-export default function StudioTable({ classes, userScheduleClasses, handleEnrollClass, handleUnenrollClass}) {
+export default function StudioTable({ classes, userScheduleClasses, handleEnrollClass, handleUnenrollClass, hasSubscribed }) {
 
     // pagination
     const [rowsPerPage, setRowsPerPage] = React.useState(2);
@@ -158,7 +160,8 @@ export default function StudioTable({ classes, userScheduleClasses, handleEnroll
                         {rows !== null && userScheduleClasses !== null &&
                             rows.map((row) => (
                                 <Row key={row.name} row={row} userScheduleClasses={userScheduleClasses} 
-                                handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}/>
+                                handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
+                                hasSubscribed={hasSubscribed}/>
                             ))
                         }
                         </TableBody>

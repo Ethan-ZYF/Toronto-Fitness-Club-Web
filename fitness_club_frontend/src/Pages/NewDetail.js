@@ -653,11 +653,14 @@ export default function StudioDetail() {
                 return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses}
                     handleEnrollClass={handleEnrollClass}
                     handleUnenrollClass={handleUnenrollClass}
+                    hasSubscribed={true}
                 />;
             } else {
-                return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-                    Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
-                </Typography>;
+                return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses}
+                    handleEnrollClass={handleEnrollClass}
+                    handleUnenrollClass={handleUnenrollClass}
+                    hasSubscribed={false}
+                />;
             }
         } else {
             return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
@@ -758,6 +761,7 @@ export default function StudioDetail() {
                                 <div style={{ width: '65%' }}>
                                     <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents}
                                         handleEnrollEvent={handleEnrollEvent} handleUnenrollEvent={handleUnenrollEvent}
+                                        hasSubscription={localStorage.getItem('plan') ? true : false}
                                     />
                                 </div>
                             </>
