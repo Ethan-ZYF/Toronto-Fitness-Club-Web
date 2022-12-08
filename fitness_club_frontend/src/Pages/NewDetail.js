@@ -23,6 +23,8 @@ import usePagination from './components/Paginate';
 import Pagination from '@mui/material/Pagination';
 import Divider from '@mui/material/Divider';
 import PhoneIcon from '@mui/icons-material/Phone';
+import InputAdornment from '@mui/material/InputAdornment';
+import ClassIcon from '@mui/icons-material/Class';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -57,7 +59,7 @@ const PaginatedEvents = () => {
             sx={{
                 width: '100%',
                 maxWidth: 500,
-                height: 600,
+                height: 800,
                 marginLeft: 'auto',
                 marginRight: 'auto',
             }}
@@ -144,6 +146,16 @@ function renderRow(e) {
                             {e.class_length_in_hour + " hours"}
                         </Typography>
                     </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="p" component="div" sx={{ flexGrow: 1 }} >
+                            Remaining
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="p" component="div" sx={{ flexGrow: 1 }} align='right'>
+                            {e.curr_size} / {e.class_capacity}
+                        </Typography>
+                    </Grid>
                 </Grid>
             </ListItemButton>
         </ListItem>
@@ -156,7 +168,7 @@ const StandardImageList = () => {
     return (
         <ImageList
             sx={{
-                width: 500,
+                width: 800,
                 height: 164,
                 marginLeft: 'auto',
                 marginRight: 'auto',
@@ -335,7 +347,110 @@ export default function StudioDetail() {
         );
     };
 
-    
+    const handleFilter = () => {
+        console.log('filter')
+    }
+    const [day, setDay] = useState('');
+    const [timeBegin, setTimeBegin] = useState('');
+    const [timeEnd, setTimeEnd] = useState('');
+    const [className, setClassName] = useState('');
+    const [coach_name, setCoachName] = useState('');
+    const FilterForm = () => {
+        return (
+            <Box
+                sx={{
+                    bgcolor: 'background.paper',
+                    pt: 8,
+                    pb: 0,
+                    width: '100%',
+                }}
+                component="form" onSubmit={handleFilter}
+            >
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <TextField
+                        id="outlined-start-adornment"
+                        sx={{ m: 1, width: 300 }}
+                        label="On Day"
+                        name="filterDay"
+                        value={day}
+                        onChange={(e) => setDay(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <ClassIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        id="outlined-start-adornment"
+                        sx={{ m: 1, width: 300 }}
+                        label="After"
+                        name="filterTimeBegin"
+                        value={timeBegin}
+                        onChange={(e) => setTimeBegin(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <ClassIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        id="outlined-start-adornment"
+                        sx={{ m: 1, width: 300 }}
+                        label="Before"
+                        name="filterTimeEnd"
+                        value={timeEnd}
+                        onChange={(e) => setTimeEnd(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <ClassIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        id="outlined-start-adornment"
+                        sx={{ m: 1, width: 300 }}
+                        label="Class"
+                        name="filterClassName"
+                        value={className}
+                        onChange={(e) => setClassName(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <ClassIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        id="outlined-start-adornment"
+                        sx={{ m: 1, width: 300 }}
+                        label="Enter Coach Name"
+                        name="filterCoachName"
+                        value={coach_name}
+                        onChange={(e) => setCoachName(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <ClassIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem' }}>
+                    <Button variant="contained" type="submit">Apply Filters</Button>
+                </div>
+            </Box>
+        )
+    }
+
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -352,10 +467,10 @@ export default function StudioDetail() {
                     minWidth: 1000,
                 }}
             >
-                <Grid item xs={4} md={4}>
-                    <SimpleAccordion />
+                <Grid item xs={4} md={6}>
+                    <FilterForm />
                 </Grid>
-                <Grid item xs={8} md={8}>
+                <Grid item xs={8} md={6}>
                     <PaginatedEvents />
                 </Grid>
                 <Grid item xs={4} md={4}>
@@ -367,7 +482,7 @@ export default function StudioDetail() {
                             width: 500,
                             marginLeft: 'auto',
                             marginRight: 'auto',
-                            marginTop: '40px',
+                            marginTop: '0px',
                             minWidth: 1000,
                         }}
                     >
