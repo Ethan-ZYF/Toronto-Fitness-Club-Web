@@ -314,7 +314,7 @@ const FilteredEventsTable = ({ filteredEvents, userScheduleEvents, handleEnrollE
 
 
 export default function StudioDetail() {
-    const [openFilter, setOpenFilter] = useState(false);
+    const [openFilter, setOpenFilter] = useState(true);
 
     const [detail, setDetail] = useState({});
     const { id } = useParams();
@@ -548,7 +548,7 @@ export default function StudioDetail() {
             .then((response) => {
                 // console.log(response);
                 // console.log('You have successfully enrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
-                // window.location.reload();
+                window.location.reload();
                 // instead of reload page we send request to get new user schedule 
                 getUserSchedule()
                     .then((response) => {
@@ -576,7 +576,7 @@ export default function StudioDetail() {
             .then((response) => {
                 // console.log(response);
                 // console.log('You have successfully unenrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
-                // window.location.reload();
+                window.location.reload();
                 getUserSchedule()
                     .then((response) => {
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));

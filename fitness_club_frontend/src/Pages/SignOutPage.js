@@ -9,17 +9,17 @@ const SignOutPage = () => {
     const context = useContext(userContext);
 
     useEffect(
-        () => {localStorage.clear();
+        () => {
+            localStorage.clear();
             logout().then((response) => {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 context.setContext(loggedOutState);
-                localStorage.clear();
                 localStorage.clear();
                 setLogOutSuccess(true);
             }).catch((error) => {
                 setLogOutSuccess(false);
                 console.log(error)
-                setErrorMsg(error.response.data); 
+                setErrorMsg(error.response.data);
             })
         },
         []);
@@ -28,7 +28,7 @@ const SignOutPage = () => {
     return (
         <div>
             Sign out: {logoutSuccess ? 'Successfully Logged Out' : "Failed"}
-            {logoutSuccess ? <Navigate to="/studios" /> : <div>{errorMsg}</div>}
+            {logoutSuccess ? <Navigate to="/" /> : <div>{errorMsg}</div>}
         </div>
     );
 };
