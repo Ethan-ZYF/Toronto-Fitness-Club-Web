@@ -177,6 +177,9 @@ function Row(props) {
     );
 }
 
+function filterEventsTale(props){
+
+}
 
 export default function StudioTable({ classes }) {
     // console.log(JSON.stringify(classes))
@@ -229,16 +232,16 @@ export default function StudioTable({ classes }) {
         <>
             {rows !== null && UserScheduleEvents !== null &&
                 <Paper
-                    sx={{
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginTop: 2,
-                        width: '90%',
-                    }}
-                >
+                sx={{
+                    marginTop: 2,
+                    minWidth: '1200',
+                }}>
                     <TableContainer
-                        component={Paper}>
-                        <Table aria-label="collapsible table">
+                        component={Paper}                     
+                        sx={{
+                            marginTop: 2,
+                        }}>
+                        <Table aria-label="collapsible table" >
                             <TableHead>
                                 <TableRow>
                                     <TableCell></TableCell>

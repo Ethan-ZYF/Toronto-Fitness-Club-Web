@@ -81,26 +81,26 @@ function Row(props) {
     }
 
     // //pagination
-    // const [rowsPerPage, setRowsPerPage] = React.useState(3);  
-    // const [page, setPage] = React.useState(0);
-    // const [events, setEvents] = useState(null);
-    // useEffect(()=> {
-    //     if (typeof(row)!=='undefined'){
-    //     setEvents(row.events.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));}
-    //     console.log(events)
-    // }, [row]);
+    const [rowsPerPage, setRowsPerPage] = React.useState(3);  
+    const [page, setPage] = React.useState(0);
+    const [events, setEvents] = useState(null);
+    useEffect(()=> {
+        if (typeof(row)!=='undefined'){
+        setEvents(row.events.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));}
+        console.log(events)
+    }, [row]);
 
-    // const handleChangePage = (event, newPage) => {
-    //     setPage(newPage);
-    //     setEvents(row.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
-    // };
-    // const handleChangeRowsPerPage = (event) => {
-    //     let newRowNumber = event.target.value;
-    //     setRowsPerPage(parseInt(newRowNumber, 10));
-    //     setPage(0);
-    //     let newPage = 0;
-    //     setEvents(row.slice(newPage * newRowNumber, newPage * newRowNumber + newRowNumber));
-    // };
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+        setEvents(row.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
+    };
+    const handleChangeRowsPerPage = (event) => {
+        let newRowNumber = event.target.value;
+        setRowsPerPage(parseInt(newRowNumber, 10));
+        setPage(0);
+        let newPage = 0;
+        setEvents(row.slice(newPage * newRowNumber, newPage * newRowNumber + newRowNumber));
+    };
 
 
     const formatTime = (timeString) => {
@@ -173,17 +173,16 @@ function Row(props) {
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                                {/* <TableFooter>
+
                                 <TablePagination
-                rowsPerPageOptions={[1, 2, 3, 4]}
-                component="div"
-                count={row.events.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-        </TableFooter> */}
+                                    rowsPerPageOptions={[1, 2, 3, 4]}
+                                    component="div"
+                                    count={row.events.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                />
                             </Table>
                         </Box>
                     </Collapse>

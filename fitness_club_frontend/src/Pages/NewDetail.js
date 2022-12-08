@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -10,9 +10,8 @@ import { NavLink } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getStudioDetail, filterEvents } from '../api';
+import { getStudioDetail, filterEvents, getUserSchedule, enrollEvent, unenrollEvent } from '../api';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -30,6 +29,14 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 // import MapIcon from '@mui/icons-material/Map';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -206,11 +213,132 @@ const StandardImageList = () => {
     );
 }
 
+const FilteredEventsTable = ({filteredEvents, userScheduleEvents}) => {
+    //pagination
+    const [rowsPerPage, setRowsPerPage] = useState(3);  
+    const [page, setPage] = useState(0);
+    const [rows, setRows] = useState(null);
+    useEffect(() => {
+        if (filteredEvents !== null) {
+            setRows(filteredEvents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+        }
+        console.log(rows)
+    }, [filteredEvents]);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+        console.log(newPage);
+        setRows(filteredEvents.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
+    };
+    const handleChangeRowsPerPage = (event) => {
+        let newRowNumber = event.target.value;
+        setRowsPerPage(parseInt(newRowNumber, 10));
+        setPage(0);
+        let newPage = 0;
+        setRows(filteredEvents.slice(newPage * newRowNumber, newPage * newRowNumber + newRowNumber));
+    };
+
+
+    const handleEnrollEvent = async (event, e) => {
+        event.preventDefault();
+        console.log(e.id);
+        enrollEvent({ id: e.id })
+            .then((response) => {
+                console.log(response);
+                console.log('You have successfully enrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    const handleUnenrollEvent = async (event, e) => {
+        event.preventDefault();
+        console.log(e.id);
+        unenrollEvent({ id: e.id })
+            .then((response) => {
+                console.log(response);
+                console.log('You have successfully unenrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+
+    const formatTime = (timeString) => {
+        const [hourString, minute] = timeString.split(":");
+        const hour = +hourString % 24;
+        return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
+    }
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    return (
+        <TableContainer>
+            <Table >
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Class</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Weekday</TableCell>
+                        <TableCell>Start Time</TableCell>
+                        <TableCell>Duration&nbsp;(h)</TableCell>
+                        <TableCell>Availabilities</TableCell>
+                        <TableCell></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows !== null && userScheduleEvents !== null && 
+                    rows.map((e)=>(
+                        <TableRow  key={e.id}>
+                        <TableCell>{e.class_name}</TableCell>
+                        <TableCell>{e.start_time.split(" ")[0]}</TableCell>
+                        <TableCell>{weekday[new Date(e.start_time).getDay()]}</TableCell>
+                        <TableCell> {formatTime(e.start_time.split(" ")[1])}</TableCell>
+                        <TableCell>{e.class_length_in_hour}</TableCell>
+                        <TableCell>{e.class_capacity - e.curr_size}</TableCell>
+                        <TableCell>{userScheduleEvents.has(e.id)? 
+                                    <Button variant="contained" color='error' onClick={(event)=>handleUnenrollEvent(event, e)}>Unenroll</Button>:
+                                    <Button variant="contained" color='primary'onClick={(event)=>handleEnrollEvent(event, e)}>Enroll</Button>}
+                        </TableCell>
+                        </TableRow>
+                    )
+                    )}
+                </TableBody>
+            </Table>
+                            <TablePagination
+                            // sx={{
+                            //     maxWidth: 800,
+                            // }}
+                                rowsPerPageOptions={[1, 2, 3, 4]}
+                                component="div"
+                                count={filteredEvents !== null ? filteredEvents.length : 0}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                            </TableContainer>
+    )
+
+}
+
 
 
 export default function StudioDetail() {
     const [detail, setDetail] = useState({});
     const { id } = useParams();
+
+    const [filteredEvents, setFilteredEvents] = useState(null);
+    const [userScheduleEvents, setUserScheduleEvents] = useState(null);
+        
+    const [day, setDay] = useState('')
+    const [timeBegin, setTimeBegin] = useState('')
+    const [timeEnd, setTimeEnd] = useState('')
+    const [className, setClassName] = useState('')
+    const [coachName, setCoachName] = useState('')
+
     useEffect(() => {
         getStudioDetail(id)
             .then((response) => {
@@ -222,16 +350,32 @@ export default function StudioDetail() {
             .catch((error) => {
                 console.log(error);
             });
+
+        filterEvents({id, params: null})
+            .then((response) => {
+                console.log(response.data);
+                setFilteredEvents(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        getUserSchedule()
+            .then((response)=>{
+                const scheduled_events_id = response.data.schedule.map((event) => { return event.id; });
+                console.log(new Set(scheduled_events_id));
+                setUserScheduleEvents(new Set(scheduled_events_id));
+            })
+            .catch((error)=>{
+                console.log(error);
+            });
     }, []);
 
     function SimpleAccordion() {
         return (
             <Accordion
                 sx={{
-                    width: 400,
-                    marginTop: 2,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
+
                 }}
 
             >
@@ -261,7 +405,6 @@ export default function StudioDetail() {
         return (
             <Accordion
                 sx={{
-                    width: 400,
                     // marginTop: '50px',
                     marginLeft: 'auto',
                     marginRight: 'auto',
@@ -385,50 +528,147 @@ export default function StudioDetail() {
         );
     };
 
-    const applyEventFilters = () => {
-        // get data from 5 text inputs 
-        console.log("388")
-        const date = document.getElementById('filterDay').value;
-        const timeBegin = document.getElementById('filterTimeBegin').value;
-        const timeEnd = document.getElementById('filterTimeEnd').value;
-        const className = document.getElementById('filterClassName').value;
-        const coach_name = document.getElementById('filterCoachName').value;
-        const data = {
-            date,
-            timeBegin,
-            timeEnd,
-            className,
-            coach_name
-        }
-        // console.log("fileter", data)
-        filterEvents(data)
-    }
-    
-    const [day, setDay] = useState('')
-    const [timeBegin, setTimeBegin] = useState('')
-    const [timeEnd, setTimeEnd] = useState('')
-    const [className, setClassName] = useState('')
-    const [coach_name, setCoachName] = useState('')
 
-    const FilterForm = () => {
-        return (
-            <Box
-                sx={{
-                    bgcolor: 'background.paper',
-                    pt: 8,
-                    pb: 0,
-                    width: '100%',
-                }}
-                component="form" onSubmit={
-                    applyEventFilters
-                }
+    const applyFilter = (event) => {
+        const params = {
+            ...day !== '' && {'date': day},
+            ...timeBegin !== '' && {'time_begin': timeBegin},
+            ...timeEnd !== '' && {'time_end': timeEnd},
+            'class_name': className,
+            'coach_name': coachName
+        }
+        console.log(params);
+        filterEvents({id, params})
+            .then((response) => {
+                console.log(response);
+                setFilteredEvents(response.data);
+                console.log(filteredEvents);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    // const FilterForm = () => {
+    //     return (
+    //         <Box
+    //             sx={{
+    //                 bgcolor: 'background.paper',
+    //                 pt: 8,
+    //                 pb: 0,
+    //                 width: '100%',
+    //             }}
+    //             component="form" 
+    //             // onSubmit={
+    //             //     applyEventFilters
+    //             // }
+    //         >
+    //             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+    //                 <TextField
+    //                     id="filterDay"
+    //                     sx={{ m: 1, width: 300 }}
+    //                     label="On Day"
+    //                     name="filterDay"
+    //                     value={day}
+    //                     onChange={(e) => setDay(e.target.value)}
+    //                     InputProps={{
+    //                         startAdornment: (
+    //                             <InputAdornment position="start">
+    //                                 <ClassIcon />
+    //                             </InputAdornment>
+    //                         ),
+    //                     }}
+    //                 />
+    //                 <TextField
+    //                     id="filterTimeBegin"
+    //                     sx={{ m: 1, width: 300 }}
+    //                     label="After"
+    //                     name="filterTimeBegin"
+    //                     value={timeBegin}
+    //                     onChange={(e) => setTimeBegin(e.target.value)}
+    //                     InputProps={{
+    //                         startAdornment: (
+    //                             <InputAdornment position="start">
+    //                                 <ClassIcon />
+    //                             </InputAdornment>
+    //                         ),
+    //                     }}
+    //                 />
+    //                 <TextField
+    //                     id="filterTimeEnd"
+    //                     sx={{ m: 1, width: 300 }}
+    //                     label="Before"
+    //                     name="filterTimeEnd"
+    //                     value={timeEnd}
+    //                     onChange={(e) => setTimeEnd(e.target.value)}
+    //                     InputProps={{
+    //                         startAdornment: (
+    //                             <InputAdornment position="start">
+    //                                 <ClassIcon />
+    //                             </InputAdornment>
+    //                         ),
+    //                     }}
+    //                 />
+    //                 <TextField
+    //                     id="filterClassName"
+    //                     sx={{ m: 1, width: 300 }}
+    //                     label="Class"
+    //                     name="filterClassName"
+    //                     value={className}
+    //                     onChange={(e) => setClassName(e.target.value)}
+    //                     InputProps={{
+    //                         startAdornment: (
+    //                             <InputAdornment position="start">
+    //                                 <ClassIcon />
+    //                             </InputAdornment>
+    //                         ),
+    //                     }}
+    //                 />
+    //                 <TextField
+    //                     id="filterCoachName"
+    //                     sx={{ m: 1, width: 300 }}
+    //                     label="Enter Coach Name"
+    //                     name="filterCoachName"
+    //                     value={coachName}
+    //                     onChange={(e) => setCoachName(e.target.value)}
+    //                     InputProps={{
+    //                         startAdornment: (
+    //                             <InputAdornment position="start">
+    //                                 <ClassIcon />
+    //                             </InputAdornment>
+    //                         ),
+    //                     }}
+    //                 />
+    //             </div>
+    //             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem' }}>
+    //                 <Button
+    //                     variant="contained"
+    //                     type="submit"
+    //                     onClick={(e)=>{console.log(e)}}
+    //                 >
+    //                     Apply Filters
+    //                 </Button>
+    //             </div>
+    //         </Box>
+    //     )
+    // }
+
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container>
+                <Header />
+                <StandardImageList />
+            </Container>
+            <div
+                style={{border:'solid 2px black', width:'80%', margin:'auto', display:'flex', flexWrap:'wrap'}}
             >
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                {/* filter */}
+                <div style={{width:'35%', border:'solid 2px black', display:'flex', flexDirection:'column', 
+                justifyContent:'center', alignContent:'center', alignItems:'center', padding:'3rem'}}>
                     <TextField
-                        id="filterDay"
                         sx={{ m: 1, width: 300 }}
                         label="On Day"
-                        name="filterDay"
                         value={day}
                         onChange={(e) => setDay(e.target.value)}
                         InputProps={{
@@ -440,10 +680,8 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="filterTimeBegin"
                         sx={{ m: 1, width: 300 }}
                         label="After"
-                        name="filterTimeBegin"
                         value={timeBegin}
                         onChange={(e) => setTimeBegin(e.target.value)}
                         InputProps={{
@@ -455,10 +693,8 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="filterTimeEnd"
                         sx={{ m: 1, width: 300 }}
                         label="Before"
-                        name="filterTimeEnd"
                         value={timeEnd}
                         onChange={(e) => setTimeEnd(e.target.value)}
                         InputProps={{
@@ -470,10 +706,8 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="filterClassName"
                         sx={{ m: 1, width: 300 }}
                         label="Class"
-                        name="filterClassName"
                         value={className}
                         onChange={(e) => setClassName(e.target.value)}
                         InputProps={{
@@ -485,11 +719,9 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="filterCoachName"
                         sx={{ m: 1, width: 300 }}
                         label="Enter Coach Name"
-                        name="filterCoachName"
-                        value={coach_name}
+                        value={coachName}
                         onChange={(e) => setCoachName(e.target.value)}
                         InputProps={{
                             startAdornment: (
@@ -498,58 +730,30 @@ export default function StudioDetail() {
                                 </InputAdornment>
                             ),
                         }}
-                    />
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem' }}>
+                    />                   
                     <Button
                         variant="contained"
-                        type="submit"
-                        onClick={applyEventFilters}
+                        onClick={applyFilter}
+                        style={{width: '100%', marginTop:'2rem'}}
                     >
-                        Apply Filters
+                        Apply Filter
                     </Button>
                 </div>
-            </Box>
-        )
-    }
 
-
-
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container>
-                <Header />
-                <StandardImageList />
-            </Container>
-            <Grid container spacing={0}
-                sx={{
-                    width: 1200,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    minWidth: 1000,
-                }}
-            >
-                <Grid item xs={4} md={6}>
-                    <FilterForm />
-                </Grid>
-                <Grid item xs={8} md={6}>
+                {/* filtered events table */}
+                <div style={{width:'65%', border:'solid 2px black'}}>
                     {/* TODO! put the filtered results here */}
-                </Grid>
-                <Grid item xs={4} md={4}>
+                    <FilteredEventsTable filteredEvents={filteredEvents} userScheduleEvents={userScheduleEvents} />
+                </div>
+
+                {/* info: amenities */}
+                <div style={{width:'35%', border:'solid 2px black', padding:'3rem'}}>   
                     <SimpleAccordion />
                     <UpcomingAccordon />
-                </Grid>
-                <Grid item xs={8} md={8}>
-                    <Container
-                        sx={{
-                            width: 500,
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginTop: '0px',
-                            minWidth: 1000,
-                        }}
-                    >
+                </div>
+                {/* info: classes */}
+                <div style={{width:'65%', border:'solid 2px black'}}>
+                    <Container>
                         {localStorage.getItem('user') ?
                             <StudioTable classes={detail.classes} />
                             :
@@ -558,8 +762,8 @@ export default function StudioDetail() {
                             </Typography>
                         }
                     </Container>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
 
         </ThemeProvider>
     )
