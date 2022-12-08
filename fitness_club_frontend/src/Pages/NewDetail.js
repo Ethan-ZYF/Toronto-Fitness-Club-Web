@@ -18,10 +18,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import StudioTable from './components/StudioTable';
+import StudioTable from './components/NewTable';
 import usePagination from './components/Paginate';
 import Pagination from '@mui/material/Pagination';
 import Divider from '@mui/material/Divider';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -33,27 +34,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const theme = createTheme();
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    height: '200px',
-    width: '200px',
-    margin: 'auto',
-    marginTop: '20px',
-    marginBottom: '20px',
-}));
-
-
 let itemData = []
 let events = []
 
 
 const PaginatedEvents = () => {
     let [page, setPage] = useState(1);
-    const PER_PAGE = 3;
+    const PER_PAGE = 5;
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
@@ -70,6 +57,7 @@ const PaginatedEvents = () => {
             sx={{
                 width: '100%',
                 maxWidth: 500,
+                height: 600,
                 marginLeft: 'auto',
                 marginRight: 'auto',
             }}
@@ -100,7 +88,6 @@ const PaginatedEvents = () => {
     );
 }
 
-
 function renderRow(e) {
     return (
         <ListItem
@@ -120,7 +107,6 @@ function renderRow(e) {
                 height: '100%',
             }}>
                 <Grid container rowSpacing={0} columnSpacing={0} >
-                    {/* squared item */}
                     <Grid item xs={6}>
                         <Typography variant="p" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
                             Name
@@ -178,7 +164,9 @@ const StandardImageList = () => {
                 marginBottom: '40px',
                 gridAutoFlow: "column",
                 gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr)) !important",
-                gridAutoColumns: "minmax(160px, 1fr)"
+                gridAutoColumns: "minmax(160px, 1fr)",
+                overflowY: 'hidden',
+                overflowX: 'auto',
             }}
             cols={3}
             rowHeight={164}
@@ -186,8 +174,10 @@ const StandardImageList = () => {
             {itemData.map((item) => (
                 <ImageListItem key={item}>
                     <img
-                        src={`${item.image}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        // src={`${item.image}?h=164&fit=crop&auto=format`}
+                        // srcSet={`${item.image}?h=164&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${item.image}?h=164&fit=crop&auto=format`}
+                        srcSet={`${item.image}?h=164&fit=crop&auto=format&dpr=2 2x`}
                         alt="https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
                         loading="lazy"
                     />
@@ -196,27 +186,6 @@ const StandardImageList = () => {
         </ImageList>
     );
 }
-const Events = () => {
-    return (
-        <Box
-            sx={{
-                width: '100%',
-                maxWidth: 500,
-                // display: 'flex',
-                bgcolor: 'background.paper'
-            }}
-            marginLeft="auto"
-            marginRight="auto"
-            marginTop="20px"
-        >
-            {events.map((event) => (
-                renderRow(event)
-            ))}
-        </Box>
-    );
-}
-
-
 
 
 
@@ -235,8 +204,99 @@ export default function StudioDetail() {
                 console.log(error);
             });
     }, []);
-    // console.log("details", detail);
-    // console.log("images", detail.images);
+    function SimpleAccordion() {
+        return (
+            <Accordion
+                sx={{
+                    width: 300,
+                    marginTop: '50px',
+                    display: 'flex-start',
+                }}
+
+            >
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                        fontWeight='bold'
+                        align='center'
+                        color='#3c59ff'
+                    >
+                        Amenities
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Amenities />
+                </AccordionDetails>
+            </Accordion>
+        );
+    }
+
+    const Header = () => {
+        return (
+            <Container
+                maxWidth="sm"
+                sx={{
+                    marginTop: '20px',
+                    marginBottom: '20px',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                }}
+            >
+                <Typography
+                    component="h1"
+                    variant="h2"
+                    align="center"
+                    color="text.primary"
+                    gutterBottom
+                    fontFamily={'Verdana'}
+                >
+                    {detail.name}
+                </Typography>
+
+                <Typography variant="h6" align="center" color="text.secondary" paragraph>
+                    {
+                        detail['direction_link'] ?
+                            <a href={detail['direction_link']} target='_blank' rel="noreferrer">
+                                <LocationOnIcon
+                                    sx={{
+                                        width: 20,
+                                        height: 20,
+                                        marginRight: '5px',
+                                        marginBottom: '-2px',
+                                    }}
+                                    color="primary"
+                                />
+                            </a> : ''
+                    }{
+                        detail['address'] ? detail['address'] : ''
+                    } {
+                        detail['postcode'] ? detail['postcode'] : ''
+                    }
+
+                </Typography>
+                <Typography variant="h6" align="center" color="text.secondary" paragraph>
+                    <PhoneIcon
+                        sx={{
+                            width: 20,
+                            height: 20,
+                            marginRight: '5px',
+                            marginBottom: '-2px',
+                        }}
+                        color="primary"
+                    />
+                    {detail['phone_number'] ? detail['phone_number'] : ''}
+                </Typography>
+            </Container>
+        )
+    };
+
+
     const Amenities = () => {
         return (
             <Box
@@ -274,75 +334,14 @@ export default function StudioDetail() {
         );
     }
 
-
-    function SimpleAccordion() {
-        return (
-            <Accordion
-                sx={{
-                    width: 500,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                }}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography
-                        variant="h5"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
-                        fontWeight='bold'
-                        align='center'
-                        color='#3c59ff'
-                    >
-                        Amenities
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Amenities />
-                </AccordionDetails>
-            </Accordion>
-        );
-    }
-
-    function UpcomingAccordon() {
-        return (
-            <Accordion
-                sx={{
-                    width: 500,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                }}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography
-                        variant="h5"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
-                        fontWeight='bold'
-                        align='center'
-                        color='#3c59ff'
-                    >Upcoming Events</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <PaginatedEvents />
-                </AccordionDetails>
-            </Accordion>
-        );
-    }
-
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Grid container spacing={2}
+            <Container>
+                <Header />
+                <StandardImageList />
+            </Container>
+            <Grid container spacing={0}
                 sx={{
                     width: 1200,
                     marginLeft: 'auto',
@@ -350,127 +349,36 @@ export default function StudioDetail() {
                     minWidth: 1000,
                 }}
             >
-                <Grid item xs={6} md={6}>
-                    <StandardImageList />
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container rowSpacing={0} columnSpacing={0} paddingTop={0}
-                            sx={{
-                                width: '100%',
-                                maxWidth: 500,
-                                marginLeft: 'auto',
-                                marginRight: 'auto',
-                            }}
-                        >
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                    Studio Name:
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                    {detail['name']}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                    Address:
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                    {detail['address'] ? detail['address'] : 'Not Provided'}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                    Map:
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                    {
-                                        detail['direction_link'] ?
-                                            <a href={detail['direction_link']} target='_blank'>
-                                                <LocationOnIcon />
-                                            </a> :
-                                            'Not Provided'
-                                    }
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                    Postcode:
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                    {detail['postcode'] ? detail['postcode'] : 'Not Provided'}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight='bold'>
-                                    Phone Number:
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='right'>
-                                    {detail['phone_number'] ? detail['phone_number'] : 'Not Provided'}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                <Grid item xs={4} md={4}>
+                    <SimpleAccordion />
                 </Grid>
-                {/* <Grid item
-                    xs={6}
-                    md={6}
-                    sx={{
-                        maxWidth: 500,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                    }}
-                > */}
-                {/* <Typography variant="h4" component="div" sx={{
-                        flexGrow: 1,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        maxWidth: 500,
-                    }}
-                        align='center'
-                        fontFamily={'Verdana'}
-                        fontWeight='bold'
-                        color='primary.main'
-                        marginTop={5}>
-                        
-                    </Typography> */}
-                {/* <Container
+                <Grid item xs={8} md={8}>
+                    <PaginatedEvents />
+                </Grid>
+                <Grid item xs={4} md={4}>
+                    <SimpleAccordion />
+                </Grid>
+                <Grid item xs={8} md={8}>
+                    <Container
                         sx={{
                             width: 500,
                             marginLeft: 'auto',
                             marginRight: 'auto',
-                            marginTop: '20px',
+                            marginTop: '40px',
+                            minWidth: 1000,
                         }}
                     >
-                        <SimpleAccordion />
-                        <UpcomingAccordon />
+                        {localStorage.getItem('user') ?
+                            <StudioTable classes={detail.classes} />
+                            :
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                                Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+                            </Typography>
+                        }
                     </Container>
-                </Grid>*/}
+                </Grid>
             </Grid>
-            {/* <Container
-                sx={{
-                    width: 1200,
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    minWidth: 1000,
-                }}
-            >
-                {localStorage.getItem('user') ?
-                    <StudioTable classes={detail.classes} />
-                    :
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-                        Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
-                    </Typography>
-                }
-            </Container> */}
+
         </ThemeProvider>
     )
 }

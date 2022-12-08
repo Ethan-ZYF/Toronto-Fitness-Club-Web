@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from studios.models import Event
 from studios.serializers.studio_detail import ScheduleSerializer, HistorySerializer
-import datetime
+from datetime import datetime
 
 class EnrollClassView(APIView):
     # authentication_classes = [authentication.TokenAuthentication]
