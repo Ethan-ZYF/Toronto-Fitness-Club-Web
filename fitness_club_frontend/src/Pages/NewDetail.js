@@ -246,6 +246,7 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
         return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
     }
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    console.log(rows)
 
     return (
         <TableContainer component={Paper}>
@@ -262,7 +263,7 @@ const FilteredEventsTable = ({filteredEvents, userScheduleEvents, handleEnrollEv
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows !== null && userScheduleEvents !== null && 
+                    {rows !== null  && userScheduleEvents !== null && 
                     rows.map((e)=>(
                         <TableRow  key={e.id}>
                         <TableCell>{e.class_name}</TableCell>
@@ -513,7 +514,12 @@ export default function StudioDetail() {
         filterEvents({id, params})
             .then((response) => {
                 console.log(response);
+                if (response.data.constructor === Array){
                 setFilteredEvents(response.data);
+                }
+                else{
+                    setFilteredEvents([]);
+                }
                 console.log(filteredEvents);
             })
             .catch((error) => {
