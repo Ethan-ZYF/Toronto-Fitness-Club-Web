@@ -101,39 +101,21 @@ class PayView(CreateAPIView):
 
 class FuturePayView(APIView):
     permission_classes = (IsAuthenticated,)
-    cnt_limit = 1
 
     def get(self, request, *args, **kwargs):
         if not hasattr(request.user, 'subscription'):
             return Response({'future_payments': []})
-        current_plan = request.user.subscription.plan.plan
         reversed_payments = Payment.objects.filter(user=request.user).order_by('-date')
         if (len(reversed_payments) == 0):
             return Response({'future_payments': []})
-        last_payment = reversed_payments[0]
-        # -5 hours from datetime due to timezone difference
-        last_payment_date = last_payment.date - relativedelta(hours=5)
-        # print(f'here:{last_payment_date}')
         response = []
-        for i in range(self.cnt_limit):
-            if current_plan == 'MONTHLY':
-                next_date = last_payment_date + relativedelta(months=1)
-                response.append({
-                    'amount': request.user.subscription.plan.price,
-                    'card_info': request.user.credit_debit_no,
-                    'date_and_time': next_date.strftime("%m/%d/%Y %H:%M:%S")
-                })
-                last_payment_date += relativedelta(months=1)
-            else:
-                next_date = last_payment_date + relativedelta(years=1)
-                response.append({
-                    'amount': request.user.subscription.plan.price,
-                    'card_info': request.user.credit_debit_no,
-                    'date_and_time': next_date.strftime("%m/%d/%Y %H:%M:%S")
-                })
-                last_payment_date += relativedelta(years=1)
-        final_response = {'future_payments': response}
-        return Response(final_response)
+        response.append({
+            'amount': request.user.subscription.plan.price,
+            'card_info': request.user.credit_debit_no,
+            'date_and_time': request.user.active_subscription.strftime("%m/%d/%Y %H:%M:%S")
+        })
+        return Response({'future_payments': response}) 
+        
 
 
 class PlansView(ListAPIView):
