@@ -34,6 +34,18 @@ const settings = {
             window.location.href = '/myplan';
         }
     },
+    PastEvents: {
+        text: 'History',
+        onclick: () => {
+            window.location.href = '/view_history';
+        }
+    },
+    ScheduledEvenets: {
+        text: 'Schedule',
+        onclick: () => {
+            window.location.href = '/view_schedule';
+        }
+    },
     Payments: {
         text: 'My Payments',
         onclick: () => {
