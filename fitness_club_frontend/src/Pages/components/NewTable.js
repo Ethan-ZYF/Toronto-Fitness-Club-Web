@@ -22,8 +22,8 @@ import Stack from '@mui/material/Stack';
 
 function Row(props) {
     const { row, UserScheduleEvents, UserScheduleClasses } = props;
-    console.log(UserScheduleEvents);
-    console.log(UserScheduleClasses);
+    // console.log(UserScheduleEvents);
+    // console.log(UserScheduleClasses);
     const [open, setOpen] = React.useState(false);
 
     const handleEnrollClass = async (event, row) => {
@@ -139,7 +139,7 @@ function Row(props) {
 
 
 export default function StudioTable({ classes }) {
-    console.log(JSON.stringify(classes))
+    // console.log(JSON.stringify(classes))
     //pagination
     const [rowsPerPage, setRowsPerPage] = React.useState(2);
     const [page, setPage] = React.useState(0);

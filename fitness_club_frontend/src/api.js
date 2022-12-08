@@ -123,7 +123,7 @@ export const getUserHistorySchedule = async() => {
     return await apiClient.get('/studios/history/');
 }
 
-export const eventFilter = async(data) => {
+export const filterEvents = async(data) => {
     return await apiClient.get('/studios/event-filter/', 
     { params: { 
             date: data.date,

@@ -46,7 +46,7 @@ const PaginatedEvents = () => {
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
-    console.log("data", _DATA.currentData())
+    // console.log("data", _DATA.currentData())
 
     const handleChange = (e, p) => {
         setPage(p);
@@ -383,18 +383,27 @@ export default function StudioDetail() {
         );
     };
 
-    const handleFilter = () => {
-        console.log('filter')
+    const applyEventFilters = () => {
+        // get data from 5 text inputs 
+        const date = document.getElementById('filterDay').value;
+        const timeBegin = document.getElementById('filterTimeBegin').value;
+        const timeEnd = document.getElementById('filterTimeEnd').value;
+        const className = document.getElementById('filterClassName').value;
+        const coach_name = document.getElementById('filterCoachName').value;
+        const data = {
+            date, 
+            timeBegin,
+            timeEnd,
+            className,
+            coach_name
+        }
+        console.log(data)
+        filterEvents(data)
     }
-    const [day, setDay] = useState('');
-    const [timeBegin, setTimeBegin] = useState('');
-    const [timeEnd, setTimeEnd] = useState('');
-    const [className, setClassName] = useState('');
-    const [coach_name, setCoachName] = useState('');
 
-    useEffect(() => {
-        console.log(day, timeBegin, timeEnd, className, coach_name)
-    }, [day, timeBegin, timeEnd, className, coach_name]);
+    // useEffect(() => {
+    //     console.log(day, timeBegin, timeEnd, className, coach_name)
+    // }, [day, timeBegin, timeEnd, className, coach_name]);
     
     const FilterForm = () => {
         return (
@@ -405,16 +414,16 @@ export default function StudioDetail() {
                     pb: 0,
                     width: '100%',
                 }}
-                component="form" onSubmit={handleFilter}
+                component="form" onSubmit={applyEventFilters}
             >
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <TextField
-                        id="outlined-start-adornment"
+                        id="filterDay"
                         sx={{ m: 1, width: 300 }}
                         label="On Day"
                         name="filterDay"
-                        value={day}
-                        onChange={(e) => setDay(e.target.value)}
+                        // value={day}
+                        // onChange={(e) => setDay(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -424,12 +433,12 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="outlined-start-adornment"
+                        id="filterTimeBegin"
                         sx={{ m: 1, width: 300 }}
                         label="After"
                         name="filterTimeBegin"
-                        value={timeBegin}
-                        onChange={(e) => setTimeBegin(e.target.value)}
+                        // value={timeBegin}
+                        // onChange={(e) => setTimeBegin(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -439,12 +448,12 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="outlined-start-adornment"
+                        id="filterTimeEnd"
                         sx={{ m: 1, width: 300 }}
                         label="Before"
                         name="filterTimeEnd"
-                        value={timeEnd}
-                        onChange={(e) => setTimeEnd(e.target.value)}
+                        // value={timeEnd}
+                        // onChange={(e) => setTimeEnd(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -454,12 +463,12 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="outlined-start-adornment"
+                        id="filterClassName"
                         sx={{ m: 1, width: 300 }}
                         label="Class"
                         name="filterClassName"
-                        value={className}
-                        onChange={(e) => setClassName(e.target.value)}
+                        // value={className}
+                        // onChange={(e) => setClassName(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -469,12 +478,12 @@ export default function StudioDetail() {
                         }}
                     />
                     <TextField
-                        id="outlined-start-adornment"
+                        id="filterCoachName"
                         sx={{ m: 1, width: 300 }}
                         label="Enter Coach Name"
                         name="filterCoachName"
-                        value={coach_name}
-                        onChange={(e) => setCoachName(e.target.value)}
+                        // value={coach_name}
+                        // onChange={(e) => setCoachName(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -485,7 +494,12 @@ export default function StudioDetail() {
                     />
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '2rem' }}>
-                    <Button variant="contained" type="submit">Apply Filters</Button>
+                    <Button 
+                        variant="contained" 
+                        type="submit"
+                        >
+                            Apply Filters
+                        </Button>
                 </div>
             </Box>
         )
