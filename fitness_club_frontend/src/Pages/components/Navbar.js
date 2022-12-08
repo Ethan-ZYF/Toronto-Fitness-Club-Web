@@ -63,7 +63,9 @@ const signupin_settings = {
     }
 }
 
-const club_subs = {
+const hasPlan = localStorage.getItem('plan') !== null;
+
+let club_subs = {
     homepage: {
         text: 'Homepage',
         onclick: () => {
@@ -71,9 +73,9 @@ const club_subs = {
         }
     },
     Plans: {
-        text: 'Plans',
+        text: hasPlan ? 'Edit Plan' : 'Plans',
         onclick: () => {
-            window.location.href = '/plans';
+            window.location.href = hasPlan ? '/edit_plan' : '/plans';
         }
     },
     Studios: {

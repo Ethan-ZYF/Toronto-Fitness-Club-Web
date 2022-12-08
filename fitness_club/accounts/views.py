@@ -214,6 +214,7 @@ class CancelView(DestroyAPIView):
             my_plan = request.user.subscription
             return Response({
                 'plan': my_plan.plan.plan,
+                'id': my_plan.plan.id,
                 'price': my_plan.plan.price,
                 'expire_date': request.user.active_subscription
             })
