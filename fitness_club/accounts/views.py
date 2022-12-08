@@ -136,13 +136,15 @@ class SubscribeView(CreateAPIView):
         if hasattr(request.user, 'subscription'):
             return Response({'detail': 'You have already subscribed.'})
         sub_end_date = datetime.now()
-        print(request.data)
-        plan_id = request.data['plan']
-        if Plan.objects.get(id=plan_id).plan == 'MONTHLY':
-            sub_end_date += relativedelta(months=1)
+        if request.user.active_subscription.date() < sub_end_date.date():
+            plan_id = request.data['plan']
+            if Plan.objects.get(id=plan_id).plan == 'MONTHLY':
+                sub_end_date += relativedelta(months=1)
+            else:
+                sub_end_date += relativedelta(years=1)
+            request.user.active_subscription = sub_end_date - relativedelta(hours=5)
         else:
-            sub_end_date += relativedelta(years=1)
-        request.user.active_subscription = sub_end_date - relativedelta(hours=5)
+            sub_end_date = request.user.active_subscription
         request.user.save()
         print(request.user.active_subscription)
         serializer = self.get_serializer(data=request.data)

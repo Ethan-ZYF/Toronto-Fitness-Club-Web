@@ -13,8 +13,11 @@ import { unsubscribe } from '../api';
 import moment from 'moment';
 
 const formatDatetime = (datetime) => {
+    if (datetime === undefined) { 
+        return 'No active subscription'; 
+    }
     console.log(datetime);
-    return moment(datetime).format('MMMM Do YYYY');
+    return datetime.slice(0, 10);
 }
 
 const PlanDetails = ({ plan }) => {

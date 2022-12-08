@@ -26,8 +26,19 @@ import { Card, CardContent } from '@mui/material';
 import moment from 'moment';
 
 const formatDatetime = (datetime) => {
+    if (datetime === undefined) { 
+        return 'No active subscription'; 
+    }
     console.log(datetime);
-    return moment(datetime).format('MMMM Do YYYY');
+    let hour = datetime.slice(11, 13);
+    let date = datetime.slice(0, 10);
+    if (hour >= 17) {
+        // add 1 day
+        let newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + 1);
+        date = newDate.toISOString().slice(0, 10);
+    }
+    return date;
 }
 
 const Item = styled(Paper)(({ theme }) => ({
