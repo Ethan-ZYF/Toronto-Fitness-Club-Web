@@ -89,13 +89,13 @@ let club_subs = {
         onclick: () => {
             window.location.href = '/studios';
         }
-    },
-    Classes: {
-        text: 'Classes',
-        onclick: () => {
-            window.location.href = '/classes';
-        }
     }
+    // Classes: {
+    //     text: 'Classes',
+    //     onclick: () => {
+    //         window.location.href = '/classes';
+    //     }
+    // }
 }
 
 function ResponsiveAppBar() {
