@@ -632,14 +632,39 @@ export default function StudioDetail() {
             });
     }
 
-    // useEffect(()=>{
-    //     getUserSchedule()
-    //     .then((response)=>{
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error);
-    //     });
-    // },[handleEnrollEvent, handleEnrollClass, handleUnenrollEvent, handleUnenrollClass]);
+    const checkAuthPlan = () => {
+        // {localStorage.getItem('user') ?
+        //     {localStorage.getItem('plan') ?
+        //         <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
+        //         handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
+        //         />
+        //         :
+        //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+        //             Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
+        //         </Typography>
+        //     }
+        //     :
+        //     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+        //         Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+        //     </Typography>
+        // }
+        if (localStorage.getItem('user')) {
+            if (localStorage.getItem('plan')) {
+                return <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
+                        handleEnrollClass={handleEnrollClass}
+                        handleUnenrollClass={handleUnenrollClass}
+                    />;
+            } else {
+                return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                    Please <NavLink to="../plans">subscribe</NavLink> to enroll in classes.
+                </Typography>;
+            }
+        } else {
+            return <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
+                Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
+            </Typography>;
+        }
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -751,15 +776,7 @@ export default function StudioDetail() {
                 {/* info: classes */}
                 <div style={{width:'65%'}}>
                     <Container>
-                        {localStorage.getItem('user') ?
-                            <StudioTable classes={detail.classes} userScheduleClasses={userScheduleClasses} 
-                            handleEnrollClass={handleEnrollClass} handleUnenrollClass={handleUnenrollClass}
-                            />
-                            :
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align='center' marginTop={10}>
-                                Please <NavLink to="../signin">sign in</NavLink> or <NavLink to="../signup">sign up</NavLink> to enroll in classes.
-                            </Typography>
-                        }
+                        {checkAuthPlan()}
                     </Container>
                 </div>
             </div>
