@@ -661,7 +661,7 @@ export default function StudioDetail() {
                     justifyContent:'center', alignContent:'center', alignItems:'center', padding:'3rem', paddingTop:'1.25rem'}}>
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="On Day"
+                            label="On Date: xxxx(year)-xx(month)-xx(day)"
                             value={day}
                             onChange={(e) => setDay(e.target.value)}
                             InputProps={{
@@ -674,7 +674,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="After"
+                            label="Start After Time: xx(hour):xx(min):xx(sec)"
                             value={timeBegin}
                             onChange={(e) => setTimeBegin(e.target.value)}
                             InputProps={{
@@ -687,7 +687,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Before"
+                            label="Start Before Time: xx(hour):xx(min):xx(sec)"
                             value={timeEnd}
                             onChange={(e) => setTimeEnd(e.target.value)}
                             InputProps={{
@@ -700,7 +700,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Class"
+                            label="Class Name:"
                             value={className}
                             onChange={(e) => setClassName(e.target.value)}
                             InputProps={{
@@ -713,7 +713,7 @@ export default function StudioDetail() {
                         />
                         <TextField
                             sx={{ m: 1, width: 300 }}
-                            label="Enter Coach Name"
+                            label="Coach Name:"
                             value={coachName}
                             onChange={(e) => setCoachName(e.target.value)}
                             InputProps={{
