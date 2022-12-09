@@ -79,14 +79,14 @@ function PricingContent() {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
     }, []);
     tiers[0].price = monthly.price;
     tiers[0].id = monthly.id;
     tiers[1].price = yearly.price;
     tiers[1].id = yearly.id;
-    // console.log("Price", tiers)
+    // //console.log("Price", tiers)
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -190,12 +190,12 @@ function PricingContent() {
                                             }
                                             subscribePlan(subscribeInfo)
                                                 .then((response) => {
-                                                    console.log(response);
+                                                    //console.log(response);
                                                 })
                                                 .catch((error) => {
-                                                    console.log(error);
+                                                    //console.log(error);
                                                 });
-                                            console.log("subscibeInfo", subscribeInfo);
+                                            //console.log("subscibeInfo", subscribeInfo);
                                             window.location.href = '/myplan';
                                             localStorage.setItem('plan', tier.id);
                                         }}

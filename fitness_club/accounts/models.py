@@ -88,7 +88,7 @@ def create_payment(sender, instance, created, **kwargs):
     # change left to offset aware
     curr_payments = Payment.objects.filter(user=instance.user)
     if len(curr_payments) > 0 and instance.start_date <= curr_payments.last().date.date():
-        print("Already covered by active subscription")
+        # print("Already covered by active subscription")
         return
     # if instance and instance.start_date <= instance.user.active_subscription.date():
     #     print("Already covered by active subscription") 
@@ -96,11 +96,11 @@ def create_payment(sender, instance, created, **kwargs):
     next_payment_date = instance.user.active_subscription
     # change next_payment_date to datetime with current time
     # get time of current timezone (new york)
-    print("next_payment_date: ", next_payment_date)
+    # print("next_payment_date: ", next_payment_date)
 
     # next_payment_date -= relativedelta(hours=5)
     if (instance and instance.start_date == next_payment_date.date()):
-        print('debug...................')
+        # print('debug...................')
         return
     # combine instance date with current time
     payment_datetime = datetime.combine(instance.start_date, datetime.now().time())

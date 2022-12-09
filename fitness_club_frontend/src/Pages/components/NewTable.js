@@ -121,7 +121,7 @@ export default function StudioTable({ classes, userScheduleClasses, handleEnroll
     const [page, setPage] = React.useState(0);
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        console.log(newPage);
+        // console.log(newPage);
         setRows(classes.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
     };
     const handleChangeRowsPerPage = (event) => {
@@ -138,7 +138,7 @@ export default function StudioTable({ classes, userScheduleClasses, handleEnroll
         if (typeof (classes) !== 'undefined') {
             setRows(classes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
         }
-        console.log(rows);
+        // console.log(rows);
     }, [classes]);
 
     return (

@@ -29,7 +29,7 @@ const formatDatetime = (datetime) => {
     if (datetime === undefined) { 
         return 'No active subscription'; 
     }
-    console.log(datetime);
+    //console.log(datetime);
     let hour = datetime.slice(11, 13);
     let date = datetime.slice(0, 10);
     if (hour >= 19) {
@@ -162,10 +162,10 @@ export default function ProfilePage() {
                 setProfile(response.data);
             })
             .catch((error) => {
-                console.log("Error", error);
+                //console.log("Error", error);
             });
     }, []);
-    console.log(profile);
+    //console.log(profile);
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="md">

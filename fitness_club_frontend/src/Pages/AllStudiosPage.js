@@ -52,10 +52,10 @@ const StudiosPage = () => {
             getAllStudios({ link: link }).then((response) => {
                 const studios = response.data.results.map((s) => {
                     const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
-                    console.log(ns);
+                    // console.log(ns);
                     return ns;
                 });
-                console.log(studios);
+                // console.log(studios);
                 setStudioLst(studios);
                 setCount(Math.ceil(response.data.count / 5));
             });
@@ -73,11 +73,11 @@ const StudiosPage = () => {
                 });
             }
         );
-        console.log(this.state.latitude)
+        // console.log(this.state.latitude)
     }
 
 
-    console.log(studioLst);
+    // console.log(studioLst);
 
     const handleSearchLocation = async (event) => {
         event.preventDefault();
@@ -102,18 +102,18 @@ const StudiosPage = () => {
         }
         searchLocationStudios(location)
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 const studios = response.data.results.map((s) => {
                     const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, "http://127.0.0.1:8000/studios/studio-detail/" + s.id + "/"); // TODO: fix backend, passback url too
-                    console.log(ns);
+                    // console.log(ns);
                     return ns;
                 });
-                console.log(studios);
+                // console.log(studios);
                 setStudioLst(studios);
             })
             .catch((error) => {
-                console.log(error);
-                console.log(error.response.data);
+                // console.log(error);
+                // console.log(error.response.data);
             })
     }
 
@@ -127,30 +127,30 @@ const StudiosPage = () => {
         }
         filterStudios(params)
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 const studios = response.data.map((s) => {
                     const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, "http://127.0.0.1:8000/studios/studio-detail/" + s.id + "/"); // TODO: fix backend, passback url too
-                    console.log(ns);
+                    // console.log(ns);
                     return ns;
                 });
-                console.log(studios);
+                // console.log(studios);
                 setStudioLst(studios);
             })
             .catch((error) => {
-                console.log(error);
-                console.log(error.response.data);
+                // console.log(error);
+                // console.log(error.response.data);
             })
     }
 
     const handlePageChange = async (event) => {
         getAllStudios({ link: link + '?offset=' + String((event.target.value - 1) * 5) }).then((response) => {
-            console.log(link + '?offset=' + String((event.target.value - 1) * 5))
+            // console.log(link + '?offset=' + String((event.target.value - 1) * 5))
             const studios = response.data.results.map((s) => {
                 const ns = new Studio(s.id, s.name, s.address, s.location, s.postcode, s.phone_number, s.url);
-                console.log(ns);
+                // console.log(ns);
                 return ns;
             });
-            console.log(studios);
+            // console.log(studios);
             setStudioLst(studios);
             setCurrPage(event.target.value);
         });

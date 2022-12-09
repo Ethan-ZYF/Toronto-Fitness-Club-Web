@@ -112,7 +112,7 @@ def createEvents(sender, **kwargs):
                       start_time=curr,
                       studio=instance.studio)
             e.save()
-            print(e)
+            # print(e)
             curr += timedelta(days=7)
 
 

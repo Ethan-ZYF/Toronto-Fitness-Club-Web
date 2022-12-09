@@ -18,7 +18,6 @@ const SignOutPage = () => {
                 setLogOutSuccess(true);
             }).catch((error) => {
                 setLogOutSuccess(false);
-                console.log(error)
                 setErrorMsg(error.response.data);
             })
         },

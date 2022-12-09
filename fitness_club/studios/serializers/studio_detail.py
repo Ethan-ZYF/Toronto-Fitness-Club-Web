@@ -8,7 +8,7 @@ from studios.models import Studio, StudioImage, Amenity, Class, Event
 class FilteredEventsSerializer(serializers.ListSerializer):
 
     def to_representation(self, data):
-        print(data)
+        # print(data)
         data = data.filter(start_time__gt=timezone.now())
         return super(FilteredEventsSerializer, self).to_representation(data)
 

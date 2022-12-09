@@ -80,24 +80,24 @@ const VirtualizedList = () => {
         getPayments((page - 1) * 5)
             .then((response) => {
                 setPageCnt(response.data.count % 5 == 0 ? response.data.count / 5 : Math.floor(response.data.count / 5) + 1);
-                console.log(pageCnt);
+                // console.log(pageCnt);
                 setPayments(response.data.results);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             }
             );
         getFuturePayments()
             .then((response) => {
-                console.log(response.data['future_payments']);
+                // console.log(response.data['future_payments']);
                 setNext(response.data['future_payments']);
             })
             .catch((err) => {
-                console.log(err);
+                // console.log(err);
             }
             );
     }, [page]);
-    console.log("payments", payments);
+    // console.log("payments", payments);
     return (
         <Box
             sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}

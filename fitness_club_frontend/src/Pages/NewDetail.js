@@ -56,7 +56,7 @@ let events = []
 
 const PaginatedEvents = () => {
     let [page, setPage] = useState(1);
-    const PER_PAGE = 3;
+    const PER_PAGE = 5;
 
     const count = Math.ceil(events.length / PER_PAGE);
     const _DATA = usePagination(events, PER_PAGE);
@@ -69,7 +69,7 @@ const PaginatedEvents = () => {
 
     return (
         <Box
-            p="0"
+            p="3"
             sx={{
                 width: '100%',
                 height: '100%',

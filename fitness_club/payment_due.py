@@ -12,9 +12,9 @@ users = FCUser.objects.filter(subscription__isnull=False)
 print(users)
 need_payment = []
 for user in users:
-    # print(user.subscription.plan.plan)
+    print(user.subscription.plan.plan)
     if user.subscription.plan.plan == "MONTHLY":
-        print(user)
+        # print(user)
         if user.subscription.start_date + relativedelta(
                 months=1) <= timezone.now().date():
             need_payment.append(user)

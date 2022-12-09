@@ -18,6 +18,51 @@ import { editProfile, getProfile } from '../api';
 import { validateSignUpForm } from './utils/validators';
 
 
+const normalizeInput = (value, previousValue) => {
+    // return nothing if no value
+    if (!value) return value;
+
+    // only allows 0-9 inputs
+    const currentValue = value.replace(/[^\d]/g, '');
+    const cvLength = currentValue.length;
+
+    if (!previousValue || value.length > previousValue.length) {
+
+        // returns: "x", "xx", "xxx"
+        if (cvLength < 4) return currentValue;
+
+        // returns: "(xxx)", "(xxx) x", "(xxx) xx", "(xxx) xxx",
+        if (cvLength < 7) return `${currentValue.slice(0, 3)}-${currentValue.slice(3)}`;
+
+        // returns: "(xxx) xxx-", (xxx) xxx-x", "(xxx) xxx-xx", "(xxx) xxx-xxx", "(xxx) xxx-xxxx"
+        return `${currentValue.slice(0, 3)}-${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`;
+    }
+};
+
+const normalizeCard = (value, previousValue) => {
+    // return nothing if no value
+    if (!value) return value;
+
+    // only allows 0-9 inputs
+    const currentValue = value.replace(/[^\d]/g, '');
+    const cvLength = currentValue.length;
+
+    if (!previousValue || value.length > previousValue.length) {
+
+        // returns: "x", "xx", "xxx"
+        if (cvLength < 4) return currentValue;
+
+        // returns: "(xxx)", "(xxx) x", "(xxx) xx", "(xxx) xxx",
+        if (cvLength < 8) return `${currentValue.slice(0, 4)}-${currentValue.slice(4)}`;
+
+        if (cvLength < 12) return `${currentValue.slice(0, 4)}-${currentValue.slice(4, 8)}-${currentValue.slice(8)}`;
+
+        // returns xxxx-xxxx-xxxx-xxxx
+        return `${currentValue.slice(0, 4)}-${currentValue.slice(4, 8)}-${currentValue.slice(8, 12)}-${currentValue.slice(12, 16)}`;
+    }
+};
+
+
 const theme = createTheme();
 
 const EditProfile = () => {
@@ -41,7 +86,7 @@ const EditProfile = () => {
             if (localStorage.getItem('user') !== null) {
                 setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
                 getProfile().then((response) => {
-                    // console.log(response.data);
+                    // //console.log(response.data);
                     setUserName(response.data.username);
                     setCardNumber(response.data.credit_debit_no);
                     setMail(response.data.email);
@@ -58,14 +103,14 @@ const EditProfile = () => {
     const selectAvatarHandler = (e) => {
         const fname = e.target.files[0];
         setAvatar(fname);
-        console.log('avatar uploaded');
+        //console.log('avatar uploaded');
         setAvatarMsg('Avatar uploaded');
     }
 
     const EditHandler = async (e) => {
         e.preventDefault();
         const editData = {
-            username, 
+            username,
             credit_debit_no: cardNumber,
             password,
             password2,
@@ -75,15 +120,15 @@ const EditProfile = () => {
             phone_number: phoneNumber,
             avatar
         }
-        console.log(editData);
+        //console.log(editData);
         await editProfile(editData).then((response) => {
             setEditSuccess(true);
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             setErrorMsg(error.response.data);
         });
     }
-    // console.log(username);
+    // //console.log(username);
 
     if (localStorage.getItem('user') === null) {
         return (
@@ -195,7 +240,9 @@ const EditProfile = () => {
                                         label="Phone Number"
                                         name="phoneNumber"
                                         value={phoneNumber}
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
+                                        onChange={(e) => setPhoneNumber(
+                                            normalizeInput(e.target.value)
+                                        )}
                                         error={errorMsg.phone_number}
                                         helperText={errorMsg.phone_number}
                                     />
@@ -207,7 +254,9 @@ const EditProfile = () => {
                                         label="Credit/Debit Number"
                                         name="credit_debit_no"
                                         value={cardNumber}
-                                        onChange={(e) => setCardNumber(e.target.value)}
+                                        onChange={(e) => setCardNumber(
+                                            normalizeCard(e.target.value)
+                                        )}
                                         error={errorMsg.credit_debit_no}
                                         helperText={errorMsg.credit_debit_no}
                                     />

@@ -122,11 +122,11 @@ const SignUp = () => {
             phone_number: phoneNumber,
             avatar
         }
-        console.log(userDetails)
+        // console.log(userDetails)
 
         register(userDetails)
             .then((response) => {
-                console.log(response)
+                // console.log(response)
                 setSignUpSuccess(true);
             })
             .catch((error) => {

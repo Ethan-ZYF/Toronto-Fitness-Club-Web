@@ -61,22 +61,22 @@ const SignIn = () => {
             username,
             password,
         }
-        console.log(userLoginInfo)
+        //console.log(userLoginInfo)
 
         login(userLoginInfo)
             .then((response) => {
-                // console.log(response);
+                // //console.log(response);
                 setErrorMsg("");
-                console.log("response.data", response.data);
+                //console.log("response.data", response.data);
                 const user = { ...userLoginInfo, token: response.data.access }
-                console.log('user', user)
+                //console.log('user', user)
                 context.setContext(loggedInState(user.username, user.token));
-                console.log(context)
+                //console.log(context)
                 localStorage.setItem('user', JSON.stringify(user));
                 setSignInSuccess(true);
             })
             .catch((error) => {
-                console.log("err", error);
+                //console.log("err", error);
                 setErrorMsg(error.response.data);
             })
     };

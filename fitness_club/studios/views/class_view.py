@@ -17,7 +17,7 @@ class EnrollClassView(APIView):
 
     def post(self, request, *args, **kwargs):
         if request.user.active_subscription.date() < datetime.now().date():
-            print(request.user.active_subscription)
+            # print(request.user.active_subscription)
             return Response(
                 "You must have an active subscription to enroll in classes!")
         events = Event.objects.filter(belonged_class=kwargs['pk']).filter(
@@ -83,7 +83,7 @@ class EnrollEventView(APIView):
 
     def post(self, request, *args, **kwargs):
         if request.user.active_subscription.date() < datetime.now().date():
-            print(request.user.active_subscription)
+            # print(request.user.active_subscription)
             return Response(
                 "You must have an active subscription to enroll in event!")
         try:
@@ -136,7 +136,7 @@ class DeleteEventView(APIView):
 
         user.schedule.remove(to_remove_event)
         event.curr_size -= 1
-        print(event.curr_size)
+        # print(event.curr_size)
         event.save()
         return Response("You have successfully unenrolled this session!")
         # return HttpResponseRedirect(redirect_to='https://studios/schedule.com')

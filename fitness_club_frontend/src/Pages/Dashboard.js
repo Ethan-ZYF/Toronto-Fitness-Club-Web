@@ -4,7 +4,7 @@ import { getCurrPlan } from '../api';
 
 const Dashboard = () => {
     const context = useContext(userContext);
-    console.log(context)
+    //console.log(context)
 
     useEffect(() => {
         if (localStorage.getItem('user') === null) {
@@ -20,7 +20,7 @@ const Dashboard = () => {
                 localStorage.setItem('plan', response.data.id);
             })
             .catch((error) => {
-                console.log("Error", error);
+                //console.log("Error", error);
             });
     }, []);
 
