@@ -10,4 +10,3 @@ python3 manage.py migrate
 cd ..
 source ./venv/bin/activate
 cd fitness_club
-python3 manage.py runserver
