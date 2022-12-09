@@ -86,6 +86,7 @@ const SignUp = () => {
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [avatar, setAvatar] = useState(null);
+    const [avatarMsg, setAvatarMsg] = useState('no file selected');
 
     const [isFormValid, setIsFormValid] = useState(false);
     const [signUpSuccess, setSignUpSuccess] = useState(false);
@@ -104,6 +105,7 @@ const SignUp = () => {
     const selectAvatarHandler = (e) => {
         const fname = e.target.files[0];
         setAvatar(fname);
+        setAvatarMsg(fname.name + ' uploaded');
     }
 
     const handleSignUp = async (event) => {
@@ -309,6 +311,7 @@ const SignUp = () => {
                                             onChange={selectAvatarHandler} />
                                     </Button>
                                     <p style={{ fontSize: '0.8rem', color: '#D7272D' }}>{errorMsg.avatar}</p>
+                                    <p style={{ fontSize: '0.8rem', color: '#D7272D' }}>{avatarMsg}</p>
                                 </Grid>
                             </Grid>
 
