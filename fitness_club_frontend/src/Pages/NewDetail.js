@@ -546,9 +546,13 @@ export default function StudioDetail() {
         // console.log(e.id);
         enrollEvent({ id: e.id })
             .then((response) => {
-                // console.log(response);
+                console.log(response);
+                if (response.data === "Error! There is no more space in this class!") {
+                    alert(response.data)
+                    return
+                }
                 // console.log('You have successfully enrolled in class ' + e.class_name + ' session' + String(e.id) + ' Time ' + e.start_time);
-                window.location.reload();
+                // window.location.reload();
                 // instead of reload page we send request to get new user schedule 
                 getUserSchedule()
                     .then((response) => {
@@ -602,6 +606,10 @@ export default function StudioDetail() {
         enrollClass({ id: row.id })
             .then((response) => {
                 console.log(response);
+                if (response.data === "Sorry, all events for this class are filled!") {
+                    alert(response.data);
+                    return;
+                }
                 // console.log('You have successfully enrolled in class ' + row.name);
                 // window.location.reload();
                 getUserSchedule()
