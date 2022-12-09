@@ -601,18 +601,11 @@ export default function StudioDetail() {
         // console.log(row.name);
         enrollClass({ id: row.id })
             .then((response) => {
-                // console.log(response);
+                console.log(response);
                 // console.log('You have successfully enrolled in class ' + row.name);
-                window.location.reload();
+                // window.location.reload();
                 getUserSchedule()
                     .then((response) => {
-                        for (let event of response.data.schedule) {
-                            // console.log(event);
-                            if (event.curr_size >= event.max_size) {
-                                alert('At least 1 class instance is full')
-                                return;
-                            }
-                        }
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
                         // console.log(scheduled_events_id);
                         setUserScheduleEvents(scheduled_events_id);
@@ -626,7 +619,7 @@ export default function StudioDetail() {
 
             })
             .catch((error) => {
-                // console.log(error);
+                console.log(error);
             });
     }
 
