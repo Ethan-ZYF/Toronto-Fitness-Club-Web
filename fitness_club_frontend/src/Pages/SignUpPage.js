@@ -29,6 +29,50 @@ const Copyright = (props) => {
     );
 }
 
+const normalizeInput = (value, previousValue) => {
+    // return nothing if no value
+    if (!value) return value;
+
+    // only allows 0-9 inputs
+    const currentValue = value.replace(/[^\d]/g, '');
+    const cvLength = currentValue.length;
+
+    if (!previousValue || value.length > previousValue.length) {
+
+        // returns: "x", "xx", "xxx"
+        if (cvLength < 4) return currentValue;
+
+        // returns: "(xxx)", "(xxx) x", "(xxx) xx", "(xxx) xxx",
+        if (cvLength < 7) return `${currentValue.slice(0, 3)}-${currentValue.slice(3)}`;
+
+        // returns: "(xxx) xxx-", (xxx) xxx-x", "(xxx) xxx-xx", "(xxx) xxx-xxx", "(xxx) xxx-xxxx"
+        return `${currentValue.slice(0, 3)}-${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`;
+    }
+};
+
+const normalizeCard = (value, previousValue) => {
+    // return nothing if no value
+    if (!value) return value;
+
+    // only allows 0-9 inputs
+    const currentValue = value.replace(/[^\d]/g, '');
+    const cvLength = currentValue.length;
+
+    if (!previousValue || value.length > previousValue.length) {
+
+        // returns: "x", "xx", "xxx"
+        if (cvLength < 4) return currentValue;
+
+        // returns: "(xxx)", "(xxx) x", "(xxx) xx", "(xxx) xxx",
+        if (cvLength < 8) return `${currentValue.slice(0, 4)}-${currentValue.slice(4)}`;
+
+        if (cvLength < 12) return `${currentValue.slice(0, 4)}-${currentValue.slice(4, 8)}-${currentValue.slice(8)}`;
+
+        // returns xxxx-xxxx-xxxx-xxxx
+        return `${currentValue.slice(0, 4)}-${currentValue.slice(4, 8)}-${currentValue.slice(8, 12)}-${currentValue.slice(12, 16)}`;
+    }
+};
+
 const theme = createTheme();
 
 const SignUp = () => {
@@ -126,7 +170,7 @@ const SignUp = () => {
                         {/* <Typography component="h1" variant="h5">
                             You have successfully registered an account! Proceed to sign in <NavLink to='/signin'>here</NavLink>!
                         </Typography> */}
-                    <Navigate to='/signin' />
+                        <Navigate to='/signin' />
                     </Box>
                     :
                     <Box
@@ -198,7 +242,10 @@ const SignUp = () => {
                                         label="Phone Number"
                                         name="phoneNumber"
                                         value={phoneNumber}
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
+                                        onChange={(e) => setPhoneNumber(
+                                            // e.target.value
+                                            normalizeInput(e.target.value)
+                                        )}
                                         error={errorMsg.phone_number}
                                         helperText={errorMsg.phone_number}
                                     />
@@ -211,7 +258,11 @@ const SignUp = () => {
                                         label="Credit/Debit Number"
                                         name="credit_debit_no"
                                         value={cardNumber}
-                                        onChange={(e) => setCardNumber(e.target.value)}
+                                        onChange={
+                                            (e) => setCardNumber(
+                                                normalizeCard(e.target.value)
+                                            )
+                                        }
                                         error={errorMsg.credit_debit_no}
                                         helperText={errorMsg.credit_debit_no}
                                     />
