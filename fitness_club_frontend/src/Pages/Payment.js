@@ -73,7 +73,7 @@ function renderRow(payment) {
 
 const VirtualizedList = () => {
     const [payments, setPayments] = React.useState([]);
-    const [next, setNext ] = React.useState([]);
+    const [next, setNext] = React.useState([]);
     const [pageCnt, setPageCnt] = React.useState(0);
     const [page, setPage] = React.useState(1);
     useEffect(() => {
@@ -86,7 +86,7 @@ const VirtualizedList = () => {
             .catch((err) => {
                 console.log(err);
             }
-        );
+            );
         getFuturePayments()
             .then((response) => {
                 console.log(response.data['future_payments']);
@@ -95,32 +95,32 @@ const VirtualizedList = () => {
             .catch((err) => {
                 console.log(err);
             }
-        );
+            );
     }, [page]);
     console.log("payments", payments);
     return (
-        <Box 
+        <Box
             sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
             marginLeft="auto"
             marginRight="auto"
             marginTop="20px"
         >
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
-                Paymeny History
+                Payment History
             </Typography>
-            <Box sx={{display:'flex', justifyContent:'left', alignItems:'center', marginTop:'20px'}}>
-              <FormControl style={{width:'12.5%'}}>
-              <InputLabel>Page</InputLabel>
-              <Select
-                value={page}
-                label="Page"
-                onChange = {(e) => {
-                    setPage(e.target.value);
-                }}
-              >
-                {Array.from({ length: pageCnt }, (_, i) => <MenuItem key={i+1} value={i+1}>{i+1}</MenuItem>)}
-              </Select>
-              </FormControl>
+            <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', marginTop: '20px' }}>
+                <FormControl style={{ width: '12.5%' }}>
+                    <InputLabel>Page</InputLabel>
+                    <Select
+                        value={page}
+                        label="Page"
+                        onChange={(e) => {
+                            setPage(e.target.value);
+                        }}
+                    >
+                        {Array.from({ length: pageCnt }, (_, i) => <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>)}
+                    </Select>
+                </FormControl>
             </Box>
             <Box
                 sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
@@ -136,7 +136,7 @@ const VirtualizedList = () => {
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} fontWeight='bold' color='#3c59ff'>
                 Next Payment
             </Typography>
-            <Box 
+            <Box
                 sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
                 marginLeft="auto"
                 marginRight="auto"
@@ -189,7 +189,7 @@ const MyPayments = () => {
     }
     return (
         <ThemeProvider theme={theme}>
-            <Box 
+            <Box
                 sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}
                 marginLeft="auto"
                 marginRight="auto"
