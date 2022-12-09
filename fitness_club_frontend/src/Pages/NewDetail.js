@@ -606,6 +606,13 @@ export default function StudioDetail() {
                 // window.location.reload();
                 getUserSchedule()
                     .then((response) => {
+                        for (let event of response.data.schedule) {
+                            // console.log(event);
+                            if (event.curr_size >= event.max_size) {
+                                alert('At least 1 class instance is full')
+                                return;
+                            }
+                        }
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
                         // console.log(scheduled_events_id);
                         setUserScheduleEvents(scheduled_events_id);
