@@ -16,6 +16,6 @@ class SubscribeSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        subscription = Subscription.objects.create(user=user, plan=validated_data['plan'], start_date=validated_data['start_date'])
+        subscription = Subscription.objects.create(user=user, **validated_data)
         print(f'created subscription: {subscription}')
         return subscription
