@@ -21,7 +21,7 @@ const ViewHistoryPage = () => {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        console.log(newPage);
+        //.log(newPage);
         setRows(history.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
       };
     const handleChangeRowsPerPage = (event) => {
@@ -37,15 +37,15 @@ const ViewHistoryPage = () => {
     useEffect(()=> {
         getUserHistorySchedule()
         .then((response) => {
-            console.log(response);
+            //.log(response);
             const his = response.data.history;
-            console.log(his);
+            //.log(his);
             setHistory(his);
-            console.log('user schedule', his);
+            //.log('user schedule', his);
             setRows(his.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
         })
         .catch((error)=>{
-            console.log(error);
+            //.log(error);
         })
     }, []);
 

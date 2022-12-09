@@ -87,11 +87,11 @@ function PlanEditPanel() {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
         getCurrPlan()
             .then((response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 const currPlan = response.data.plan;
                 if (currPlan === 'MONTHLY') {
                     tiers[0].currentPlan = true;
@@ -105,14 +105,14 @@ function PlanEditPanel() {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
     }, []);
     tiers[0].price = monthly.price;
     tiers[0].id = monthly.id;
     tiers[1].price = yearly.price;
     tiers[1].id = yearly.id;
-    // console.log("Price", tiers)
+    // //console.log("Price", tiers)
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -211,11 +211,11 @@ function PlanEditPanel() {
                                             }
                                             editPlan({plan: tier.id})
                                                 .then((response) => {
-                                                    console.log(response);
+                                                    //console.log(response);
                                                     window.location.href = '/myplan';
                                                 })
                                                 .catch((error) => {
-                                                    console.log(error);
+                                                    //console.log(error);
                                                 });
                                         }}
                                     >

@@ -22,7 +22,7 @@ const ViewSchedulePage = () => {
     
         const handleChangePage = (event, newPage) => {
             setPage(newPage);
-            console.log(newPage);
+            //console.log(newPage);
             setRows(schedule.slice(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage));
           };
         const handleChangeRowsPerPage = (event) => {
@@ -39,13 +39,13 @@ const ViewSchedulePage = () => {
         getUserSchedule()
         .then((response) => {
             const sch = response.data.schedule;
-            console.log(sch);
+            //console.log(sch);
             setSchedule(sch);
-            console.log('user schedule', sch);
+            //console.log('user schedule', sch);
             setRows(sch.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
         })
         .catch((error)=>{
-            console.log(error);
+            //console.log(error);
         })
     }, []);
 

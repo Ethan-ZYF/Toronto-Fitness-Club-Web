@@ -117,7 +117,7 @@ function Row(props) {
 
 
 export default function StudioTable({ classes }) {
-    console.log(JSON.stringify(classes))
+    // console.log(JSON.stringify(classes))
     const rows = classes
     //pagination
     const [rowsPerPage, setRowsPerPage] = React.useState(2);  

@@ -51,7 +51,7 @@ class EditSerializer(serializers.ModelSerializer):
         currUser = self.context['request'].user
         if currUser.pk != instance.pk:
             raise ValidationError("You do not have permission to edit this user")
-        print(validated_data)
+        # print(validated_data)
         if 'username' in validated_data and validated_data['username'] != self.initial_data['username']:
             instance.username = validated_data['username']
         if 'password' in validated_data:

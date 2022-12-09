@@ -16,7 +16,7 @@ const formatDatetime = (datetime) => {
     if (datetime === undefined) { 
         return 'No active subscription'; 
     }
-    console.log(datetime);
+    // //.log(datetime);
     return datetime.slice(0, 10);
 }
 
@@ -70,10 +70,10 @@ export default function SubscribePage() {
                 setPlan(response.data);
             })
             .catch((error) => {
-                console.log("Error", error);
+                //.log("Error", error);
             });
     }, []);
-    // console.log(plan);
+    // //.log(plan);
     if (localStorage.getItem('user') === null) {
         return (
             <ThemeProvider theme={theme}>
@@ -127,7 +127,7 @@ export default function SubscribePage() {
                         onClick={() => {
                             unsubscribe()
                                 .then((response) => {
-                                    console.log(response);
+                                    //.log(response);
                                     if (response.data['detail'] === 'You are not subscribed.') {
                                         setErrorMsg('You are not subscribed.');
                                         return;
@@ -137,7 +137,7 @@ export default function SubscribePage() {
                                     window.location.href = '/myplan';
                                 })
                                 .catch((error) => {
-                                    console.log("Error", error);
+                                    //.log("Error", error);
                                 });
                         }}
                     >

@@ -86,7 +86,7 @@ const EditProfile = () => {
             if (localStorage.getItem('user') !== null) {
                 setIsFormValid(validateSignUpForm({ username, cardNumber, password, password2 }));
                 getProfile().then((response) => {
-                    // console.log(response.data);
+                    // //console.log(response.data);
                     setUserName(response.data.username);
                     setCardNumber(response.data.credit_debit_no);
                     setMail(response.data.email);
@@ -103,7 +103,7 @@ const EditProfile = () => {
     const selectAvatarHandler = (e) => {
         const fname = e.target.files[0];
         setAvatar(fname);
-        console.log('avatar uploaded');
+        //console.log('avatar uploaded');
         setAvatarMsg('Avatar uploaded');
     }
 
@@ -120,15 +120,15 @@ const EditProfile = () => {
             phone_number: phoneNumber,
             avatar
         }
-        console.log(editData);
+        //console.log(editData);
         await editProfile(editData).then((response) => {
             setEditSuccess(true);
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             setErrorMsg(error.response.data);
         });
     }
-    // console.log(username);
+    // //console.log(username);
 
     if (localStorage.getItem('user') === null) {
         return (

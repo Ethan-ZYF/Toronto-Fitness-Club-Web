@@ -39,10 +39,10 @@ class CreatePaymentSerializer(serializers.ModelSerializer):
         if not hasattr(self.context['request'].user, 'subscription'):
             raise serializers.ValidationError("You don't have a subscription now!")
         start_date = self.context['request'].user.subscription.start_date
-        print(start_date, "debug")
+        # print(start_date, "debug")
         plan = self.context['request'].user.subscription.plan.plan
         if start_date > today:
-            print("start date is in the future")
+            # print("start date is in the future")
             raise serializers.ValidationError("Your subscription has already covered this period")
         while start_date < today:
             if plan == 'MONTHLY':
@@ -50,7 +50,7 @@ class CreatePaymentSerializer(serializers.ModelSerializer):
             else:
                 start_date += relativedelta(years=1)
         if start_date > today:
-            print(start_date)
+            # print(start_date)
             raise serializers.ValidationError("No Payment Due")
         payments = Payment.objects.filter(user=self.context['request'].user)
         last_payment = payments.last()

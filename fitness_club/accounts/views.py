@@ -146,7 +146,7 @@ class SubscribeView(CreateAPIView):
         else:
             sub_end_date = request.user.active_subscription
         request.user.save()
-        print(request.user.active_subscription)
+        # print(request.user.active_subscription)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -182,7 +182,7 @@ class CancelView(DestroyAPIView):
             request.user.save()
             request.user.schedule.filter(
                 start_time__gt=request.user.active_subscription).delete()
-            print(request.user.schedule.all())
+            # print(request.user.schedule.all())
             # request.user.save()
             return Response({
                 'detail':
