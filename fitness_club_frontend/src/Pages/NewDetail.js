@@ -603,7 +603,7 @@ export default function StudioDetail() {
             .then((response) => {
                 // console.log(response);
                 // console.log('You have successfully enrolled in class ' + row.name);
-                // window.location.reload();
+                window.location.reload();
                 getUserSchedule()
                     .then((response) => {
                         const scheduled_events_id = new Set(response.data.schedule.map((event) => { return event.id; }));
@@ -630,7 +630,7 @@ export default function StudioDetail() {
             .then((response) => {
                 // console.log(response);
                 // console.log('You have successfully unenrolled in class ' + row.name);
-                // window.location.reload();
+                window.location.reload();
 
                 getUserSchedule()
                     .then((response) => {
